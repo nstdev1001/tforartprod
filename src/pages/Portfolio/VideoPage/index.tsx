@@ -129,7 +129,7 @@ const SortableVideo = ({
           {video.videoTitle}
         </h3>
       </motion.div>
-      <DialogContent className="w-fit !max-w-fit">
+      <DialogContent className="w-fit max-w-fit">
         <VideoDialog
           src={getEmbedYoutubeVideoURL(video.linkURL)}
           title={video.videoTitle}

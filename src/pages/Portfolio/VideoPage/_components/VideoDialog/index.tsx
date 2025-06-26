@@ -6,7 +6,7 @@ interface Props {
 
 const VideoDialog = ({ src, title, description }: Props) => {
   return (
-    <div className="p-5 w-[300px] md:w-[600px] lg:w-[900px]">
+    <div className="w-[calc(100vw-50px)] max-w-[900px] md:p-4">
       <iframe
         className="w-full aspect-video"
         src={src}

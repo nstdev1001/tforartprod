@@ -39,7 +39,7 @@ const ImagePage = () => {
   } = useFullScreenGallery(photos || []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 370);
   }, [location.pathname]);
 
   useEffect(() => {
