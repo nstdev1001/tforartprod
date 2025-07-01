@@ -29,7 +29,7 @@ const AboutCompany = () => {
       <div className="about-wrapper flex flex-col md:flex-col lg:flex-row justify-center gap-20 mx-auto">
         <motion.img
           className="md:max-w-[600px] lg:max-w-[600px] h-auto rounded-ee-2xl bg-top object-cover mx-auto"
-          src="/company-img-draft.JPG"
+          src="/public/tforart_homepage_color.jpg"
           alt="Tforart team image"
           {...defaultYMotionProps}
           initial={{ opacity: 0, y: 100 }}
