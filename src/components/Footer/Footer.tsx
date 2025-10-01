@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="content-row content-row-2 text-center md:text-start flex flex-col gap-3 *:cursor-pointer">
             <Link to="/support/faq">FAQ</Link>
             <Link to="">
-              Tforart Review
+              Tforart Review{" "}
               <span className="font-thin text-gray-200">(Comming soon)</span>
             </Link>
             <Link to="/ai-chatbot">
