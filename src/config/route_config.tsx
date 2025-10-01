@@ -7,7 +7,6 @@ import AIchatbot from "@/pages/AIchatbot";
 import CompanyInfo from "@/pages/CompanyInfo";
 import CompanyServices from "@/pages/CompanyServices";
 import DeveloperInfoPage from "@/pages/DeveloperInfo";
-// import DeveloperInfoPage from "@/pages/DeveloperInfo";
 import TforartFAQ from "@/pages/FAQ";
 import Login from "@/pages/Login/Login";
 import AlbumPage from "@/pages/Portfolio/AlbumPage";
