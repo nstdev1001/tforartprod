@@ -3,8 +3,10 @@ import Contact from "../pages/Contact";
 import Home from "../pages/Home";
 import Portfolio from "../pages/Portfolio/Portfolio";
 import NotFound from "@/components/NotFound/NotFound";
+import AIchatbot from "@/pages/AIchatbot";
 import CompanyInfo from "@/pages/CompanyInfo";
 import CompanyServices from "@/pages/CompanyServices";
+import DeveloperInfoPage from "@/pages/DeveloperInfo";
 // import DeveloperInfoPage from "@/pages/DeveloperInfo";
 import TforartFAQ from "@/pages/FAQ";
 import Login from "@/pages/Login/Login";
@@ -91,10 +93,14 @@ export const routerConfig = createBrowserRouter(
       path: "/support/weather",
       element: <WeatherApp />,
     },
-    // {
-    //   path: "/developer-info",
-    //   element: <DeveloperInfoPage />,
-    // },
+    {
+      path: "/developer-info",
+      element: <DeveloperInfoPage />,
+    },
+    {
+      path: "/ai-chatbot",
+      element: <AIchatbot />,
+    },
     {
       path: "/test-error",
       element: <TestError />,
