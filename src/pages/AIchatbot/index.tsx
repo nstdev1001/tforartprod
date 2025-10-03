@@ -2,8 +2,8 @@ import Layout from "@/components/Layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Loader2, Plus } from "lucide-react";
-import React, { useState, type ComponentProps } from "react";
+import { Loader2, Plus, Send } from "lucide-react";
+import React, { useEffect, useRef, useState, type ComponentProps } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -25,6 +25,28 @@ const AIChatbot = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const model = "meta-llama/llama-3.3-8b-instruct:free";
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]"
+      );
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (messages.length > 0 && !isLoading) {
+      scrollToBottom();
+      inputRef.current?.focus();
+    }
+  }, [isLoading, messages.length]);
 
   const handleNewChat = () => {
     setMessages([]);
@@ -92,6 +114,13 @@ const AIChatbot = () => {
     }
   };
 
+  useEffect(() => {
+    if (messages.length > 0 && !isLoading) {
+      scrollToBottom();
+      inputRef.current?.focus();
+    }
+  }, [messages, isLoading]);
+
   return (
     <Layout>
       <div className="privacy-policy-container max-w-full sm:max-w-[1200px] px-2 sm:px-5 pt-[70px] sm:pt-[100px] lg:pt-[150px] mx-auto">
@@ -119,10 +148,13 @@ const AIChatbot = () => {
           giới hạn một số chức năng nâng cao)
         </p>
 
-        {/* answer your questions with AI */}
-        <section className="flex flex-col h-[calc(100dvh-180px)] sm:h-[800px] relative">
+        {/* generate questions area */}
+        <section className="flex flex-col h-[calc(100vh-250px)] relative">
           {messages.length > 0 && (
-            <ScrollArea className="p-2 sm:p-6 h-[60dvh] sm:h-[700px]">
+            <ScrollArea
+              ref={scrollAreaRef}
+              className="p-3 md:p-4 h-[calc(100vh-320px)] md:h-[calc(100vh-350px)] border-t border-gray-700 mb-3 sm:mb-5"
+            >
               {messages.map((msg, index) => (
                 <div
                   key={index}
@@ -204,7 +236,7 @@ const AIChatbot = () => {
                 </div>
               ))}
 
-              {/* Hiệu ứng loading xuất hiện ngay sau tin nhắn cuối cùng của user */}
+              {/* loading effect*/}
               {isLoading && (
                 <div className="mb-2 sm:mb-4 flex justify-start">
                   <div className="max-w-[80%] rounded-lg p-2 sm:p-3 bg-gray-800 flex items-center gap-2 text-sm sm:text-base">
@@ -217,17 +249,21 @@ const AIChatbot = () => {
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </ScrollArea>
           )}
 
           {/* input prompt */}
           <div
             className={`flex w-full gap-2 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 transition-[bottom] duration-500 ease-in-out ${
-              messages.length > 0 ? "bottom-10" : "bottom-[60%] sm:bottom-[50%]"
+              messages.length > 0
+                ? "bottom-[-20px]"
+                : "bottom-[60%] sm:bottom-[50%]"
             }`}
           >
             <div className="relative flex-1">
               <Input
+                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
