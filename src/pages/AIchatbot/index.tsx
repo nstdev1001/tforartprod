@@ -1,8 +1,10 @@
+import { AI_MODELS } from "./variables";
 import Layout from "@/components/Layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Plus, Send } from "lucide-react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { Loader2, Send } from "lucide-react";
 import React, { useEffect, useRef, useState, type ComponentProps } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -24,7 +26,9 @@ const AIChatbot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const model = "meta-llama/llama-3.3-8b-instruct:free";
+  const [selectedModel, setSelectedModel] = useState<
+    (typeof AI_MODELS)[number]["id"]
+  >(AI_MODELS[0].id);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -66,18 +70,17 @@ const AIChatbot = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_OPENROUTE_API_KEY}`,
+            Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
             "HTTP-Referer": "https://tforart.vn/",
             "X-Title": "AI Chatbot",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: `${model}`,
+            model: selectedModel,
             messages: [...messages, userMessage].map((msg) => ({
               role: msg.role,
               content: msg.content,
             })),
-            // stream: true,
           }),
         }
       );
@@ -124,27 +127,35 @@ const AIChatbot = () => {
   return (
     <Layout>
       <div className="privacy-policy-container max-w-full sm:max-w-[1200px] px-2 sm:px-5 pt-[70px] sm:pt-[100px] lg:pt-[150px] mx-auto">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
+        <div className="flex flex-col justify-center items-center gap-1">
           <h1 className="text-lg sm:text-2xl font-semibold text-center">
             TFORART&apos;s AI Chatbot <span className="font-light">(Beta)</span>
           </h1>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleNewChat}
-            className="border-gray-700 hover:bg-gray-800 mt-2 sm:mt-0"
-            title="New Chat"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-3 items-center justify-center">
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className="w-48 px-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+              disabled={isLoading}
+            >
+              {AI_MODELS.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.name}
+                </option>
+              ))}
+            </select>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNewChat}
+              title="New Chat"
+            >
+              <ReloadIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         <p className="text-center text-xs text-gray-400 mt-2 mb-3 sm:mb-5">
-          (Tính năng đang trong quá trình phát triển bởi NST -
-          <br className="hidden sm:block" />
-          Model sử dụng:{" "}
-          <span className="font-semibold">
-            Llama 3.3 8B Instruct (free)
-          </span>{" "}
+          (Model AI sử dụng là các phiên bản miễn phí từ OpenRouter.ai, có thể
           giới hạn một số chức năng nâng cao)
         </p>
 
@@ -262,28 +273,28 @@ const AIChatbot = () => {
             }`}
           >
             <div className="relative flex-1">
-              <Input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
-                className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 h-14 sm:h-20 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 pr-16 transition-all duration-200 text-sm sm:text-base"
-                disabled={isLoading}
-              />
-              <Button
-                onClick={() => {
-                  void handleSend();
-                }}
-                disabled={isLoading || !input.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed h-10 w-10 sm:h-12 sm:w-12 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                ) : (
-                  <Send className="h-5 w-5" />
-                )}
-              </Button>
+              <div className="relative">
+                <Input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Type your message..."
+                  className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 h-14 sm:h-20 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 pr-16 transition-all duration-200 text-sm sm:text-base"
+                  disabled={isLoading}
+                />
+                <Button
+                  onClick={() => void handleSend()}
+                  disabled={isLoading || !input.trim()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed h-10 w-10 sm:h-12 sm:w-12 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Send className="h-5 w-5" />
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         </section>
