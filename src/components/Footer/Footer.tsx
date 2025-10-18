@@ -78,6 +78,9 @@ const Footer = () => {
         <p className="text-center text-xs">
           © {currentYear} Tforart Production. All Rights Reserved.
         </p>
+        <p className="text-center text-xs font-mono text-gray-400">
+          Made by Nguyen Son Tung
+        </p>
       </section>
     </footer>
   );
