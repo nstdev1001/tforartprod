@@ -41,47 +41,34 @@ const Clients = () => {
       </section>
 
       {/* pc view */}
-      <section className="hidden md:block">
+      <section className="hidden md:block w-full overflow-x-hidden py-12">
         {/* line 1 */}
         <motion.div
-          className={`flex space-x-[1750px] overflow-hidden ${styles.group} scale-[20%] md:scale-[70%] lg:scale-[80%]`}
+          className="relative flex items-center"
           {...defaultYMotionProps}
           initial={{ opacity: 0, y: 70 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          <div className="mt-[50px] flex space-x-28 animate-loop-scroll *:text-white">
-            {clientLogos.map((src, index) => (
+          <div className={`${styles.scrollTrack} flex gap-28`}>
+            {[...clientLogos, ...clientLogos].map((src, index) => (
               <LogoImage key={`line1-${index}`} src={src} />
             ))}
           </div>
-          <div
-            className="mt-[50px] flex animate-loop-scroll space-x-28"
-            aria-hidden="true"
-          >
-            {clientLogos.map((src, index) => (
-              <LogoImage key={`line1-clone-${index}`} src={src} />
-            ))}
-          </div>
         </motion.div>
+
         {/* line 2 */}
         <motion.div
-          className={`flex space-x-[1750px] overflow-hidden ${styles.group} scale-[20%] md:scale-[70%] lg:scale-[80%]`}
+          className="relative flex items-center mt-16"
           {...defaultYMotionProps}
           initial={{ opacity: 0, y: 70 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
-          <div className="mt-[50px] flex space-x-28 animate-loop-scroll *:text-white">
-            {clientLogosReverse.map((src, index) => (
-              <LogoImage key={`line2-${index}`} src={src} />
-            ))}
-          </div>
-          <div
-            className="mt-[50px] flex animate-loop-scroll space-x-28"
-            aria-hidden="true"
-          >
-            {clientLogosReverse.map((src, index) => (
-              <LogoImage key={`line2-clone-${index}`} src={src} />
-            ))}
+          <div className={`${styles.scrollTrackReverse} flex gap-28`}>
+            {[...clientLogosReverse, ...clientLogosReverse].map(
+              (src, index) => (
+                <LogoImage key={`line2-${index}`} src={src} />
+              )
+            )}
           </div>
         </motion.div>
       </section>

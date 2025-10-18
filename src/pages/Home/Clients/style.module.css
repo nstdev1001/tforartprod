@@ -6,3 +6,57 @@
     transparent
   );
 }
+
+.scrollTrack {
+  animation: scroll 30s linear infinite;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent
+  );
+}
+
+.scrollTrackReverse {
+  animation: scroll-reverse 30s linear infinite;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent
+  );
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% / 2));
+  }
+}
+
+@keyframes scroll-reverse {
+  0% {
+    transform: translateX(calc(-100% / 2));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

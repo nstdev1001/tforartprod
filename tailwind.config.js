@@ -6,6 +6,8 @@ export default {
     extend: {
       animation: {
         "loop-scroll": "loop-scroll 30s linear infinite",
+        scroll: "scroll 40s linear infinite",
+        "scroll-reverse": "scroll-reverse 40s linear infinite",
       },
       keyframes: {
         "loop-scroll": {
@@ -15,6 +17,14 @@ export default {
           to: {
             transform: "translateX(calc(-50px * 57.5))",
           },
+        },
+        scroll: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(calc(-100% - 7rem))" },
+        },
+        "scroll-reverse": {
+          "0%": { transform: "translateX(calc(-100% - 7rem))" },
+          "100%": { transform: "translateX(0)" },
         },
       },
       borderRadius: {
