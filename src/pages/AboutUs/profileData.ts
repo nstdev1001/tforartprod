@@ -21,7 +21,7 @@ export const profileData: ProfileData[] = [
     imgUrl: "/Profile_TFORART_design/Tung.png",
     role: "Filmmaker",
     description:
-      "“Với tôi, những thước phim không chỉ là khung hình chuyển động; nó còn còn là cảm xúc, là tâm hồn, là động lực để mình sáng tạo nhiều hơn nữa.”",
+      "“Với tôi, những thước phim không chỉ là khung hình chuyển động; nó còn là cảm xúc, là tâm hồn, là động lực để mình sáng tạo nhiều hơn nữa.”",
   },
   {
     id: "c3",
