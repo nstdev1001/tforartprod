@@ -143,7 +143,6 @@ const useControlGraphicProject = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["graphicCollection"] });
       NProgress.done();
-      toast.success("Add project successfully!");
       form.reset();
     },
     onError: (error) => {
@@ -190,7 +189,6 @@ const useControlGraphicProject = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["graphicCollection"] });
       NProgress.done();
-      // toast.success("Update project successfully!");
     },
     onError: (error) => {
       toast.error("Update project failed! Please try again.");
@@ -218,7 +216,6 @@ const useControlGraphicProject = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["graphicCollection"] });
       NProgress.done();
-      toast.success("Delete project successfully!");
     },
     onError: (error) => {
       toast.error("Delete project failed! Please try again.");

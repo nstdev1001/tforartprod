@@ -77,17 +77,17 @@ const AddAlbumDialog = () => {
     >
       <DialogTrigger
         disabled={isPending}
-        className="cursor-pointer hidden md:block p-3 border rounded-lg"
+        className="cursor-pointer p-2 md:p-3 border rounded-lg"
       >
-        <i className="fa-regular fa-plus text-3xl"></i>
+        <i className="fa-regular fa-plus text-xl md:text-3xl"></i>
       </DialogTrigger>
 
       <DialogContent
-        className="w-fit md:scale-75 lg:scale-100 max-w-fit flex justify-between gap-[80px]"
+        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
         aria-describedby={undefined}
       >
-        <div className="add-box w-[400px] flex flex-col gap-8">
-          <DialogTitle className="text-center text-xl">
+        <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
+          <DialogTitle className="text-center text-lg md:text-xl">
             Tạo mới album
           </DialogTitle>
 
@@ -103,7 +103,7 @@ const AddAlbumDialog = () => {
                 e.preventDefault();
                 void form.handleSubmit(handleSubmitAddAlbum)();
               }}
-              className="space-y-8 flex flex-col"
+              className="space-y-4 md:space-y-8 flex flex-col"
             >
               <FormField
                 control={form.control}
@@ -141,18 +141,18 @@ const AddAlbumDialog = () => {
               />
 
               <div
-                className="flex flex-col gap-10 items-center justify-center w-full max-w-lg mx-auto p-6 border-2 border-dashed border-gray-500 rounded-lg"
+                className="flex flex-col gap-6 md:gap-10 items-center justify-center w-full max-w-lg mx-auto p-4 md:p-6 border-2 border-dashed border-gray-500 rounded-lg"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
                 {isCompressing ? (
                   <div className="loading-effect flex flex-col gap-1 items-center">
                     <CompressImageLoading />
-                    <p>Đang nén ảnh...</p>
+                    <p className="text-sm md:text-base">Đang nén ảnh...</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3 items-center">
-                    <p className="text-lg text-gray-600 text-center w-52">
+                    <p className="text-base md:text-lg text-gray-600 text-center w-full md:w-52">
                       Kéo và thả file để tải Thumnnail
                     </p>
                     <span className="text-gray-500 text-sm">- or -</span>
@@ -201,8 +201,8 @@ const AddAlbumDialog = () => {
             </form>
           </Form>
         </div>
-        <div className="preview-album flex flex-col items-center justify-center gap-8">
-          <h1 className="text-center text-2xl">Xem trước album</h1>
+        <div className="preview-album hidden md:flex flex-col items-center justify-center gap-8">
+          <h1 className="text-center text-xl md:text-2xl">Xem trước album</h1>
           <div
             className={`${styles.album} relative`}
             key={`album-${"album.id"}`}

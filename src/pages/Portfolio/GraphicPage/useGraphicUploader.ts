@@ -102,7 +102,6 @@ const useGraphicUploader = (albumBucket: string) => {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["graphicsCollection"] });
       NProgress.done();
-      toast.success("Upload photos successfully!");
       setIsOpen(false);
       setUploadProgress(0);
     },
@@ -130,7 +129,6 @@ const useGraphicUploader = (albumBucket: string) => {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["graphicsCollection"] });
       NProgress.done();
-      toast.success("Delete album successfully!");
     },
     onError: (error) => {
       console.error("Error delete images:", error);

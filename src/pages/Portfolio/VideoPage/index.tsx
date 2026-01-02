@@ -108,7 +108,6 @@ const SortableVideo = ({
               <Button
                 variant="destructive"
                 className="w-[50px]"
-                // onClick={() => video.id && deleteVideoMutation.mutate(video.id)}
                 onClick={() => handleDeleteClick(video)}
               >
                 <i className="fa-light fa-trash"></i>

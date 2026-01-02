@@ -28,13 +28,14 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
     useControlGraphicProject();
 
   const projectTitle = watch("projectTitle");
+  const projectDescription = watch("projectDescription");
 
   useEffect(() => {
-    if (projectData) {
+    if (isOpen && projectData) {
       form.setValue("projectTitle", projectData.projectTitle);
       form.setValue("projectDescription", projectData.projectDescription || "");
     }
-  }, [projectData, form]);
+  }, [projectData, form, isOpen]);
 
   const {
     handleDragOver,
@@ -82,16 +83,14 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
         oldThumbnailUrl: projectData?.thumbnailUrl,
       });
     }
-    form.reset();
-    onClose();
-    setSelectedFiles([]);
+    handleClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-fit !max-w-fit flex justify-between gap-[80px]">
-        <div className="add-box w-[400px] flex flex-col gap-8">
-          <h1 className="text-center text-2xl font-semibold">
+      <DialogContent className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto">
+        <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
+          <h1 className="text-center text-lg md:text-2xl font-semibold">
             Cập nhật project
           </h1>
           <Form {...form}>
@@ -100,7 +99,7 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
                 e.preventDefault();
                 void form.handleSubmit(handleUpdateProject)();
               }}
-              className="flex flex-col gap-8"
+              className="flex flex-col gap-4 md:gap-8"
             >
               <FormField
                 control={form.control}
@@ -138,18 +137,18 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
               />
 
               <div
-                className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-6 border-2 border-dashed border-gray-500 rounded-lg"
+                className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-4 md:p-6 border-2 border-dashed border-gray-500 rounded-lg"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
                 {isCompressing ? (
                   <div className="loading-effect flex flex-col gap-1 items-center">
                     <CompressImageLoading />
-                    <p>Đang nén ảnh...</p>
+                    <p className="text-sm md:text-base">Đang nén ảnh...</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3 items-center">
-                    <p className="text-lg text-gray-600 text-center w-52">
+                    <p className="text-base md:text-lg text-gray-600 text-center w-full md:w-52">
                       Kéo và thả file để tải Ảnh thumbnail
                     </p>
                     <span className="text-gray-500 text-sm">- hoặc -</span>
@@ -186,8 +185,8 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
             </form>
           </Form>
         </div>
-        <div className="preview-project flex flex-col items-center justify-center gap-8">
-          <h1 className="text-center text-2xl">Xem trước project</h1>
+        <div className="preview-project hidden md:flex flex-col items-center justify-center gap-8">
+          <h1 className="text-center text-xl md:text-2xl">Xem trước project</h1>
           <div
             className={`${styles.project} relative`}
             key={`project-${"project.id"}`}
@@ -212,10 +211,10 @@ const UpdateProjectDialog = ({ projectData, isOpen, onClose }: Props) => {
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
-              {watch("projectDescription")?.trim() === "" ? (
-                <p className="text-gray-600">(Chưa có mô tả)</p>
+              {!projectDescription?.trim() ? (
+                <span className="text-gray-600">(Chưa có mô tả)</span>
               ) : (
-                watch("projectDescription")
+                projectDescription
               )}
             </p>
           </div>
