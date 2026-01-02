@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import useAuth from "@/hooks/useAuth";
 
 const FormContent = () => {
-  const { form, loading, onSubmit, error } = useAuth();
+  const { form, isAuthLoading, onSubmit, loginError } = useAuth();
 
   return (
     <div className="border-stone-700 p-10 border-[1px] rounded-md w-[400px] bg-black">
@@ -79,13 +79,9 @@ const FormContent = () => {
             )}
           />
 
-          {error && (
-            <p className="text-red-600">
-              Tên đăng nhập hoặc mật khẩu không đúng!
-            </p>
-          )}
+          {loginError && <p className="text-red-600 text-sm">{loginError}</p>}
 
-          <Button disabled={loading} className="w-full" type="submit">
+          <Button disabled={isAuthLoading} className="w-full" type="submit">
             Sign In
           </Button>
         </form>
