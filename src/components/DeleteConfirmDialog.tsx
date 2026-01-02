@@ -36,7 +36,7 @@ const DeleteConfirmDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogTitle className="text-2xl text-center">
           <i className="fa-duotone fa-solid fa-triangle-exclamation"></i>{" "}
           Tforart nhắc nhở{" "}

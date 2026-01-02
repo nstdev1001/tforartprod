@@ -7,7 +7,7 @@ interface Props {
   albumData: AlbumData | null;
   isOpen: boolean;
   onClose: () => void;
-  deleteAlbumMutaion: {
+  deleteAlbumMutation: {
     mutate: UseMutateFunction<void, unknown, string, unknown>;
   };
 }
@@ -16,27 +16,24 @@ const DeleteConfirmDialog = ({
   albumData,
   isOpen,
   onClose,
-  deleteAlbumMutaion,
+  deleteAlbumMutation,
 }: Props) => {
-  const handleClose = () => {
-    onClose();
-  };
   const handleDeleteAlbum = () => {
-    if (albumData) {
-      deleteAlbumMutaion.mutate(albumData.id);
-    }
-    handleClose();
+    if (!albumData) return;
+    deleteAlbumMutation.mutate(albumData.id);
+    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent aria-describedby={undefined}>
         <DialogTitle className="text-2xl text-center">
           Bạn chắc chắn muốn xóa album{" "}
-          <p className="italic text-red-500">{albumData?.albumTitle} ?</p>
+          <span className="block italic text-red-500">
+            {albumData?.albumTitle} ?
+          </span>
         </DialogTitle>
-        {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-        <p id="add-album-description" className="sr-only">
+        <p id="delete-album-description" className="sr-only">
           Confirm delete album
         </p>
         <div className="flex justify-center gap-3">
@@ -47,7 +44,7 @@ const DeleteConfirmDialog = ({
           >
             Có
           </Button>
-          <Button variant="secondary" className="w-full" onClick={handleClose}>
+          <Button variant="secondary" className="w-full" onClick={onClose}>
             Khum
           </Button>
         </div>

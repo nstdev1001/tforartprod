@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,20 +16,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useControlVideo from "@/hooks/useControlVideo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AddVideoDialog = () => {
   const { form, isPending, onSubmit } = useControlVideo();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmitAddVideo = async () => {
-    await onSubmit();
+  // Reset form when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      form.reset();
+    }
+  }, [isOpen, form]);
+
+  const handleClose = () => {
     form.reset();
     setIsOpen(false);
   };
 
+  const handleSubmitAddVideo = async () => {
+    await onSubmit();
+    handleClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => (open ? setIsOpen(true) : handleClose())}
+    >
       <DialogTrigger
         disabled={isPending}
         className="cursor-pointer hidden md:block p-3 border rounded-lg"
@@ -38,12 +51,15 @@ const AddVideoDialog = () => {
         <i className="fa-regular fa-plus text-3xl"></i>
       </DialogTrigger>
 
-      <DialogContent className="w-fit !max-w-fit">
+      <DialogContent className="w-fit !max-w-fit" aria-describedby={undefined}>
         <div className="add-box w-[400px] h-[400px]">
           <DialogTitle className="text-center text-xl">Add Video</DialogTitle>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmitAddVideo)}
+              onSubmit={(e) => {
+                e.preventDefault();
+                void form.handleSubmit(handleSubmitAddVideo)();
+              }}
               className="space-y-8 mt-5"
             >
               <FormField

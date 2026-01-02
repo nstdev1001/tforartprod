@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { albumSchema } from "@/schema/albumSchema";
 import { AlbumData } from "@/types/albumDataType";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -163,7 +161,7 @@ const useControlAlbum = () => {
       NProgress.start();
       if (albumId) {
         const albumRef = doc(db, "albumCollection", albumId);
-        const { createdAt, ...dataToUpdate } = updatedData;
+        const { ...dataToUpdate } = updatedData;
 
         if (thumbnailFile) {
           const newThumbnailUrl = await uploadImage(thumbnailFile, albumId);
@@ -191,7 +189,7 @@ const useControlAlbum = () => {
     },
   });
 
-  const deleteAlbumMutaion = useMutation({
+  const deleteAlbumMutation = useMutation({
     mutationFn: async (albumId: string) => {
       if (albumId) {
         NProgress.start();
@@ -269,7 +267,7 @@ const useControlAlbum = () => {
     onSubmit,
     isPending,
     albums,
-    deleteAlbumMutaion,
+    deleteAlbumMutation,
     editAlbumMutation,
     uploadProgress,
     updateAlbumPositionMutation,

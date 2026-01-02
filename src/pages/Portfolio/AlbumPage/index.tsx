@@ -28,7 +28,6 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { UseMutateFunction } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
@@ -39,9 +38,6 @@ interface SortableAlbumProps {
   checkIsLogin: boolean;
   handleEditClick: (album: AlbumData) => void;
   handleDeleteClick: (album: AlbumData) => void;
-  deleteAlbumMutaion: {
-    mutate: UseMutateFunction<void, unknown, string, unknown>;
-  };
   toUrlSlug: (title: string) => string;
   navigate: NavigateFunction;
 }
@@ -163,7 +159,7 @@ const DragAlbumPreview = ({ album }: DragAlbumPreviewProps) => {
 const AlbumPage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
-  const { albums, toUrlSlug, deleteAlbumMutaion, updateAlbumPositionMutation } =
+  const { albums, toUrlSlug, deleteAlbumMutation, updateAlbumPositionMutation } =
     useControlAlbum();
   const [editAlbumData, setEditAlbumData] = useState<AlbumData | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -254,7 +250,7 @@ const AlbumPage = () => {
         }}
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
-        deleteMutation={deleteAlbumMutaion}
+        deleteMutation={deleteAlbumMutation}
         dialogTitle="Bạn có chắc chắn muốn xóa album"
       />
 
@@ -286,9 +282,8 @@ const AlbumPage = () => {
                 album={album}
                 index={index}
                 checkIsLogin={checkIsLogin}
-                handleEditClick={handleEditClick}
-                handleDeleteClick={handleDeleteClick}
-                deleteAlbumMutaion={deleteAlbumMutaion}
+                handleEditClick={() => handleEditClick(album)}
+                handleDeleteClick={() => handleDeleteClick(album)}
                 toUrlSlug={toUrlSlug}
                 navigate={navigate}
               />

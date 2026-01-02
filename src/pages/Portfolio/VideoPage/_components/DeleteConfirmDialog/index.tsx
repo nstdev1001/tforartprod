@@ -7,7 +7,7 @@ interface Props {
   videoData: VideoData | null;
   isOpen: boolean;
   onClose: () => void;
-  deleteAlbumMutaion: {
+  deleteVideoMutation: {
     mutate: UseMutateFunction<void, unknown, string, unknown>;
   };
 }
@@ -16,24 +16,24 @@ const DeleteConfirmDialog = ({
   videoData,
   isOpen,
   onClose,
-  deleteAlbumMutaion,
+  deleteVideoMutation,
 }: Props) => {
   const handleDeleteVideo = () => {
-    if (videoData) {
-      deleteAlbumMutaion.mutate(videoData.id);
-    }
+    if (!videoData) return;
+    deleteVideoMutation.mutate(videoData.id);
     onClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogTitle className="text-2xl text-center">
           Bạn chắc chắn muốn xóa video
-          <p className="italic text-red-500">{videoData?.videoTitle} ?</p>
+          <span className="block italic text-red-500">
+            {videoData?.videoTitle} ?
+          </span>
         </DialogTitle>
-        {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-        <p id="add-album-description" className="sr-only">
+        <p id="delete-video-description" className="sr-only">
           Confirm delete video
         </p>
         <div className="flex justify-center gap-3">

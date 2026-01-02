@@ -1,11 +1,11 @@
 export const AI_MODELS = [
   {
-    id: "google/gemini-2.0-flash-exp:free",
-    name: "Gemini 2.0 Flash (Free)",
-  },
-  {
     id: "meta-llama/llama-3.3-70b-instruct:free",
     name: "Llama 3.3 70B (Free)",
+  },
+  {
+    id: "google/gemini-2.0-flash-exp:free",
+    name: "Gemini 2.0 Flash (Free)",
   },
   {
     id: "x-ai/grok-4-fast:free",
