@@ -71,7 +71,6 @@ const useControlVideo = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["videoCollection"] });
       NProgress.done();
-      toast.success("Thêm video thành công!");
       form.reset();
     },
     onError: (error) => {
@@ -91,7 +90,6 @@ const useControlVideo = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["videoCollection"] });
       NProgress.done();
-      toast.success("Xóa video thành công!");
     },
     onError: (error) => {
       NProgress.done();
@@ -118,7 +116,6 @@ const useControlVideo = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["videoCollection"] });
       NProgress.done();
-      toast.success("Cập nhật video thành công!");
     },
     onError: (error) => {
       NProgress.done();

@@ -84,7 +84,6 @@ const useImageUploader = (
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["photosCollection"] });
       NProgress.done();
-      toast.success("Upload photos successfully!");
 
       if (setSelectedPhotos) {
         setSelectedPhotos([]);
@@ -117,7 +116,6 @@ const useImageUploader = (
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["photosCollection"] });
       NProgress.done();
-      toast.success("Delete album successfully!");
     },
     onError: (error) => {
       console.error("Error delete images:", error);

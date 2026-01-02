@@ -137,7 +137,6 @@ const useControlAlbum = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["albumCollection"] });
       NProgress.done();
-      toast.success("Add album successfully!");
       form.reset();
     },
     onError: (error) => {
@@ -181,7 +180,6 @@ const useControlAlbum = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["albumCollection"] });
       NProgress.done();
-      toast.success("Update successfully!");
     },
     onError: (error) => {
       toast.error("Update album failed! Please try again.");
@@ -209,7 +207,6 @@ const useControlAlbum = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["albumCollection"] });
       NProgress.done();
-      toast.success("Delete album successfully!");
     },
     onError: (error) => {
       toast.error("Delete album failed! Please try again.");

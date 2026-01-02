@@ -43,7 +43,6 @@ const useAuth = () => {
 
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      toast.success("Đăng nhập thành công!");
       navigate("/portfolio/videos");
     } catch (error: unknown) {
       const firebaseError = error as { code?: string; message?: string };
