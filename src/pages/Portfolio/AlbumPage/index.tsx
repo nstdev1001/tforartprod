@@ -100,15 +100,20 @@ const SortableAlbum = ({
             <i className="fa-solid fa-grip-lines"></i>
           </div>
           <div
-            className="control-album hidden md:block absolute top-1 right-1 z-10"
+            className="control-album absolute top-1 right-1 z-10 flex gap-1 md:gap-0"
             onClick={(e) => e.stopPropagation()}
           >
-            <Button onClick={() => handleEditClick(album)}>
+            <Button
+              size="sm"
+              className="h-8 w-8 md:h-9 md:w-auto md:px-4"
+              onClick={() => handleEditClick(album)}
+            >
               <i className="fa-regular fa-pen-to-square"></i>
             </Button>
             <Button
               variant="destructive"
-              className="ml-2"
+              size="sm"
+              className="h-8 w-8 md:h-9 md:w-auto md:px-4 md:ml-2"
               onClick={() => handleDeleteClick(album)}
             >
               <i className="fa-regular fa-trash-can"></i>
@@ -159,8 +164,12 @@ const DragAlbumPreview = ({ album }: DragAlbumPreviewProps) => {
 const AlbumPage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
-  const { albums, toUrlSlug, deleteAlbumMutation, updateAlbumPositionMutation } =
-    useControlAlbum();
+  const {
+    albums,
+    toUrlSlug,
+    deleteAlbumMutation,
+    updateAlbumPositionMutation,
+  } = useControlAlbum();
   const [editAlbumData, setEditAlbumData] = useState<AlbumData | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);

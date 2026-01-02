@@ -14,14 +14,20 @@ const FormContent = () => {
   const { form, isAuthLoading, onSubmit, loginError } = useAuth();
 
   return (
-    <div className="border-stone-700 p-10 border-[1px] rounded-md w-[400px] bg-black">
+    <div className="border-stone-700 p-6 md:p-10 border-[1px] rounded-md w-full max-w-[400px] bg-black">
       <div className="header_form">
-        <h3 className="flex justify-center items-center gap-2 text-2xl font-semibold">
+        <h3 className="flex justify-center items-center gap-2 text-xl md:text-2xl font-semibold">
           <span>Sign in to</span>
-          <img className="w-[80px]" src="/logobrand/tforart.png" alt="" />
+          <img
+            className="w-[60px] md:w-[80px]"
+            src="/logobrand/tforart.png"
+            alt=""
+          />
         </h3>
-        <p className="text-center text-gray-400">Welcome to Tforart admin!</p>
-        <div className="third_party flex gap-2 justify-center mt-8">
+        <p className="text-center text-gray-400 text-sm md:text-base">
+          Welcome to Tforart admin!
+        </p>
+        <div className="third_party flex flex-col sm:flex-row gap-2 justify-center mt-6 md:mt-8">
           <Button variant="outline" className="flex items-center gap-2 w-full">
             <i className="fa-brands fa-google"></i>
             Google

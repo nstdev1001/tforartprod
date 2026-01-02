@@ -26,17 +26,20 @@ const DeleteConfirmDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent aria-describedby={undefined}>
-        <DialogTitle className="text-2xl text-center">
+      <DialogContent
+        className="w-[95vw] max-w-[450px] p-4 md:p-6"
+        aria-describedby={undefined}
+      >
+        <DialogTitle className="text-lg md:text-2xl text-center">
           Bạn chắc chắn muốn xóa album{" "}
-          <span className="block italic text-red-500">
+          <span className="block italic text-red-500 text-base md:text-2xl mt-1">
             {albumData?.albumTitle} ?
           </span>
         </DialogTitle>
         <p id="delete-album-description" className="sr-only">
           Confirm delete album
         </p>
-        <div className="flex justify-center gap-3">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 mt-2">
           <Button
             variant="destructive"
             className="w-full"

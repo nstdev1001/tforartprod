@@ -54,9 +54,12 @@ const UpdateVideoDialog = ({ videoData, isOpen, onClose }: Props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-fit !max-w-fit" aria-describedby={undefined}>
-        <div className="add-box w-[400px] h-[400px]">
-          <DialogTitle className="text-center text-2xl">
+      <DialogContent
+        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit p-4 md:p-6"
+        aria-describedby={undefined}
+      >
+        <div className="add-box w-full md:w-[400px] h-auto md:h-[400px]">
+          <DialogTitle className="text-center text-xl md:text-2xl">
             Cập nhật video
           </DialogTitle>
           <Form {...form}>
@@ -65,7 +68,7 @@ const UpdateVideoDialog = ({ videoData, isOpen, onClose }: Props) => {
                 e.preventDefault();
                 void form.handleSubmit(handleSubmit)();
               }}
-              className="space-y-8 mt-5"
+              className="space-y-4 md:space-y-8 mt-4 md:mt-5"
             >
               <FormField
                 control={form.control}
@@ -106,7 +109,11 @@ const UpdateVideoDialog = ({ videoData, isOpen, onClose }: Props) => {
                   <FormItem>
                     <FormLabel>Mô tả</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Nhập mô tả video" {...field} />
+                      <Textarea
+                        className="min-h-[150px]"
+                        placeholder="Nhập mô tả video"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -3,8 +3,6 @@ import "nprogress/nprogress.css";
 import { useEffect } from "react";
 
 const LoadingBar = () => {
-  //   const location = useLocation();
-
   useEffect(() => {
     NProgress.start();
     setTimeout(() => NProgress.done(), 500);

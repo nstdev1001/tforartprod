@@ -7,22 +7,22 @@ const Footer = () => {
 
   return (
     <footer
-      className={`${styles.footerContainer} p-[50px] md:p-[100px] flex flex-col gap-[50px] md:gap-[80px]`}
+      className={`${styles.footerContainer} px-6 py-10 md:p-[100px] flex flex-col gap-10 md:gap-[80px]`}
     >
-      <section className="footer-content-wrapper gap-[50px] flex flex-col md:flex-col lg:flex-row justify-around items-center">
+      <section className="footer-content-wrapper gap-8 md:gap-[50px] flex flex-col lg:flex-row justify-around items-center">
         <img
-          className="text-white h-[70px] md:h-[90px]"
+          className="text-white h-[50px] md:h-[70px] lg:h-[90px]"
           src="/tforart-main.png"
           alt="logo"
         />
-        <div className="content flex flex-col gap-5 md:flex-row lg:flex-row justify-around md:gap-[100px] lg:gap-[200px] ">
-          <div className="content-row content-row-1 text-center md:text-start flex flex-col gap-3 *:cursor-pointer">
+        <div className="content flex flex-col gap-8 md:flex-row lg:flex-row justify-around md:gap-12 lg:gap-[200px]">
+          <div className="content-row content-row-1 text-center md:text-start flex flex-col gap-2 md:gap-3 text-sm md:text-base *:cursor-pointer">
             <Link to="/about-us">Giới thiệu</Link>
             <Link to="/services">Dịch vụ</Link>
             <Link to="/company-info">Thông tin doanh nghiệp</Link>
             <Link to="/privacy-policy">Quyền riêng tư</Link>
           </div>
-          <div className="content-row content-row-2 text-center md:text-start flex flex-col gap-3 *:cursor-pointer">
+          <div className="content-row content-row-2 text-center md:text-start flex flex-col gap-2 md:gap-3 text-sm md:text-base *:cursor-pointer">
             <Link to="/support/faq">FAQ</Link>
             <Link to="">
               Tforart Review{" "}
@@ -33,7 +33,7 @@ const Footer = () => {
             </Link>
             <Link to="/support/weather">Weather</Link>
           </div>
-          <div className="content-row content-row-3 text-center md:text-start flex flex-col gap-3 *:cursor-pointer">
+          <div className="content-row content-row-3 text-center md:text-start flex flex-col gap-2 md:gap-3 text-sm md:text-base *:cursor-pointer">
             <Link to="">Watch</Link>
             <Link to="/developer-info">Developer</Link>
             <Link to="">Báo lỗi</Link>
@@ -43,7 +43,7 @@ const Footer = () => {
                 e.preventDefault();
                 navigate("/login");
               }}
-              className="hidden lg:block font-semibold"
+              className="font-semibold"
             >
               LOGIN ADMIN
             </Link>
@@ -53,7 +53,7 @@ const Footer = () => {
       <hr className="w-[90%] mx-auto" />
       <section className="flex flex-col gap-5">
         <div
-          className={`${styles.socialIconWrapper} flex justify-center gap-10`}
+          className={`${styles.socialIconWrapper} flex justify-center gap-6 md:gap-10`}
         >
           <Link
             to="https://web.facebook.com/TforartProduction"

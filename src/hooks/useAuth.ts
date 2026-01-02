@@ -1,3 +1,4 @@
+import { AUTH_ERROR_MESSAGES } from "@/config/auth_error_messages_config";
 import { loginSchema } from "@/schema/loginSchema";
 import { auth } from "@/services/firebaseConfig";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,15 +14,6 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-
-const AUTH_ERROR_MESSAGES: Record<string, string> = {
-  "auth/wrong-password": "Mật khẩu không đúng. Vui lòng kiểm tra lại!",
-  "auth/user-not-found": "Tài khoản không tồn tại.",
-  "auth/invalid-email": "Email không hợp lệ.",
-  "auth/too-many-requests":
-    "Quá nhiều lần thử đăng nhập. Vui lòng thử lại sau!",
-  "auth/invalid-credential": "Thông tin đăng nhập không hợp lệ.",
-};
 
 const useAuth = () => {
   const navigate = useNavigate();

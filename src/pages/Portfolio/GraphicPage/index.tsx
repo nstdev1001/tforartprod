@@ -106,15 +106,20 @@ const SortableProject = ({
             <i className="fa-solid fa-grip-lines"></i>
           </div>
           <div
-            className="control-project hidden md:block absolute top-1 right-1 z-10"
+            className="control-project absolute top-1 right-1 z-10 flex gap-1 md:gap-0"
             onClick={(e) => e.stopPropagation()}
           >
-            <Button onClick={() => handleEditClick(project)}>
+            <Button
+              size="sm"
+              className="h-8 w-8 md:h-9 md:w-auto md:px-4"
+              onClick={() => handleEditClick(project)}
+            >
               <i className="fa-regular fa-pen-to-square"></i>
             </Button>
             <Button
               variant="destructive"
-              className="ml-2"
+              size="sm"
+              className="h-8 w-8 md:h-9 md:w-auto md:px-4 md:ml-2"
               onClick={() => handleDeleteClick(project)}
             >
               <i className="fa-regular fa-trash-can"></i>
