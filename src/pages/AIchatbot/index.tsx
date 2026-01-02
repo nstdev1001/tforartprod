@@ -46,11 +46,14 @@ const AIChatbot = () => {
   };
 
   useEffect(() => {
-    if (messages.length > 0 && !isLoading) {
-      scrollToBottom();
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (!isLoading) {
       inputRef.current?.focus();
     }
-  }, [isLoading, messages.length]);
+  }, [isLoading]);
 
   const handleNewChat = () => {
     setMessages([]);
@@ -117,13 +120,6 @@ const AIChatbot = () => {
     }
   };
 
-  useEffect(() => {
-    if (messages.length > 0 && !isLoading) {
-      scrollToBottom();
-      inputRef.current?.focus();
-    }
-  }, [messages, isLoading]);
-
   return (
     <Layout>
       <div className="privacy-policy-container max-w-full sm:max-w-[1200px] px-2 sm:px-5 pt-[70px] sm:pt-[100px] lg:pt-[150px] mx-auto">
@@ -161,117 +157,122 @@ const AIChatbot = () => {
 
         {/* generate questions area */}
         <section className="flex flex-col h-[calc(100vh-250px)] relative">
-          {messages.length > 0 && (
-            <ScrollArea
-              ref={scrollAreaRef}
-              className="p-3 md:p-4 h-[calc(100vh-320px)] md:h-[calc(100vh-350px)] border-t border-gray-700 mb-3 sm:mb-5"
-            >
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`mb-2 sm:mb-4 flex ${
-                    msg.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
+          {/* Chat messages area */}
+          <div className="flex-1 overflow-hidden">
+            {messages.length === 0 ? (
+              <div className="h-full flex items-center justify-center">
+                <p className="text-gray-500 text-center">
+                  Hãy bắt đầu cuộc trò chuyện với AI
+                </p>
+              </div>
+            ) : (
+              <ScrollArea
+                ref={scrollAreaRef}
+                className="h-full p-3 md:p-4 border-t border-gray-700"
+              >
+                {messages.map((msg, index) => (
                   <div
-                    className={`max-w-[95%] sm:max-w-[80%] rounded-lg p-2 sm:p-3 text-sm sm:text-base ${
-                      msg.role === "user" ? "bg-blue-600" : "bg-gray-800"
+                    key={index}
+                    className={`mb-2 sm:mb-4 flex ${
+                      msg.role === "user" ? "justify-end" : "justify-start"
                     }`}
                   >
-                    {msg.role === "assistant" ? (
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          h3: ({ ...props }: ComponentProps<"h3">) => (
-                            <h3
-                              className="text-base sm:text-lg font-semibold mt-2 mb-1 sm:mt-4 sm:mb-2"
-                              {...props}
-                            />
-                          ),
-                          strong: ({ ...props }: ComponentProps<"strong">) => (
-                            <strong className="font-bold" {...props} />
-                          ),
-                          ul: ({ ...props }: ComponentProps<"ul">) => (
-                            <ul
-                              className="list-disc pl-4 sm:pl-5 my-1 sm:my-2"
-                              {...props}
-                            />
-                          ),
-                          ol: ({ ...props }: ComponentProps<"ol">) => (
-                            <ol
-                              className="list-decimal pl-4 sm:pl-5 my-1 sm:my-2"
-                              {...props}
-                            />
-                          ),
-                          li: ({ ...props }: ComponentProps<"li">) => (
-                            <li className="my-1 pl-1 sm:pl-2" {...props} />
-                          ),
-                          hr: ({ ...props }: ComponentProps<"hr">) => (
-                            <hr
-                              className="border-gray-600 my-2 sm:my-4"
-                              {...props}
-                            />
-                          ),
-                          p: ({ ...props }: ComponentProps<"p">) => (
-                            <p className="my-1 sm:my-2" {...props} />
-                          ),
-                          table: ({ ...props }: ComponentProps<"table">) => (
-                            <table
-                              className="w-full border-collapse border border-gray-600 my-2 sm:my-4"
-                              {...props}
-                            />
-                          ),
-                          th: ({ ...props }: ComponentProps<"th">) => (
-                            <th
-                              className="border border-gray-600 p-1 sm:p-2 bg-gray-700"
-                              {...props}
-                            />
-                          ),
-                          td: ({ ...props }: ComponentProps<"td">) => (
-                            <td
-                              className="border border-gray-600 p-1 sm:p-2"
-                              {...props}
-                            />
-                          ),
-                          br: ({ ...props }: ComponentProps<"br">) => (
-                            <br {...props} />
-                          ),
-                        }}
-                      >
-                        {msg.content}
-                      </ReactMarkdown>
-                    ) : (
-                      <span>{msg.content}</span>
-                    )}
+                    <div
+                      className={`max-w-[95%] sm:max-w-[80%] rounded-lg p-2 sm:p-3 text-sm sm:text-base ${
+                        msg.role === "user" ? "bg-blue-600" : "bg-gray-800"
+                      }`}
+                    >
+                      {msg.role === "assistant" ? (
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            h3: ({ ...props }: ComponentProps<"h3">) => (
+                              <h3
+                                className="text-base sm:text-lg font-semibold mt-2 mb-1 sm:mt-4 sm:mb-2"
+                                {...props}
+                              />
+                            ),
+                            strong: ({
+                              ...props
+                            }: ComponentProps<"strong">) => (
+                              <strong className="font-bold" {...props} />
+                            ),
+                            ul: ({ ...props }: ComponentProps<"ul">) => (
+                              <ul
+                                className="list-disc pl-4 sm:pl-5 my-1 sm:my-2"
+                                {...props}
+                              />
+                            ),
+                            ol: ({ ...props }: ComponentProps<"ol">) => (
+                              <ol
+                                className="list-decimal pl-4 sm:pl-5 my-1 sm:my-2"
+                                {...props}
+                              />
+                            ),
+                            li: ({ ...props }: ComponentProps<"li">) => (
+                              <li className="my-1 pl-1 sm:pl-2" {...props} />
+                            ),
+                            hr: ({ ...props }: ComponentProps<"hr">) => (
+                              <hr
+                                className="border-gray-600 my-2 sm:my-4"
+                                {...props}
+                              />
+                            ),
+                            p: ({ ...props }: ComponentProps<"p">) => (
+                              <p className="my-1 sm:my-2" {...props} />
+                            ),
+                            table: ({ ...props }: ComponentProps<"table">) => (
+                              <table
+                                className="w-full border-collapse border border-gray-600 my-2 sm:my-4"
+                                {...props}
+                              />
+                            ),
+                            th: ({ ...props }: ComponentProps<"th">) => (
+                              <th
+                                className="border border-gray-600 p-1 sm:p-2 bg-gray-700"
+                                {...props}
+                              />
+                            ),
+                            td: ({ ...props }: ComponentProps<"td">) => (
+                              <td
+                                className="border border-gray-600 p-1 sm:p-2"
+                                {...props}
+                              />
+                            ),
+                            br: ({ ...props }: ComponentProps<"br">) => (
+                              <br {...props} />
+                            ),
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      ) : (
+                        <span>{msg.content}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-              {/* loading effect*/}
-              {isLoading && (
-                <div className="mb-2 sm:mb-4 flex justify-start">
-                  <div className="max-w-[80%] rounded-lg p-2 sm:p-3 bg-gray-800 flex items-center gap-2 text-sm sm:text-base">
-                    <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]"></span>
-                    <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                    <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-                    <span className="ml-2 text-gray-400">
-                      AI is thinking...
-                    </span>
+                {/* loading effect*/}
+                {isLoading && (
+                  <div className="mb-2 sm:mb-4 flex justify-start">
+                    <div className="max-w-[80%] rounded-lg p-2 sm:p-3 bg-gray-800 flex items-center gap-2 text-sm sm:text-base">
+                      <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]"></span>
+                      <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                      <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                      <span className="ml-2 text-gray-400">
+                        AI is thinking...
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </ScrollArea>
-          )}
+                )}
+                <div ref={messagesEndRef} />
+              </ScrollArea>
+            )}
+          </div>
 
-          {/* input prompt */}
-          <div
-            className={`flex w-full gap-2 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 transition-[bottom] duration-500 ease-in-out ${
-              messages.length > 0
-                ? "bottom-[-20px]"
-                : "bottom-[60%] sm:bottom-[50%]"
-            }`}
-          >
+          {/* input prompt - fixed at bottom */}
+          <div className="flex w-full gap-2 py-3 sm:py-4 bg-transparent">
             <div className="relative flex-1">
               <div className="relative">
                 <Input
@@ -280,7 +281,7 @@ const AIChatbot = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 h-14 sm:h-20 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 pr-16 transition-all duration-200 text-sm sm:text-base"
+                  className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 h-14 sm:h-16 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 pr-16 transition-all duration-200 text-sm sm:text-base"
                   disabled={isLoading}
                 />
                 <Button
