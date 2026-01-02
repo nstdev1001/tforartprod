@@ -16,7 +16,7 @@ function App() {
     <ErrorBoundary>
       <LoadingBar />
       <ToasterConfig />
-      <RouterProvider fallbackElement={<>loading...</>} router={routerConfig} />
+      <RouterProvider router={routerConfig} />
     </ErrorBoundary>
   );
 }
