@@ -3,7 +3,7 @@ import React from "react";
 interface AdminBarProps {
   user: { email: string | null } | null;
   checkIsLogin: boolean;
-  handleSignOut: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  handleSignOut: () => void | Promise<void>;
 }
 
 const AdminBar: React.FC<AdminBarProps> = ({
@@ -12,6 +12,11 @@ const AdminBar: React.FC<AdminBarProps> = ({
   handleSignOut,
 }) => {
   if (!checkIsLogin) return null;
+
+  const onSignOutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    void handleSignOut();
+  };
 
   return (
     <div
@@ -25,7 +30,7 @@ const AdminBar: React.FC<AdminBarProps> = ({
           <p className="text-black">Bạn đang ở chế độ admin.</p>
           <a
             href="#"
-            onClick={handleSignOut}
+            onClick={onSignOutClick}
             className="underline text-red-700"
           >
             Đăng xuất

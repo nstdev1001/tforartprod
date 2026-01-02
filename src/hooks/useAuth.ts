@@ -27,6 +27,7 @@ const useAuth = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -38,6 +39,7 @@ const useAuth = () => {
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     NProgress.start();
+    setLoginError(null);
 
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
@@ -47,9 +49,8 @@ const useAuth = () => {
       const firebaseError = error as { code?: string; message?: string };
       const errorCode = firebaseError.code || "";
       const errorMessage =
-        AUTH_ERROR_MESSAGES[errorCode] ||
-        `Đã xảy ra lỗi: ${firebaseError.message}`;
-      toast.error(errorMessage);
+        AUTH_ERROR_MESSAGES[errorCode] || "Đã xảy ra lỗi khi đăng nhập.";
+      setLoginError(errorMessage);
     } finally {
       NProgress.done();
     }
@@ -75,7 +76,15 @@ const useAuth = () => {
 
   const checkIsLogin = user !== null;
 
-  return { user, isAuthLoading, form, onSubmit, handleSignOut, checkIsLogin };
+  return {
+    user,
+    isAuthLoading,
+    form,
+    onSubmit,
+    handleSignOut,
+    checkIsLogin,
+    loginError,
+  };
 };
 
 export default useAuth;
