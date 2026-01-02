@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useControlAlbum from "@/hooks/useControlAlbum";
 import { useSelectImages } from "@/hooks/useSelectImages";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AddAlbumDialog = () => {
   const { form, watch, isPending, onSubmit } = useControlAlbum();
@@ -32,30 +32,49 @@ const AddAlbumDialog = () => {
     selectedFiles,
     previewUrls,
     setSelectedFiles,
+    setPreviewUrls,
     isCompressing,
   } = useSelectImages({ isThumbnail: true });
 
   const albumTitle = watch("albumTitle");
+  const albumDescription = watch("albumDescription");
+
+  // Reset form when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      form.reset();
+      setSelectedFiles([]);
+      setPreviewUrls([]);
+    }
+  }, [isOpen, form, setSelectedFiles, setPreviewUrls]);
+
+  const handleClose = () => {
+    form.reset();
+    setSelectedFiles([]);
+    setPreviewUrls([]);
+    setIsOpen(false);
+  };
 
   const handleSubmitAddAlbum = async () => {
     try {
-      if (!selectedFiles) {
+      if (!selectedFiles || selectedFiles.length === 0) {
         console.error("No file selected");
         return;
       }
       for (const file of selectedFiles) {
         await onSubmit(file);
       }
-      form.reset();
-      setIsOpen(false);
-      setSelectedFiles([]);
+      handleClose();
     } catch (error) {
       console.error("Error creating album:", error);
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => (open ? setIsOpen(true) : handleClose())}
+    >
       <DialogTrigger
         disabled={isPending}
         className="cursor-pointer hidden md:block p-3 border rounded-lg"
@@ -64,8 +83,8 @@ const AddAlbumDialog = () => {
       </DialogTrigger>
 
       <DialogContent
-        aria-describedby="add-album-description"
         className="w-fit md:scale-75 lg:scale-100 max-w-fit flex justify-between gap-[80px]"
+        aria-describedby={undefined}
       >
         <div className="add-box w-[400px] flex flex-col gap-8">
           <DialogTitle className="text-center text-xl">
@@ -215,10 +234,10 @@ const AddAlbumDialog = () => {
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
-              {watch("albumDescription")?.trim() === "" ? (
-                <p className="text-gray-600">(Chưa có mô tả)</p>
+              {!albumDescription?.trim() ? (
+                <span className="text-gray-600">(Chưa có mô tả)</span>
               ) : (
-                watch("albumDescription")
+                albumDescription
               )}
             </p>
           </div>

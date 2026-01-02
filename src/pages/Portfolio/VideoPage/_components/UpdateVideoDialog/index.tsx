@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -25,38 +24,47 @@ const UpdateVideoDialog = ({ videoData, isOpen, onClose }: Props) => {
   const { form, isPending, editVideoMutation } = useControlVideo();
 
   useEffect(() => {
-    if (videoData) {
+    if (isOpen && videoData) {
       form.setValue("linkURL", videoData.linkURL);
       form.setValue("videoTitle", videoData.videoTitle);
       form.setValue("videoDescription", videoData.videoDescription || "");
     }
-  }, [videoData, form]);
+  }, [videoData, form, isOpen]);
 
-  const handleSubmit = () => {
-    if (videoData) {
-      const formValues = form.getValues();
-      const updatedData = {
-        ...formValues,
-        videoDescription: formValues.videoDescription || null,
-      };
-
-      editVideoMutation.mutate({
-        videoId: videoData.id,
-        updatedData,
-      });
-    }
+  const handleClose = () => {
     form.reset();
     onClose();
   };
 
+  const handleSubmit = () => {
+    if (!videoData) return;
+
+    const formValues = form.getValues();
+    const updatedData = {
+      ...formValues,
+      videoDescription: formValues.videoDescription || null,
+    };
+
+    editVideoMutation.mutate({
+      videoId: videoData.id,
+      updatedData,
+    });
+    handleClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-fit !max-w-fit">
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="w-fit !max-w-fit" aria-describedby={undefined}>
         <div className="add-box w-[400px] h-[400px]">
-          <h1 className="text-center text-2xl">Cập nhật video</h1>
+          <DialogTitle className="text-center text-2xl">
+            Cập nhật video
+          </DialogTitle>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={(e) => {
+                e.preventDefault();
+                void form.handleSubmit(handleSubmit)();
+              }}
               className="space-y-8 mt-5"
             >
               <FormField

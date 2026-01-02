@@ -1,7 +1,7 @@
 import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -27,13 +27,14 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
   const { form, watch, editAlbumMutation, isPending } = useControlAlbum();
 
   const albumTitle = watch("albumTitle");
+  const albumDescription = watch("albumDescription");
 
   useEffect(() => {
-    if (albumData) {
+    if (isOpen && albumData) {
       form.setValue("albumTitle", albumData.albumTitle);
       form.setValue("albumDescription", albumData.albumDescription || "");
     }
-  }, [albumData, form]);
+  }, [albumData, form, isOpen]);
 
   const {
     handleDragOver,
@@ -63,31 +64,33 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
       albumDescription: formValues.albumDescription || null,
     };
 
-    if (selectedFiles.length > 0) {
-      // If a new thumbnail is selected
-      editAlbumMutation.mutate({
-        albumId: albumData?.id,
-        updatedData,
-        thumbnailFile: selectedFiles[0],
-      });
-    } else {
-      // If no new thumbnail is selected
-      editAlbumMutation.mutate({
-        albumId: albumData?.id,
-        updatedData,
-        oldThumbnailUrl: albumData?.thumbnailUrl,
-      });
-    }
-    form.reset();
-    onClose();
-    setSelectedFiles([]);
+    const mutationData =
+      selectedFiles.length > 0
+        ? {
+            albumId: albumData?.id,
+            updatedData,
+            thumbnailFile: selectedFiles[0],
+          }
+        : {
+            albumId: albumData?.id,
+            updatedData,
+            oldThumbnailUrl: albumData?.thumbnailUrl,
+          };
+
+    editAlbumMutation.mutate(mutationData);
+    handleClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-fit !max-w-fit flex justify-between gap-[80px]">
+      <DialogContent
+        className="w-fit !max-w-fit flex justify-between gap-[80px]"
+        aria-describedby={undefined}
+      >
         <div className="add-box w-[400px] flex flex-col gap-8">
-          <h1 className="text-center text-2xl font-semibold">Cập nhật album</h1>
+          <DialogTitle className="text-center text-2xl font-semibold">
+            Cập nhật album
+          </DialogTitle>
           <Form {...form}>
             <form
               onSubmit={(e) => {
@@ -162,12 +165,12 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
                     </label>
                   </div>
                 )}
-                {selectedFiles && (
+                {selectedFiles.length > 0 && (
                   <div className="mt-4 w-full">
                     <h4 className="text-gray-700 font-medium">Tệp đã chọn:</h4>
                     <ul className="list-disc list-inside text-gray-600">
-                      {selectedFiles.map((file) => (
-                        <li key={file.name}>{file.name}</li>
+                      {selectedFiles.map((file, index) => (
+                        <li key={`${file.name}-${index}`}>{file.name}</li>
                       ))}
                     </ul>
                   </div>
@@ -182,10 +185,7 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
         </div>
         <div className="preview-album flex flex-col items-center justify-center gap-8">
           <h1 className="text-center text-2xl">Xem trước album</h1>
-          <div
-            className={`${styles.album} relative`}
-            key={`album-${"album.id"}`}
-          >
+          <div className={`${styles.album} relative`}>
             {previewUrls.length > 0 ? (
               <>
                 <img
@@ -201,16 +201,13 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
               <p className="text-gray-600">Chưa có ảnh để hiển thị</p>
             )}
           </div>
-          {/* <h3 className="title text-xl font-semibold text-center max-w-[384px] overflow-hidden text-ellipsis">
-            {albumTitle}
-          </h3> */}
           <div className="preview-description max-w-[384px]">
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
-              {watch("albumDescription")?.trim() === "" ? (
-                <p className="text-gray-600">(Chưa có mô tả)</p>
+              {!albumDescription?.trim() ? (
+                <span className="text-gray-600">(Chưa có mô tả)</span>
               ) : (
-                watch("albumDescription")
+                albumDescription
               )}
             </p>
           </div>
