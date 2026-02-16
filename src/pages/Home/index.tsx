@@ -38,7 +38,7 @@ const Home = () => {
             </motion.h1>
             <motion.img
               className="w-[400px] mt-3"
-              src="/Tforart-white.svg"
+              src="/tforart_white.svg"
               alt="Logo"
               {...defaultScaleMotionProps}
               transition={{ duration: 3 }}
