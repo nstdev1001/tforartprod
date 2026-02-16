@@ -43,34 +43,24 @@ const Clients = () => {
       {/* pc view */}
       <section className="hidden md:block w-full overflow-x-hidden py-12">
         {/* line 1 */}
-        <motion.div
-          className="relative flex items-center"
-          {...defaultYMotionProps}
-          initial={{ opacity: 0, y: 70 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
+        <div className="relative flex items-center">
           <div className={`${styles.scrollTrack} flex gap-28`}>
             {[...clientLogos, ...clientLogos].map((src, index) => (
               <LogoImage key={`line1-${index}`} src={src} />
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* line 2 */}
-        <motion.div
-          className="relative flex items-center mt-16"
-          {...defaultYMotionProps}
-          initial={{ opacity: 0, y: 70 }}
-          transition={{ duration: 1, delay: 0.4 }}
-        >
+        <div className="relative flex items-center mt-16">
           <div className={`${styles.scrollTrackReverse} flex gap-28`}>
             {[...clientLogosReverse, ...clientLogosReverse].map(
               (src, index) => (
                 <LogoImage key={`line2-${index}`} src={src} />
-              )
+              ),
             )}
           </div>
-        </motion.div>
+        </div>
       </section>
     </div>
   );

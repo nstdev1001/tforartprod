@@ -85,7 +85,7 @@ const Navbar = () => {
         <div className={styles.mainLogo}>
           <img
             className="w-[100px] cursor-pointer"
-            src="/Tforart-white.svg"
+            src="/tforart_white.svg"
             alt="Logo"
             onClick={() => (window.location.href = "/")}
           />
