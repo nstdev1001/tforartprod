@@ -18,7 +18,7 @@ const AboutCompany = () => {
     () => ({
       typeSpeed: 1,
       backSpeed: 0,
-      cursorChar: "",
+      cursorChar: "|",
       loop: false,
     }),
     [],
