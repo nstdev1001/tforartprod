@@ -120,7 +120,7 @@ const Navbar = () => {
         <div className={styles.mobileLogo}>
           <img
             className="w-[80px] cursor-pointer"
-            src="/Tforart-white.svg"
+            src="/tforart_white.svg"
             alt="Mobile Logo"
             onClick={() => navigate("/")}
           />
