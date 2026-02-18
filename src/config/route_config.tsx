@@ -1,46 +1,73 @@
-import AboutUs from "../pages/AboutUs";
-import Contact from "../pages/Contact";
-import Home from "../pages/Home";
-import Portfolio from "../pages/Portfolio/Portfolio";
+import SuspenseWrapper from "@/components/Loading/SuspenseWrapper";
 import NotFound from "@/components/NotFound/NotFound";
-import AIchatbot from "@/pages/AIchatbot";
-import CompanyInfo from "@/pages/CompanyInfo";
-import CompanyServices from "@/pages/CompanyServices";
-import DeveloperInfoPage from "@/pages/DeveloperInfo";
-import TforartFAQ from "@/pages/FAQ";
-import Login from "@/pages/Login/Login";
-import AlbumPage from "@/pages/Portfolio/AlbumPage";
-import ImagePage from "@/pages/Portfolio/AlbumPage/ImagesPage";
-import GraphicPage from "@/pages/Portfolio/GraphicPage";
-import GraphicImagePage from "@/pages/Portfolio/GraphicPage/GraphicImagePage";
-import VideoPage from "@/pages/Portfolio/VideoPage";
-import PrivacyPolicy from "@/pages/PrivacyPolicy";
-import TestError from "@/pages/TestError";
-import WeatherApp from "@/pages/Weather";
+import { lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+
+const Home = lazy(() => import("../pages/Home"));
+const Login = lazy(() => import("@/pages/Login/Login"));
+const AboutUs = lazy(() => import("../pages/AboutUs"));
+const Portfolio = lazy(() => import("../pages/Portfolio/Portfolio"));
+const VideoPage = lazy(() => import("@/pages/Portfolio/VideoPage"));
+const AlbumPage = lazy(() => import("@/pages/Portfolio/AlbumPage"));
+const ImagePage = lazy(() => import("@/pages/Portfolio/AlbumPage/ImagesPage"));
+const GraphicPage = lazy(() => import("@/pages/Portfolio/GraphicPage"));
+const GraphicImagePage = lazy(
+  () => import("@/pages/Portfolio/GraphicPage/GraphicImagePage"),
+);
+const CompanyServices = lazy(() => import("@/pages/CompanyServices"));
+const Contact = lazy(() => import("../pages/Contact"));
+const CompanyInfo = lazy(() => import("@/pages/CompanyInfo"));
+const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
+const TforartFAQ = lazy(() => import("@/pages/FAQ"));
+const WeatherApp = lazy(() => import("@/pages/Weather"));
+const DeveloperInfoPage = lazy(() => import("@/pages/DeveloperInfo"));
+const AIchatbot = lazy(() => import("@/pages/AIchatbot"));
+const TestError = lazy(() => import("@/pages/TestError"));
+
+const S = SuspenseWrapper;
 
 export const routerConfig = createBrowserRouter(
   [
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <S>
+          <Home />
+        </S>
+      ),
       errorElement: <NotFound />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <S>
+          <Login />
+        </S>
+      ),
     },
     {
       path: "/home",
-      element: <Home />,
+      element: (
+        <S>
+          <Home />
+        </S>
+      ),
     },
     {
       path: "/about-us",
-      element: <AboutUs />,
+      element: (
+        <S>
+          <AboutUs />
+        </S>
+      ),
     },
     {
       path: "/portfolio",
-      element: <Portfolio />,
+      element: (
+        <S>
+          <Portfolio />
+        </S>
+      ),
       children: [
         {
           index: true,
@@ -48,61 +75,117 @@ export const routerConfig = createBrowserRouter(
         },
         {
           path: "videos",
-          element: <VideoPage />,
+          element: (
+            <S>
+              <VideoPage />
+            </S>
+          ),
         },
         {
           path: "photos",
-          element: <AlbumPage />,
+          element: (
+            <S>
+              <AlbumPage />
+            </S>
+          ),
         },
         {
           path: "photos/:id/:albumSlug",
-          element: <ImagePage />,
+          element: (
+            <S>
+              <ImagePage />
+            </S>
+          ),
         },
         {
           path: "graphics",
-          element: <GraphicPage />,
+          element: (
+            <S>
+              <GraphicPage />
+            </S>
+          ),
         },
         {
           path: "graphics/:id/:albumSlug",
-          element: <GraphicImagePage />,
+          element: (
+            <S>
+              <GraphicImagePage />
+            </S>
+          ),
         },
       ],
     },
     {
       path: "/services",
-      element: <CompanyServices />,
+      element: (
+        <S>
+          <CompanyServices />
+        </S>
+      ),
     },
     {
       path: "/contact",
-      element: <Contact />,
+      element: (
+        <S>
+          <Contact />
+        </S>
+      ),
     },
     {
       path: "/company-info",
-      element: <CompanyInfo />,
+      element: (
+        <S>
+          <CompanyInfo />
+        </S>
+      ),
     },
     {
       path: "/privacy-policy",
-      element: <PrivacyPolicy />,
+      element: (
+        <S>
+          <PrivacyPolicy />
+        </S>
+      ),
     },
     {
       path: "/support/faq",
-      element: <TforartFAQ />,
+      element: (
+        <S>
+          <TforartFAQ />
+        </S>
+      ),
     },
     {
       path: "/support/weather",
-      element: <WeatherApp />,
+      element: (
+        <S>
+          <WeatherApp />
+        </S>
+      ),
     },
     {
       path: "/developer-info",
-      element: <DeveloperInfoPage />,
+      element: (
+        <S>
+          <DeveloperInfoPage />
+        </S>
+      ),
     },
     {
       path: "/ai-chatbot",
-      element: <AIchatbot />,
+      element: (
+        <S>
+          <AIchatbot />
+        </S>
+      ),
     },
     {
       path: "/test-error",
-      element: <TestError />,
+      element: (
+        <S>
+          <TestError />
+        </S>
+      ),
     },
   ],
   {
@@ -113,5 +196,5 @@ export const routerConfig = createBrowserRouter(
       v7_partialHydration: true,
       v7_skipActionErrorRevalidation: true,
     },
-  }
+  },
 );
