@@ -9,4 +9,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      // Proxy /api requests to Firebase Functions emulator during development
+      "/api": {
+        target: "http://127.0.0.1:5001/tforart-dev/asia-southeast1",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/api\//, "/"),
+      },
+    },
+  },
 });

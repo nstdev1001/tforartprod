@@ -11,7 +11,6 @@ const useControlWeather = () => {
   const [forecast, setForecast] = useState<ForecastItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const API_KEY: string = import.meta.env.VITE_WEATHER_API_KEY as string;
 
   const vietnamCities = [
     { name: "Hà Nội", value: "Hanoi" },
@@ -32,9 +31,9 @@ const useControlWeather = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch current weather
+        // Fetch current weather via server proxy (API key is hidden on server)
         const currentWeatherResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+          `/api/weather?city=${encodeURIComponent(city)}&type=weather`,
         );
 
         if (!currentWeatherResponse.ok) {
@@ -45,9 +44,9 @@ const useControlWeather = () => {
           (await currentWeatherResponse.json()) as WeatherData;
         setWeatherData(currentWeatherData);
 
-        // Fetch 5-day forecast
+        // Fetch 5-day forecast via server proxy
         const forecastResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
+          `/api/weather?city=${encodeURIComponent(city)}&type=forecast`,
         );
 
         if (!forecastResponse.ok) {
@@ -67,7 +66,7 @@ const useControlWeather = () => {
     };
 
     void fetchWeather();
-  }, [city, API_KEY]);
+  }, [city]);
 
   const processForecastData = (forecastData: ForecastData): ForecastItem[] => {
     const dailyForecasts: Record<string, ForecastItem[]> = {};

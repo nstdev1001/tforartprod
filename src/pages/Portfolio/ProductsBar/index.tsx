@@ -26,7 +26,7 @@ const ProductsBar = () => {
   return (
     <Tabs value={defaultTab} className="flex justify-center">
       <TabsList
-        className={`${styles.tabList} w-[300px] md:w-auto lg:w-auto`}
+        className={`${styles.tabList} w-full md:w-auto lg:w-auto`}
         aria-label="tabs"
         role="tablist"
       >
