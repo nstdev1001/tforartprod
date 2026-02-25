@@ -34,7 +34,7 @@ const Footer = () => {
             <Link to="/support/weather">Weather</Link>
           </div>
           <div className="content-row content-row-3 text-center md:text-start flex flex-col gap-2 md:gap-3 text-sm md:text-base *:cursor-pointer">
-            <Link to="">Watch</Link>
+            <Link to="/support/gold-price">Giá vàng</Link>
             <Link to="/developer-info">Developer</Link>
             <Link to="">Báo lỗi</Link>
             <Link

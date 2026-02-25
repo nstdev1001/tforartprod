@@ -18,6 +18,13 @@
         }
       },
       {
+        "source": "/api/gold",
+        "function": {
+          "functionId": "gold",
+          "region": "asia-southeast1"
+        }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
