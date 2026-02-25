@@ -165,10 +165,6 @@ export default function GoldPricePage() {
           <p className="text-lg text-gray-400">
             Cập nhật giá vàng SJC, DOJI, PNJ trong nước nhanh chóng và chính
             xác.
-            <br />
-            <span className="font-extralight">
-              Dữ liệu được cung cấp bởi VNAppMob Open API.
-            </span>
           </p>
         </div>
 
