@@ -4,6 +4,7 @@ import { onRequest } from "firebase-functions/v2/https";
 // ── Secrets (stored in Google Secret Manager, NOT in client bundle) ──
 const weatherApiKey = defineSecret("WEATHER_API_KEY");
 const openrouterApiKey = defineSecret("OPENROUTER_API_KEY");
+const goldApiKey = defineSecret("GOLD_API_KEY");
 
 // ── CORS helper ──
 const ALLOWED_ORIGINS = [
@@ -86,6 +87,67 @@ export const weather = onRequest(
       res.status(200).json(data);
     } catch (error) {
       console.error("Weather proxy error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// /api/gold  –  proxy to VNAppMob Gold API
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+export const gold = onRequest(
+  { secrets: [goldApiKey], region: "asia-southeast1" },
+  async (req, res) => {
+    setCors(req, res);
+
+    // Handle preflight
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
+    if (req.method !== "GET") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
+    const provider = req.query["provider"] as string | undefined;
+    const allowedProviders = ["sjc", "doji", "pnj"];
+
+    if (!provider || !allowedProviders.includes(provider)) {
+      res
+        .status(400)
+        .json({
+          error: "Missing or invalid 'provider'. Use 'sjc', 'doji', or 'pnj'",
+        });
+      return;
+    }
+
+    try {
+      const apiKey = goldApiKey.value();
+      const url = `https://api.vnappmob.com/api/v2/gold/${provider}`;
+
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        res.status(response.status).json({
+          error: `VNAppMob Gold API returned ${response.status}`,
+        });
+        return;
+      }
+
+      const data = await response.json();
+
+      // Cache gold prices for 5 minutes
+      res.setHeader("Cache-Control", "public, max-age=300");
+      res.status(200).json(data);
+    } catch (error) {
+      console.error("Gold proxy error:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   },
