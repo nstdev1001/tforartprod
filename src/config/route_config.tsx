@@ -22,6 +22,7 @@ const TforartFAQ = lazy(() => import("@/pages/FAQ"));
 const WeatherApp = lazy(() => import("@/pages/Weather"));
 const DeveloperInfoPage = lazy(() => import("@/pages/DeveloperInfo"));
 const AIchatbot = lazy(() => import("@/pages/AIchatbot"));
+const GoldPrice = lazy(() => import("@/pages/GoldPrice"));
 const TestError = lazy(() => import("@/pages/TestError"));
 
 const S = SuspenseWrapper;
@@ -160,6 +161,14 @@ export const routerConfig = createBrowserRouter(
       element: (
         <S>
           <WeatherApp />
+        </S>
+      ),
+    },
+    {
+      path: "/support/gold-price",
+      element: (
+        <S>
+          <GoldPrice />
         </S>
       ),
     },

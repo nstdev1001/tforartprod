@@ -5,6 +5,29 @@ import { onRequest } from "firebase-functions/v2/https";
 const weatherApiKey = defineSecret("WEATHER_API_KEY");
 const openrouterApiKey = defineSecret("OPENROUTER_API_KEY");
 
+// ── Gold API key auto-refresh (expires every 15 days) ──
+let cachedGoldKey: string | null = null;
+let goldKeyExpiry = 0; // unix ms
+
+async function getGoldApiKey(): Promise<string> {
+  const now = Date.now();
+  if (cachedGoldKey && now < goldKeyExpiry) {
+    return cachedGoldKey;
+  }
+
+  const response = await fetch(
+    "https://api.vnappmob.com/api/request_api_key?scope=gold",
+  );
+  if (!response.ok) {
+    throw new Error(`Failed to request gold API key (HTTP ${response.status})`);
+  }
+  const data = (await response.json()) as { results: string };
+  cachedGoldKey = data.results;
+  // Key is valid for 15 days; refresh 1 day early to be safe
+  goldKeyExpiry = now + 14 * 24 * 60 * 60 * 1000;
+  return cachedGoldKey;
+}
+
 // ── CORS helper ──
 const ALLOWED_ORIGINS = [
   "https://tforart.vn",
@@ -86,6 +109,76 @@ export const weather = onRequest(
       res.status(200).json(data);
     } catch (error) {
       console.error("Weather proxy error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// /api/gold  –  proxy to VNAppMob Gold API
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+export const gold = onRequest(
+  { region: "asia-southeast1" },
+  async (req, res) => {
+    setCors(req, res);
+
+    // Handle preflight
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
+    if (req.method !== "GET") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
+    const provider = req.query["provider"] as string | undefined;
+    const allowedProviders = ["sjc", "doji", "pnj"];
+
+    if (!provider || !allowedProviders.includes(provider)) {
+      res.status(400).json({
+        error: "Missing or invalid 'provider'. Use 'sjc', 'doji', or 'pnj'",
+      });
+      return;
+    }
+
+    const fetchGold = async (apiKey: string) => {
+      const url = `https://api.vnappmob.com/api/v2/gold/${provider}`;
+      return fetch(url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          Accept: "application/json",
+        },
+      });
+    };
+
+    try {
+      let apiKey = await getGoldApiKey();
+      let response = await fetchGold(apiKey);
+
+      // If 403 → key expired, force refresh and retry once
+      if (response.status === 403) {
+        cachedGoldKey = null;
+        goldKeyExpiry = 0;
+        apiKey = await getGoldApiKey();
+        response = await fetchGold(apiKey);
+      }
+
+      if (!response.ok) {
+        res.status(response.status).json({
+          error: `VNAppMob Gold API returned ${response.status}`,
+        });
+        return;
+      }
+
+      const data = await response.json();
+
+      // Cache gold prices for 5 minutes
+      res.setHeader("Cache-Control", "public, max-age=300");
+      res.status(200).json(data);
+    } catch (error) {
+      console.error("Gold proxy error:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   },
