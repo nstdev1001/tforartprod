@@ -2,7 +2,11 @@ import useControlGold from "./useControlGold";
 import Layout from "@/components/Layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DojiGoldItem, PnjGoldItem, SjcGoldItem } from "@/types/goldDataType";
+import type {
+  DojiGoldItem,
+  PnjGoldItem,
+  SjcGoldItem,
+} from "@/types/goldDataType";
 import { RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -140,6 +144,63 @@ function RegionalTable({ data }: { data: (DojiGoldItem | PnjGoldItem)[] }) {
   );
 }
 
+type BtmcDisplayItem = {
+  name: string;
+  buy: number;
+  sell: number;
+  updated_at: string;
+};
+
+function BtmcTable({ data }: { data: BtmcDisplayItem[] }) {
+  if (data.length === 0) {
+    return (
+      <p className="text-gray-400 text-center py-8">
+        Không có dữ liệu BTMC hiện tại.
+      </p>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm md:text-base">
+        <thead>
+          <tr className="border-b border-gray-700 text-gray-400">
+            <th className="text-left py-3 px-4 font-medium">Sản phẩm</th>
+            <th className="text-right py-3 px-4 font-medium">Mua vào</th>
+            <th className="text-right py-3 px-4 font-medium">Bán ra</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item: BtmcDisplayItem, i: number) => (
+            <tr
+              key={`${item.name}-${i}`}
+              className="border-b border-gray-800 hover:bg-gray-900/50 transition-colors"
+            >
+              <td className="py-4 px-4 font-medium">{item.name}</td>
+              <td className="py-4 px-4 text-right">
+                <span className="text-green-400 font-semibold">
+                  {formatPrice(item.buy)}
+                </span>
+                <span className="block text-xs text-gray-500 md:hidden">
+                  {formatShortPrice(item.buy)}
+                </span>
+              </td>
+              <td className="py-4 px-4 text-right">
+                <span className="text-red-400 font-semibold">
+                  {formatPrice(item.sell)}
+                </span>
+                <span className="block text-xs text-gray-500 md:hidden">
+                  {formatShortPrice(item.sell)}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 /* ───────────── Main Page ───────────── */
 export default function GoldPricePage() {
   const {
@@ -148,6 +209,7 @@ export default function GoldPricePage() {
     sjcData,
     dojiData,
     pnjData,
+    btmcData,
     loading,
     error,
     lastUpdated,
@@ -204,10 +266,12 @@ export default function GoldPricePage() {
         {!loading && (
           <Tabs
             value={provider}
-            onValueChange={(v) => setProvider(v as "sjc" | "doji" | "pnj")}
+            onValueChange={(v) =>
+              setProvider(v as "sjc" | "doji" | "pnj" | "btmc")
+            }
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 bg-gray-900 border border-gray-700 mb-6">
+            <TabsList className="grid w-full grid-cols-4 bg-gray-900 border border-gray-700 mb-6">
               <TabsTrigger
                 value="sjc"
                 className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
@@ -225,6 +289,12 @@ export default function GoldPricePage() {
                 className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
               >
                 PNJ
+              </TabsTrigger>
+              <TabsTrigger
+                value="btmc"
+                className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
+              >
+                BTMC
               </TabsTrigger>
             </TabsList>
 
@@ -269,6 +339,21 @@ export default function GoldPricePage() {
                 </CardHeader>
                 <CardContent>
                   <RegionalTable data={pnjData} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* BTMC Tab */}
+            <TabsContent value="btmc">
+              <Card className="bg-transparent border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-xl flex items-center gap-2">
+                    <span className="inline-block w-3 h-3 rounded-full bg-yellow-500"></span>
+                    Giá vàng BTMC
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <BtmcTable data={btmcData} />
                 </CardContent>
               </Card>
             </TabsContent>

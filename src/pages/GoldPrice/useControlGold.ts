@@ -1,4 +1,5 @@
 import {
+  BtmcGoldItem,
   DojiGoldItem,
   GoldApiResponse,
   GoldProvider,
@@ -12,6 +13,7 @@ const useControlGold = () => {
   const [sjcData, setSjcData] = useState<SjcGoldItem[]>([]);
   const [dojiData, setDojiData] = useState<DojiGoldItem[]>([]);
   const [pnjData, setPnjData] = useState<PnjGoldItem[]>([]);
+  const [btmcData, setBtmcData] = useState<BtmcGoldItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -38,10 +40,11 @@ const useControlGold = () => {
       setLoading(true);
       setError(null);
 
-      const [sjcRes, dojiRes, pnjRes] = await Promise.allSettled([
+      const [sjcRes, dojiRes, pnjRes, btmcRes] = await Promise.allSettled([
         fetchGoldData<SjcGoldItem>("sjc"),
         fetchGoldData<DojiGoldItem>("doji"),
         fetchGoldData<PnjGoldItem>("pnj"),
+        fetchGoldData<BtmcGoldItem>("btmc"),
       ]);
 
       if (sjcRes.status === "fulfilled") {
@@ -53,12 +56,16 @@ const useControlGold = () => {
       if (pnjRes.status === "fulfilled") {
         setPnjData(pnjRes.value.results ?? []);
       }
+      if (btmcRes.status === "fulfilled") {
+        setBtmcData(btmcRes.value.results ?? []);
+      }
 
       // Check if all failed
       if (
         sjcRes.status === "rejected" &&
         dojiRes.status === "rejected" &&
-        pnjRes.status === "rejected"
+        pnjRes.status === "rejected" &&
+        btmcRes.status === "rejected"
       ) {
         throw new Error(
           "Không thể kết nối đến máy chủ giá vàng. Vui lòng thử lại sau.",
@@ -87,6 +94,7 @@ const useControlGold = () => {
     sjcData,
     dojiData,
     pnjData,
+    btmcData,
     loading,
     error,
     lastUpdated,
