@@ -23,8 +23,16 @@ export interface PnjGoldItem {
   sell_hn: number;
 }
 
+export interface BtmcGoldItem {
+  name: string;
+  purity: string;
+  buy: number;
+  sell: number;
+  updated_at: string;
+}
+
 export interface GoldApiResponse<T> {
   results: T[];
 }
 
-export type GoldProvider = "sjc" | "doji" | "pnj";
+export type GoldProvider = "sjc" | "doji" | "pnj" | "btmc";
