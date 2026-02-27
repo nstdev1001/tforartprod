@@ -42,7 +42,7 @@ const CompanyServices = () => {
         {/* Header */}
         <div className="mb-10">
           <h1 className="text-3xl text-center md:text-4xl font-bold mb-3">
-            Dịch Vụ Của Chúng Tôi
+            DỊCH VỤ CỦA CHÚNG TÔI
           </h1>
 
           <p className="text-lg text-gray-400 max-w-3xl mx-auto">

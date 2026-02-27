@@ -1,5 +1,4 @@
 import {
-  BtmcGoldItem,
   DojiGoldItem,
   GoldApiResponse,
   GoldProvider,
@@ -8,12 +7,34 @@ import {
 } from "@/types/goldDataType";
 import { useCallback, useEffect, useState } from "react";
 
+type BtmcGoldItem = {
+  name: string;
+  gold_content: string;
+  kara_content: string;
+  buy: number;
+  sell: number;
+  updated_at: string;
+};
+
+type BtmcSilverItem = {
+  name: string;
+  buy: number;
+  sell: number;
+  updated_at: string;
+};
+
+type BtmcApiResponse = {
+  gold: BtmcGoldItem[];
+  silver: BtmcSilverItem[];
+};
+
 const useControlGold = () => {
   const [provider, setProvider] = useState<GoldProvider>("sjc");
   const [sjcData, setSjcData] = useState<SjcGoldItem[]>([]);
   const [dojiData, setDojiData] = useState<DojiGoldItem[]>([]);
   const [pnjData, setPnjData] = useState<PnjGoldItem[]>([]);
-  const [btmcData, setBtmcData] = useState<BtmcGoldItem[]>([]);
+  const [btmcGoldData, setBtmcGoldData] = useState<BtmcGoldItem[]>([]);
+  const [btmcSilverData, setBtmcSilverData] = useState<BtmcSilverItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -35,38 +56,44 @@ const useControlGold = () => {
     [],
   );
 
+  const fetchBtmcData = useCallback(async (): Promise<BtmcApiResponse> => {
+    const response = await fetch(`/api/gold?provider=btmc`);
+    if (!response.ok) {
+      throw new Error(
+        `Không thể lấy dữ liệu giá vàng BTMC (HTTP ${response.status})`,
+      );
+    }
+    return response.json() as Promise<BtmcApiResponse>;
+  }, []);
+
   const fetchAllGoldPrices = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const [sjcRes, dojiRes, pnjRes, btmcRes] = await Promise.allSettled([
-        fetchGoldData<SjcGoldItem>("sjc"),
-        fetchGoldData<DojiGoldItem>("doji"),
-        fetchGoldData<PnjGoldItem>("pnj"),
-        fetchGoldData<BtmcGoldItem>("btmc"),
+      const [sjcRes, dojiRes, pnjRes, btmcRes] = await Promise.all([
+        fetchGoldData<SjcGoldItem>("sjc").catch(() => null),
+        fetchGoldData<DojiGoldItem>("doji").catch(() => null),
+        fetchGoldData<PnjGoldItem>("pnj").catch(() => null),
+        fetchBtmcData().catch(() => null),
       ]);
 
-      if (sjcRes.status === "fulfilled") {
-        setSjcData(sjcRes.value.results ?? []);
+      if (sjcRes) {
+        setSjcData(sjcRes.results ?? []);
       }
-      if (dojiRes.status === "fulfilled") {
-        setDojiData(dojiRes.value.results ?? []);
+      if (dojiRes) {
+        setDojiData(dojiRes.results ?? []);
       }
-      if (pnjRes.status === "fulfilled") {
-        setPnjData(pnjRes.value.results ?? []);
+      if (pnjRes) {
+        setPnjData(pnjRes.results ?? []);
       }
-      if (btmcRes.status === "fulfilled") {
-        setBtmcData(btmcRes.value.results ?? []);
+      if (btmcRes) {
+        setBtmcGoldData(btmcRes.gold ?? []);
+        setBtmcSilverData(btmcRes.silver ?? []);
       }
 
       // Check if all failed
-      if (
-        sjcRes.status === "rejected" &&
-        dojiRes.status === "rejected" &&
-        pnjRes.status === "rejected" &&
-        btmcRes.status === "rejected"
-      ) {
+      if (!sjcRes && !dojiRes && !pnjRes && !btmcRes) {
         throw new Error(
           "Không thể kết nối đến máy chủ giá vàng. Vui lòng thử lại sau.",
         );
@@ -82,7 +109,7 @@ const useControlGold = () => {
     } finally {
       setLoading(false);
     }
-  }, [fetchGoldData]);
+  }, [fetchGoldData, fetchBtmcData]);
 
   useEffect(() => {
     void fetchAllGoldPrices();
@@ -94,7 +121,8 @@ const useControlGold = () => {
     sjcData,
     dojiData,
     pnjData,
-    btmcData,
+    btmcGoldData,
+    btmcSilverData,
     loading,
     error,
     lastUpdated,

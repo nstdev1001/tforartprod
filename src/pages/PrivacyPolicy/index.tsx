@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
       <div className="privacy-policy-container max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[150px] mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Chính sách Quyền Riêng Tư
+            CHÍNH SÁCH QUYỀN RIÊNG TƯ
           </h1>
           <p className="text-lg text-gray-600">
             {companyInfo.internationalName}
