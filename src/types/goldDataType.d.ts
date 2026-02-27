@@ -25,10 +25,23 @@ export interface PnjGoldItem {
 
 export interface BtmcGoldItem {
   name: string;
-  purity: string;
+  gold_content: string;
+  kara_content: string;
   buy: number;
   sell: number;
   updated_at: string;
+}
+
+export interface BtmcSilverItem {
+  name: string;
+  buy: number;
+  sell: number;
+  updated_at: string;
+}
+
+export interface BtmcApiResponse {
+  gold: BtmcGoldItem[];
+  silver: BtmcSilverItem[];
 }
 
 export interface GoldApiResponse<T> {
