@@ -113,15 +113,11 @@ export default function WeatherApp() {
       <div className="weather-container max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[150px] mx-auto">
         <div className="text-center mb-20">
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Dự báo thời tiết
+            DỰ BÁO THỜI TIẾT
           </h1>
           <p className="text-lg text-gray-400">
             Để đảm bảo dự án của bạn không bị ảnh hưởng bởi thời tiết, hãy kiểm
             tra dự báo thời tiết tại đây.
-            <br />
-            <span className="font-extralight">
-              Bạn yên tâm, thời tiết do TFORART cung cấp cực chuẩn và uy tín!
-            </span>
           </p>
         </div>
 

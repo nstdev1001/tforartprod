@@ -2,7 +2,7 @@ export const companyInfo = {
   internationalName: "TFORART COMPANY LIMITED",
   abbreviation: "TFORART CO.,LTD",
   taxCode: "0110834706",
-  address: "Huyện Sóc Sơn, Thành phố Hà Nội, Việt Nam",
+  address: "Xã Nội Bài, Thành phố Hà Nội, Việt Nam",
   legalRepresentative: "Lê Trường Giang",
   phoneNumber: "0365187269",
   email: "tforartprod@gmail.com",

@@ -58,7 +58,7 @@ const TforartFAQ = () => {
       <div className="faq-container max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[150px] mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Câu hỏi thường gặp (FAQ)
+            CÂU HỎI THƯỜNG GẶP (FAQ)
           </h1>
           <p className="text-lg text-gray-400">
             Tìm hiểu thêm về TFORART COMPANY LIMITED và dịch vụ của chúng tôi

@@ -222,7 +222,7 @@ export default function GoldPricePage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Giá Vàng Hôm Nay
+            GIÁ VÀNG HÔM NAY
           </h1>
           <p className="text-lg text-gray-400">
             Cập nhật giá vàng SJC, DOJI, PNJ trong nước nhanh chóng và chính
