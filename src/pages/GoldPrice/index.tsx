@@ -7,7 +7,6 @@ import Layout from "@/components/Layout/Layout";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { GoldProvider } from "@/types/goldDataType";
 import { RefreshCw } from "lucide-react";
-import { Link } from "react-router-dom";
 
 /* ───────────── Main Page ───────────── */
 export default function GoldPricePage() {
@@ -111,23 +110,6 @@ export default function GoldPricePage() {
             <BtmcTab goldData={btmcGoldData} silverData={btmcSilverData} />
           </Tabs>
         )}
-
-        {/* Footer note */}
-        <footer className="mt-12 text-center text-gray-500 text-sm">
-          <p>
-            Dữ liệu giá vàng được cung cấp bởi{" "}
-            <Link
-              className="underline"
-              target="_blank"
-              to="https://vapi.vnappmob.com"
-            >
-              VNAppMob Open API
-            </Link>
-          </p>
-          <p className="mt-1 text-xs text-gray-600">
-            Giá vàng chỉ mang tính chất tham khảo.
-          </p>
-        </footer>
       </div>
     </Layout>
   );
