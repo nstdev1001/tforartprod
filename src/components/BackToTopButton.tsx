@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
