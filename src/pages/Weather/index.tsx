@@ -3,6 +3,7 @@ import CurrentWeatherCard from "./_components/CurrentWeatherCard";
 import ForecastCard from "./_components/ForecastCard";
 import useControlWeather from "./useControlWeather";
 import Layout from "@/components/Layout/Layout";
+import BouncyLoading from "@/components/Loading/BouncyLoading";
 
 export default function WeatherApp() {
   const {
@@ -40,8 +41,9 @@ export default function WeatherApp() {
 
         {/* Loading */}
         {loading && (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white" />
+          <div className="flex flex-col gap-5 justify-center items-center h-64">
+            <BouncyLoading />
+            <p className="text-white">Đang tải dữ liệu...</p>
           </div>
         )}
 
