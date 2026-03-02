@@ -18,6 +18,7 @@ import {
   // Sun,
   Wind,
 } from "lucide-react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 export default function WeatherApp() {
@@ -31,7 +32,7 @@ export default function WeatherApp() {
     setCity,
   } = useControlWeather();
 
-  const getWeatherIcon = (weatherCode: number): JSX.Element => {
+  const getWeatherIcon = (weatherCode: number): React.JSX.Element => {
     switch (true) {
       case weatherCode >= 200 && weatherCode < 300:
         // return <CloudLightning className="h-14 w-14" />;
