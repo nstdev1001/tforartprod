@@ -1,7 +1,7 @@
-import Layout from "../../components/Layout/Layout";
-import FormContent from "./FormContent/FormContent";
 import { Link } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
+import Layout from "../../components/Layout/Layout";
+import FormContent from "./FormContent/FormContent";
 
 const Contact = () => {
   return (

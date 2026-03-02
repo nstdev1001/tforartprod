@@ -1,7 +1,8 @@
-import { Bouncy } from "ldrs/react";
+import { bouncy } from "ldrs";
 
 const BouncyLoading = () => {
-  return <Bouncy size="45" speed="1.75" color="white" />;
+  bouncy.register();
+  return <l-bouncy size="45" speed="1.75" color="white"></l-bouncy>;
 };
 
 export default BouncyLoading;
