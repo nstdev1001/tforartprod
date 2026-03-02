@@ -2,9 +2,11 @@ import styles from "./style.module.css";
 import { defaultYMotionProps } from "@/config/motion_config";
 import { motion } from "framer-motion";
 import { Fragment, useMemo } from "react";
+import { preload } from "react-dom";
 import { ReactTyped } from "react-typed";
 
 const AboutCompany = () => {
+  preload("/tforart_studio_white.jpg", { as: "image" });
   // Use useMemo to ensure the string array is stable across renders
   const typedContent = useMemo(
     () => [

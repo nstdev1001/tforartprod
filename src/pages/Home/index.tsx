@@ -8,8 +8,10 @@ import { defaultScaleMotionProps } from "@/config/motion_config";
 import MoreProduct from "@/pages/Home/MoreProduct";
 import { motion } from "framer-motion";
 import { Fragment } from "react";
+import { preload } from "react-dom";
 
 const Home = () => {
+  preload("/videos/hero-vp9.webm", { as: "video", type: "video/webm" });
   const scrollToMainContent = () => {
     const mainContent = document.getElementById("main-content");
     if (mainContent) {
@@ -23,11 +25,13 @@ const Home = () => {
         <div className={`${styles.hero} w-full h-[800px] relative`}>
           <video
             className="absolute top-0 left-0 w-full h-full object-cover"
-            src="/HERO.mp4"
             autoPlay
             muted
             loop
-          />
+          >
+            <source src="/videos/hero-vp9.webm" type="video/webm" />
+            <source src="/videos/hero-h264.mp4" type="video/mp4" />
+          </video>
           <div className="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
             <motion.h1
               className="text-3xl text-center text-white"
