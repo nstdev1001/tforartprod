@@ -31,7 +31,6 @@ const useControlWeather = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch current weather via server proxy (API key is hidden on server)
         const currentWeatherResponse = await fetch(
           `/api/weather?city=${encodeURIComponent(city)}&type=weather`,
         );
