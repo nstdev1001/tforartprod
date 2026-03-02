@@ -6,7 +6,7 @@ import { preload } from "react-dom";
 import { ReactTyped } from "react-typed";
 
 const AboutCompany = () => {
-  preload("/tforart_studio_white.jpg", { as: "image" });
+  preload("/images/branding/tforart_studio_white.jpg", { as: "image" });
   // Use useMemo to ensure the string array is stable across renders
   const typedContent = useMemo(
     () => [
@@ -31,7 +31,7 @@ const AboutCompany = () => {
       <div className="about-wrapper flex flex-col justify-center gap-20">
         <motion.img
           className=" h-auto rounded-ee-2xl bg-top object-cover mx-auto"
-          src="/tforart_studio_white.jpg"
+          src="/images/branding/tforart_studio_white.jpg"
           alt="Tforart team image"
           {...defaultYMotionProps}
           initial={{ opacity: 0, y: 100 }}

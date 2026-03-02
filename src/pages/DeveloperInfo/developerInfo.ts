@@ -1,7 +1,7 @@
 export const developerInfo = {
   name: "Nguyễn Sơn Tùng",
   role: "Developer of Tforart's web system",
-  avatarPath: "/Profile_TFORART_design/TUNG_developer.jpg",
+  avatarPath: "/images/team/TUNG_developer.jpg",
   contactInfo: {
     email: "sontung2000ct@gmail.com",
     phone: "+84356616706",

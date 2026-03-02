@@ -39,7 +39,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="thunderstorm"
-            src="/weather-icon/storm-unscreen.gif"
+            src="/images/icons/weather/storm-unscreen.gif"
             className="h-14 w-14"
           />
         );
@@ -48,7 +48,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="drizzle"
-            src="/weather-icon/moderate-rain-unscreen.gif"
+            src="/images/icons/weather/moderate-rain-unscreen.gif"
             className="h-14 w-14"
           />
         );
@@ -57,7 +57,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="light rain"
-            src="/weather-icon/rain-unscreen.gif"
+            src="/images/icons/weather/rain-unscreen.gif"
             className="h-14 w-14"
           />
         );
@@ -66,7 +66,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="snow"
-            src="/weather-icon/cloud-snow.gif"
+            src="/images/icons/weather/cloud-snow.gif"
             className="h-14 w-14"
           />
         );
@@ -75,7 +75,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="cloudy"
-            src="/weather-icon/cloudy.gif"
+            src="/images/icons/weather/cloudy.gif"
             className="h-14 w-14"
           />
         );
@@ -84,7 +84,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="sun"
-            src="/weather-icon/sun-default-unscreen.gif"
+            src="/images/icons/weather/sun-default-unscreen.gif"
             className="h-14 w-14"
           />
         );
@@ -93,7 +93,7 @@ export default function WeatherApp() {
         return (
           <img
             alt="cloudy"
-            src="/weather-icon/cloudy.gif"
+            src="/images/icons/weather/cloudy.gif"
             className="h-14 w-14"
           />
         );
@@ -181,7 +181,7 @@ export default function WeatherApp() {
                     {/* <Droplets className="mr-2 h-5 w-5 text-blue-400" /> */}
                     <img
                       alt="humidity"
-                      src="/weather-icon/drop-unscreen.gif"
+                      src="/images/icons/weather/drop-unscreen.gif"
                       className="mr-2 h-5 w-5"
                     />
                     <span>{weatherData.main.humidity}% độ ẩm</span>
@@ -190,7 +190,7 @@ export default function WeatherApp() {
                     {/* <Wind className="mr-2 h-5 w-5 text-green-400" /> */}
                     <img
                       alt="wind"
-                      src="/weather-icon/wind-unscreen.gif"
+                      src="/images/icons/weather/wind-unscreen.gif"
                       className="mr-2 h-5 w-5"
                     />
                     <span>{Math.round(weatherData.wind.speed * 3.6)} km/h</span>
@@ -199,7 +199,7 @@ export default function WeatherApp() {
                     {/* <Sun className="mr-2 h-5 w-5 text-yellow-400" /> */}
                     <img
                       alt="feels like"
-                      src="/weather-icon/sun-glass-unscreen.gif"
+                      src="/images/icons/weather/sun-glass-unscreen.gif"
                       className="mr-2 h-5 w-5"
                     />
                     <span>
@@ -210,7 +210,7 @@ export default function WeatherApp() {
                     {/* <Cloud className="mr-2 h-5 w-5 text-gray-400" /> */}
                     <img
                       alt="clouds"
-                      src="/weather-icon/cloudy.gif"
+                      src="/images/icons/weather/cloudy.gif"
                       className="mr-2 h-5 w-5"
                     />
                     <span>{weatherData.clouds.all}% mây</span>

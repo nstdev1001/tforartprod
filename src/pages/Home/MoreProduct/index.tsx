@@ -27,7 +27,7 @@ const MoreProduct = () => {
             {...defaultYMotionProps}
             transition={{ duration: 1 }}
           >
-            <img src="/videography.jpg" alt="" />
+            <img src="/images/portfolio/videography.jpg" alt="" />
             <p className="text-md md:text-4xl">Videography</p>
           </motion.section>
           <motion.section
@@ -36,7 +36,7 @@ const MoreProduct = () => {
             {...defaultYMotionProps}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <img src="/photography.JPG" alt="" />
+            <img src="/images/portfolio/photography.JPG" alt="" />
             <p className="text-md md:text-4xl">Photography</p>
           </motion.section>
           <motion.section
@@ -45,7 +45,7 @@ const MoreProduct = () => {
             {...defaultYMotionProps}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <img src="/graphic.jpg" alt="" />
+            <img src="/images/portfolio/graphic.jpg" alt="" />
             <p className="text-md md:text-4xl">Graphic design</p>
           </motion.section>
         </div>

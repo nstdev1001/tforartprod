@@ -85,7 +85,7 @@ const Navbar = () => {
         <div className={styles.mainLogo}>
           <img
             className="w-[100px] cursor-pointer"
-            src="/tforart_white.svg"
+            src="/images/branding/tforart_white.svg"
             alt="Logo"
             onClick={() => (window.location.href = "/")}
           />
@@ -120,7 +120,7 @@ const Navbar = () => {
         <div className={styles.mobileLogo}>
           <img
             className="w-[80px] cursor-pointer"
-            src="/tforart_white.svg"
+            src="/images/branding/tforart_white.svg"
             alt="Mobile Logo"
             onClick={() => navigate("/")}
           />
