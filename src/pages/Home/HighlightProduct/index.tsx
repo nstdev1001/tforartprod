@@ -3,8 +3,11 @@ import styles from "./style.module.css";
 import { defaultYMotionProps } from "@/config/motion_config";
 import { motion } from "framer-motion";
 import { Fragment } from "react";
+import { preconnect } from "react-dom";
 
 const HighlightProduct = () => {
+  preconnect("https://www.google.com");
+  preconnect("https://static.doubleclick.net");
   return (
     <Fragment>
       <div className="hightlight-product-container flex flex-col gap-[50px] md:gap-[100px]">
