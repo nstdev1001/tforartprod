@@ -12,7 +12,7 @@ const Footer = () => {
       <section className="footer-content-wrapper gap-8 md:gap-[50px] flex flex-col lg:flex-row justify-around items-center">
         <img
           className="text-white h-[50px] md:h-[70px] lg:h-[90px]"
-          src="/tforart_main.png"
+          src="/images/branding/tforart_main.png"
           alt="logo"
         />
         <div className="content flex flex-col gap-8 md:flex-row lg:flex-row justify-around md:gap-12 lg:gap-[200px]">

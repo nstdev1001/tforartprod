@@ -10,7 +10,7 @@ body {
   background-color: rgb(0, 0, 0);
   color: azure;
   box-sizing: border-box;
-  background-image: url("/main_back.jpg");
+  background-image: url("/images/backgrounds/main_back.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;

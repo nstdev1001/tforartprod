@@ -7,7 +7,7 @@ const MaintenancePage = () => {
       <p className="text-xl">Chúng tôi xin lỗi vì sự bất tiện này.</p>
       <img
         className="max-w-[400px]"
-        src="/maintain_web.gif"
+        src="/images/illustrations/maintain_web.gif"
         alt="Maintenance"
       />
     </div>

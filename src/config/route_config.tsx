@@ -1,9 +1,9 @@
 import SuspenseWrapper from "@/components/Loading/SuspenseWrapper";
 import NotFound from "@/components/NotFound/NotFound";
+import Home from "@/pages/Home";
 import { lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("@/pages/Login/Login"));
 const AboutUs = lazy(() => import("../pages/AboutUs"));
 const Portfolio = lazy(() => import("../pages/Portfolio/Portfolio"));

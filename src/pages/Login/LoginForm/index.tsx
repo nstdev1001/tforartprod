@@ -20,7 +20,7 @@ const FormContent = () => {
           <span>Sign in to</span>
           <img
             className="w-[60px] md:w-[80px]"
-            src="/logobrand/tforart.png"
+            src="/images/clients/tforart.png"
             alt=""
           />
         </h3>

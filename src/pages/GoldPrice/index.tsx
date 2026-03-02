@@ -4,11 +4,11 @@ import PnjTab from "./components/PnjTab";
 import SjcTab from "./components/SjcTab";
 import useControlGold from "./useControlGold";
 import Layout from "@/components/Layout/Layout";
+import BouncyLoading from "@/components/Loading/BouncyLoading";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { GoldProvider } from "@/types/goldDataType";
 import { RefreshCw } from "lucide-react";
 
-/* ───────────── Main Page ───────────── */
 export default function GoldPricePage() {
   const {
     provider,
@@ -58,8 +58,9 @@ export default function GoldPricePage() {
 
         {/* Loading */}
         {loading && (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+          <div className="flex flex-col gap-5 justify-center items-center h-64">
+            <BouncyLoading />
+            <p className="text-white">Đang tải dữ liệu...</p>
           </div>
         )}
 
