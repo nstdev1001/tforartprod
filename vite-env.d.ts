@@ -21,6 +21,14 @@ declare module "react" {
         },
         HTMLElement
       >;
+      "l-bouncy": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & {
+          size?: string;
+          speed?: string;
+          color?: string;
+        },
+        HTMLElement
+      >;
     }
   }
 }
