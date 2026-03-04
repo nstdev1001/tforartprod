@@ -1,5 +1,5 @@
-import styles from "./Footer.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import styles from "./Footer.module.css";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -23,13 +23,14 @@ const Footer = () => {
             <Link to="/privacy-policy">Quyền riêng tư</Link>
           </div>
           <div className="content-row content-row-2 text-center md:text-start flex flex-col gap-2 md:gap-3 text-sm md:text-base *:cursor-pointer">
-            <Link to="/support/faq">FAQ</Link>
+            <Link to="/support/faq">FAQ</Link>{" "}
+            <Link to="https://tforart-tripsy.web.app/" target="_blank">
+              Tforart Tripsy{" "}
+              <span className="font-thin text-gray-200">(New)</span>
+            </Link>
             <Link to="">
               Tforart Review{" "}
               <span className="font-thin text-gray-200">(Comming soon)</span>
-            </Link>
-            <Link to="/ai-chatbot">
-              AI chatbot <span className="font-thin text-gray-200">(Beta)</span>
             </Link>
             <Link to="/support/weather">Weather</Link>
           </div>
