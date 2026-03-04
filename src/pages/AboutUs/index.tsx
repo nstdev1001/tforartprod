@@ -1,6 +1,3 @@
-import Layout from "../../components/Layout/Layout";
-import PcProfile from "./PcProfile";
-import SpProfile from "./SpProfile";
 import {
   defaultOpacityMotionProps,
   defaultXMotionProps,
@@ -8,6 +5,15 @@ import {
 } from "@/config/motion_config";
 import { motion } from "framer-motion";
 import { Fragment } from "react";
+import { preload } from "react-dom";
+import Layout from "../../components/Layout/Layout";
+import PcProfile from "./PcProfile";
+import SpProfile from "./SpProfile";
+import { profileData } from "./profileData";
+
+profileData.forEach(({ imgUrl }) => {
+  preload(imgUrl, { as: "image" });
+});
 
 const AboutUs = () => {
   return (
