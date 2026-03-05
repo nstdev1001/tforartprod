@@ -1,9 +1,6 @@
-import AddAlbumDialog from "./_components/AddAlbumDialog";
-import UpdateAlbumDialog from "./_components/UpdateAlbumDialog";
-import styles from "./style.module.css";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { defaultOpacityMotionProps } from "@/config/motion_config";
+import { createSmoothTextContainerMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
 import useControlAlbum from "@/hooks/useControlAlbum";
 import { AlbumData } from "@/types/albumDataType";
@@ -31,10 +28,12 @@ import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import AddAlbumDialog from "./_components/AddAlbumDialog";
+import UpdateAlbumDialog from "./_components/UpdateAlbumDialog";
+import styles from "./style.module.css";
 
 interface SortableAlbumProps {
   album: AlbumData;
-  index: number;
   checkIsLogin: boolean;
   handleEditClick: (album: AlbumData) => void;
   handleDeleteClick: (album: AlbumData) => void;
@@ -48,7 +47,6 @@ interface DragAlbumPreviewProps {
 
 const SortableAlbum = ({
   album,
-  index,
   checkIsLogin,
   handleEditClick,
   handleDeleteClick,
@@ -72,14 +70,12 @@ const SortableAlbum = ({
   };
 
   return (
-    <motion.div
+    <div
       className={`${styles.album} relative ${
         isDragging ? `${styles.dragging}` : ""
       }`}
       ref={setNodeRef}
       style={style}
-      {...defaultOpacityMotionProps}
-      transition={{ duration: 1.5, delay: index * 0.2 }}
       onClick={(e) => {
         const target = e.target as Element;
         const isInteractiveElement =
@@ -89,7 +85,7 @@ const SortableAlbum = ({
 
         if (!isInteractiveElement) {
           navigate(
-            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`
+            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`,
           );
         }
       }}
@@ -128,7 +124,7 @@ const SortableAlbum = ({
         className="cursor-pointer"
         onClick={() =>
           navigate(
-            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`
+            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`,
           )
         }
       />
@@ -136,13 +132,13 @@ const SortableAlbum = ({
         className={`${styles.overlay} cursor-pointer`}
         onClick={() =>
           navigate(
-            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`
+            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`,
           )
         }
       >
         <h3 className={styles.title}>{album.albumTitle}</h3>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -185,7 +181,7 @@ const AlbumPage = () => {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -276,20 +272,20 @@ const AlbumPage = () => {
         onDragEnd={handleDragEnd}
         onDragCancel={() => setActiveId(null)}
       >
-        <div
+        <motion.div
           className={`album-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
+          {...createSmoothTextContainerMotionProps(0.15)}
         >
           <SortableContext
             items={orderedAlbums.map((album) => album.id)}
             strategy={rectSortingStrategy}
           >
-            {orderedAlbums.map((album, index) => (
+            {orderedAlbums.map((album) => (
               <SortableAlbum
                 key={album.id}
                 album={album}
-                index={index}
                 checkIsLogin={checkIsLogin}
                 handleEditClick={() => handleEditClick(album)}
                 handleDeleteClick={() => handleDeleteClick(album)}
@@ -298,7 +294,7 @@ const AlbumPage = () => {
               />
             ))}
           </SortableContext>
-        </div>
+        </motion.div>
 
         <DragOverlay dropAnimation={dropAnimation}>
           {activeId && activeAlbum ? (

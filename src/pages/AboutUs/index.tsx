@@ -1,6 +1,5 @@
 import {
-  defaultOpacityMotionProps,
-  defaultXMotionProps,
+  createSmoothTextItemMotionProps,
   defaultYMotionProps,
 } from "@/config/motion_config";
 import { motion } from "framer-motion";
@@ -16,6 +15,8 @@ profileData.forEach(({ imgUrl }) => {
 });
 
 const AboutUs = () => {
+  const aboutTextAmount = 0.25;
+
   return (
     <Fragment>
       <Layout>
@@ -23,19 +24,26 @@ const AboutUs = () => {
           <div className="text-info-wrapprer flex flex-col gap-5">
             <h1 className="uppercase text-5xl font-extrabold">
               Tforart&apos;s{" "}
-              <motion.span className="font-thin" {...defaultOpacityMotionProps}>
+              <motion.span
+                className="font-thin"
+                {...createSmoothTextItemMotionProps(0.3, aboutTextAmount)}
+              >
                 story
               </motion.span>
             </h1>
             <motion.div
               className="flex flex-col gap-3 text-md"
-              {...defaultXMotionProps}
-              transition={{ duration: 2 }}
+              {...createSmoothTextItemMotionProps(0.45, aboutTextAmount)}
             >
-              <p className="font-semibold italic">
+              <motion.p
+                className="font-semibold italic"
+                {...createSmoothTextItemMotionProps(0.6, aboutTextAmount)}
+              >
                 Tforart Story – Hành Trình Từ Đam Mê Đến Khẳng Định Vị Thế
-              </p>
-              <p>
+              </motion.p>
+              <motion.p
+                {...createSmoothTextItemMotionProps(0.75, aboutTextAmount)}
+              >
                 Tforart được sinh ra từ những giấc mơ và đam mê cháy bỏng của
                 bốn người trẻ, những con người luôn khao khát được thổi hồn nghệ
                 thuật vào từng khung hình, từng câu chữ và từng dự án sáng tạo.
@@ -43,8 +51,10 @@ const AboutUs = () => {
                 trong lĩnh vực media, họ bắt đầu với những dự án cá nhân nhỏ,
                 đơn giản nhưng chứa đựng tất cả tâm huyết và sự sáng tạo không
                 ngừng.
-              </p>
-              <p>
+              </motion.p>
+              <motion.p
+                {...createSmoothTextItemMotionProps(0.9, aboutTextAmount)}
+              >
                 Những sản phẩm đầu tiên được chia sẻ trên các nền tảng mạng xã
                 hội đã gây được tiếng vang bất ngờ, thu hút sự chú ý của những
                 khách hàng đầu tiên. Từ đó, chất lượng sản phẩm dần được nâng
@@ -54,8 +64,10 @@ const AboutUs = () => {
                 Tforart vào năm 2024, với mong muốn mang đến những giải pháp
                 sáng tạo chuyên nghiệp hơn, phục vụ không chỉ các cá nhân mà cả
                 các doanh nghiệp lớn nhỏ.
-              </p>
-              <p>
+              </motion.p>
+              <motion.p
+                {...createSmoothTextItemMotionProps(1.05, aboutTextAmount)}
+              >
                 Chỉ sau vài tháng hoạt động, Tforart đã nhanh chóng khẳng định
                 vị thế của mình trong ngành truyền thông và media. Những dự án
                 thành công với các tên tuổi lớn như Viettel AI, Panasonic, và
@@ -65,18 +77,23 @@ const AboutUs = () => {
                 thuật, mà còn là sự kết hợp hài hòa giữa ý tưởng độc đáo và
                 chiến lược truyền thông hiệu quả, mang lại giá trị vượt trội cho
                 khách hàng.
-              </p>
-              <p>
+              </motion.p>
+              <motion.p
+                {...createSmoothTextItemMotionProps(1.2, aboutTextAmount)}
+              >
                 Hành trình của Tforart là hành trình của sự nỗ lực không ngừng,
                 của niềm đam mê bất tận và của tinh thần &quot;cùng nhau kiến
                 tạo nghệ thuật&quot;. Chúng tôi tin rằng, với sự đồng hành của
                 khách hàng và đối tác, Tforart sẽ tiếp tục viết nên những trang
                 sử mới, đưa nghệ thuật và sáng tạo lên những tầm cao mới.
-              </p>
-              <p className="font-semibold italic">
+              </motion.p>
+              <motion.p
+                className="font-semibold italic"
+                {...createSmoothTextItemMotionProps(1.35, aboutTextAmount)}
+              >
                 Together We Create Art – Vì nghệ thuật là sự kết nối, chúng tôi
                 luôn sẵn sàng đồng hành cùng bạn trên mọi hành trình sáng tạo!
-              </p>
+              </motion.p>
             </motion.div>
           </div>
 

@@ -47,16 +47,30 @@
 .navItem {
   cursor: pointer;
   transition: all 0.3s;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .navItem:hover {
-  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #eee5a9,
-    0 0 25px #eee5b7, 0 0 10px #f1e699, 0 0 30px #f9e981;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #fff,
+    0 0 20px #eee5a9,
+    0 0 25px #eee5b7,
+    0 0 10px #f1e699,
+    0 0 30px #f9e981;
 }
 
 .navItem.active {
   color: #fff; /* Change text color for active tab */
-  text-shadow: 0 0 5px #cacaca, 0 0 10px #9c9c9c, 0 0 15px #fff,
-    0 0 20px #a1a1a1, 0 0 25px #a7a7a7, 0 0 10px #d1d1d1, 0 0 30px #f0f0f0;
+  text-shadow:
+    0 0 5px #cacaca,
+    0 0 10px #9c9c9c,
+    0 0 15px #fff,
+    0 0 20px #a1a1a1,
+    0 0 25px #a7a7a7,
+    0 0 10px #d1d1d1,
+    0 0 30px #f0f0f0;
 }
 
 .secondaryMenuItems {

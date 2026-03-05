@@ -30,11 +30,13 @@ const FAQItem = ({ question, answer }: FaqItem) => {
           ></path>
         </svg>
       </button>
-      {isOpen && (
-        <div className="mt-2 text-gray-400">
-          <p className="whitespace-pre-line">{answer}</p>
-        </div>
-      )}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
+        }`}
+      >
+        <p className="whitespace-pre-line text-gray-400">{answer}</p>
+      </div>
     </div>
   );
 };

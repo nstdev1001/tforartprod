@@ -1,7 +1,6 @@
-import styles from "./style.module.css";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { defaultOpacityMotionProps } from "@/config/motion_config";
+import { createSmoothTextContainerMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
 import useControlGraphicProject from "@/hooks/useControlGraphicProject";
 import AddProjectDialog from "@/pages/Portfolio/GraphicPage/_components/AddProjectDialog";
@@ -32,10 +31,10 @@ import { UseMutateFunction } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import styles from "./style.module.css";
 
 interface SortableProjectProps {
   project: GraphicProjectData;
-  index: number;
   checkIsLogin: boolean;
   handleEditClick: (project: GraphicProjectData) => void;
   handleDeleteClick: (project: GraphicProjectData) => void;
@@ -52,7 +51,6 @@ interface DragProjectPreviewProps {
 
 const SortableProject = ({
   project,
-  index,
   checkIsLogin,
   handleEditClick,
   handleDeleteClick,
@@ -76,14 +74,12 @@ const SortableProject = ({
   };
 
   return (
-    <motion.div
+    <div
       className={`${styles.project} relative ${
         isDragging ? `${styles.dragging}` : ""
       }`}
       ref={setNodeRef}
       style={style}
-      {...defaultOpacityMotionProps}
-      transition={{ duration: 1.5, delay: index * 0.2 }}
       onClick={(e) => {
         const target = e.target as Element;
         const isInteractiveElement =
@@ -94,8 +90,8 @@ const SortableProject = ({
         if (!isInteractiveElement) {
           navigate(
             `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle
-            )}`
+              project.projectTitle,
+            )}`,
           );
         }
       }}
@@ -135,8 +131,8 @@ const SortableProject = ({
         onClick={() =>
           navigate(
             `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle
-            )}`
+              project.projectTitle,
+            )}`,
           )
         }
       />
@@ -145,14 +141,14 @@ const SortableProject = ({
         onClick={() =>
           navigate(
             `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle
-            )}`
+              project.projectTitle,
+            )}`,
           )
         }
       >
         <h3 className={styles.title}>{project.projectTitle}</h3>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -185,7 +181,7 @@ const GraphicPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orderedProjects, setOrderedProjects] = useState<GraphicProjectData[]>(
-    []
+    [],
   );
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
@@ -198,7 +194,7 @@ const GraphicPage = () => {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -289,20 +285,20 @@ const GraphicPage = () => {
         onDragEnd={handleDragEnd}
         onDragCancel={() => setActiveId(null)}
       >
-        <div
+        <motion.div
           className={`project-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
+          {...createSmoothTextContainerMotionProps(0.15)}
         >
           <SortableContext
             items={orderedProjects.map((project) => project.id)}
             strategy={rectSortingStrategy}
           >
-            {orderedProjects.map((project, index) => (
+            {orderedProjects.map((project) => (
               <SortableProject
                 key={project.id}
                 project={project}
-                index={index}
                 checkIsLogin={checkIsLogin}
                 handleEditClick={handleEditClick}
                 handleDeleteClick={handleDeleteClick}
@@ -312,7 +308,7 @@ const GraphicPage = () => {
               />
             ))}
           </SortableContext>
-        </div>
+        </motion.div>
 
         <DragOverlay dropAnimation={dropAnimation}>
           {activeId && activeProject ? (
