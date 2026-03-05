@@ -2,16 +2,11 @@ import BackToTop from "@/components/BackToTopButton";
 import Layout from "@/components/Layout/Layout";
 import { createSmoothTextItemMotionProps } from "@/config/motion_config";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import ProductsBar from "./ProductsBar";
 
 const Portfolio = () => {
   const portfolioTextAmount = 0.3;
-
-  useEffect(() => {
-    void import("@/pages/Portfolio/VideoPage");
-  }, []);
 
   return (
     <Layout>

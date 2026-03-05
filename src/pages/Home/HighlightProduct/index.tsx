@@ -1,11 +1,16 @@
-import highlightProductsData from "./highlightProduct";
-import styles from "./style.module.css";
-import { defaultYMotionProps } from "@/config/motion_config";
+import {
+  createSmoothTextContainerMotionProps,
+  createSmoothTextItemMotionProps,
+} from "@/config/motion_config";
 import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { preconnect } from "react-dom";
+import highlightProductsData from "./highlightProduct";
+import styles from "./style.module.css";
 
 const HighlightProduct = () => {
+  const highlightAmount = 0.2;
+
   preconnect("https://www.google.com");
   preconnect("https://static.doubleclick.net");
   return (
@@ -13,10 +18,7 @@ const HighlightProduct = () => {
       <div className="hightlight-product-container flex flex-col gap-[50px] md:gap-[100px]">
         <motion.h3
           className={`${styles.productTitle} text-xl text-center uppercase font-semibold`}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: false }}
+          {...createSmoothTextContainerMotionProps(highlightAmount)}
         >
           Sản phẩm nổi bật
         </motion.h3>
@@ -31,8 +33,7 @@ const HighlightProduct = () => {
                 {/* pc */}
                 <motion.div
                   className={`${styles.productContent} hidden md:hidden lg:block`}
-                  {...defaultYMotionProps}
-                  transition={{ duration: 1, delay: 0.2 }}
+                  {...createSmoothTextItemMotionProps(0.15, highlightAmount)}
                 >
                   <h3
                     className={`${styles.productTitle} text-start md:text-start`}
@@ -47,8 +48,7 @@ const HighlightProduct = () => {
                 {/* Video */}
                 <motion.div
                   className={`${styles.productVideo} w-full`}
-                  {...defaultYMotionProps}
-                  transition={{ duration: 1 }}
+                  {...createSmoothTextContainerMotionProps(highlightAmount)}
                 >
                   <iframe
                     className="w-full h-auto md:w-[600px] aspect-video"

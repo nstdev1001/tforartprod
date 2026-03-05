@@ -1,10 +1,10 @@
-import styles from "./Navbar.module.css";
-import Clock from "./_components/Clock";
 import AdminBar from "@/components/Admin/AdminBar";
 import { navbarConfig } from "@/config/navbar_config";
 import useAuth from "@/hooks/useAuth";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import styles from "./Navbar.module.css";
+import Clock from "./_components/Clock";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -87,7 +87,7 @@ const Navbar = () => {
             className="w-[100px] cursor-pointer"
             src="/images/branding/tforart_white.svg"
             alt="Logo"
-            onClick={() => (window.location.href = "/")}
+            onClick={() => navigate("/")}
           />
         </div>
         <div className="flex gap-10 justify-around">

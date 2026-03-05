@@ -1,8 +1,7 @@
-import styles from "./style.module.css";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { defaultOpacityMotionProps } from "@/config/motion_config";
+import { createSmoothTextContainerMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
 import useControlVideo from "@/hooks/useControlVideo";
 import AddVideoDialog from "@/pages/Portfolio/VideoPage/_components/AddVideoDialog";
@@ -36,10 +35,10 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
+import styles from "./style.module.css";
 
 interface SortableVideoProps {
   video: VideoData;
-  index: number;
   checkIsLogin: boolean;
   handleEditClick: (video: VideoData) => void;
   handleDeleteClick: (video: VideoData) => void;
@@ -55,7 +54,6 @@ interface DragVideoPreviewProps {
 
 const SortableVideo = ({
   video,
-  index,
   checkIsLogin,
   handleEditClick,
   handleDeleteClick,
@@ -78,14 +76,12 @@ const SortableVideo = ({
 
   return (
     <Dialog>
-      <motion.div
+      <div
         className={`${styles.videoWrapper} relative ${
           isDragging ? `${styles.dragging}` : ""
         } ${checkIsLogin ? "min-h-[350px]" : ""}`}
         ref={setNodeRef}
         style={style}
-        {...defaultOpacityMotionProps}
-        transition={{ duration: 1.5, delay: index * 0.2 }}
       >
         {checkIsLogin && (
           <>
@@ -127,7 +123,7 @@ const SortableVideo = ({
         <h3 className="font-semibold text-[16px] uppercase mt-3">
           {video.videoTitle}
         </h3>
-      </motion.div>
+      </div>
       <DialogContent className="w-fit max-w-fit">
         <VideoDialog
           src={getEmbedYoutubeVideoURL(video.linkURL)}
@@ -175,7 +171,7 @@ const VideoPage = () => {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -272,20 +268,20 @@ const VideoPage = () => {
         onDragEnd={handleDragEnd}
         onDragCancel={() => setActiveId(null)}
       >
-        <div
+        <motion.div
           className={`video_page_container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
+          {...createSmoothTextContainerMotionProps(0.15)}
         >
           <SortableContext
             items={orderedVideos.map((video) => video.id)}
             strategy={rectSortingStrategy}
           >
-            {orderedVideos.map((video, index) => (
+            {orderedVideos.map((video) => (
               <SortableVideo
                 key={video.id}
                 video={video}
-                index={index}
                 checkIsLogin={checkIsLogin}
                 handleEditClick={handleEditClick}
                 handleDeleteClick={handleDeleteClick}
@@ -296,7 +292,7 @@ const VideoPage = () => {
               />
             ))}
           </SortableContext>
-        </div>
+        </motion.div>
 
         <DragOverlay dropAnimation={dropAnimation}>
           {activeId && activeVideo ? (

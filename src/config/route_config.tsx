@@ -1,12 +1,13 @@
 import SuspenseWrapper from "@/components/Loading/SuspenseWrapper";
 import NotFound from "@/components/NotFound/NotFound";
+import AboutUs from "@/pages/AboutUs";
+import Contact from "@/pages/Contact";
 import Home from "@/pages/Home";
+import Portfolio from "@/pages/Portfolio";
 import { lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-const Login = lazy(() => import("@/pages/Login/Login"));
-const AboutUs = lazy(() => import("../pages/AboutUs"));
-const Portfolio = lazy(() => import("../pages/Portfolio/Portfolio"));
+const Login = lazy(() => import("@/pages/Login"));
 const VideoPage = lazy(() => import("@/pages/Portfolio/VideoPage"));
 const AlbumPage = lazy(() => import("@/pages/Portfolio/AlbumPage"));
 const ImagePage = lazy(() => import("@/pages/Portfolio/AlbumPage/ImagesPage"));
@@ -15,7 +16,6 @@ const GraphicImagePage = lazy(
   () => import("@/pages/Portfolio/GraphicPage/GraphicImagePage"),
 );
 const CompanyServices = lazy(() => import("@/pages/CompanyServices"));
-const Contact = lazy(() => import("../pages/Contact"));
 const CompanyInfo = lazy(() => import("@/pages/CompanyInfo"));
 const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
 const TforartFAQ = lazy(() => import("@/pages/FAQ"));
@@ -23,7 +23,7 @@ const WeatherApp = lazy(() => import("@/pages/Weather"));
 const DeveloperInfoPage = lazy(() => import("@/pages/DeveloperInfo"));
 const AIchatbot = lazy(() => import("@/pages/AIchatbot"));
 const GoldPrice = lazy(() => import("@/pages/GoldPrice"));
-const TestError = lazy(() => import("@/pages/TestError"));
+const TestError = lazy(() => import("@/pages/TestError.index"));
 
 const S = SuspenseWrapper;
 

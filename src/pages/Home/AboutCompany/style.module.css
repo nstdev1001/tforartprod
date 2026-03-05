@@ -1,13 +1,15 @@
 .gradientText {
   background: linear-gradient(45deg, #ffffff, #ceedff, #858585, #c8c8c8);
-  background-size: 300%;
+  background-size: 320%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: animate 3s ease-in-out infinite;
+  animation:
+    gradientShift 8s ease-in-out infinite,
+    glowPulse 4s ease-in-out infinite;
 }
 
-@keyframes animate {
+@keyframes gradientShift {
   0% {
     background-position: 0 50%;
   }
@@ -16,5 +18,15 @@
   }
   100% {
     background-position: 0 50%;
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.15rem rgba(255, 255, 255, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 0.5rem rgba(206, 237, 255, 0.45));
   }
 }
