@@ -1,6 +1,5 @@
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { createSmoothTextContainerMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
 import useControlAlbum from "@/hooks/useControlAlbum";
 import { AlbumData } from "@/types/albumDataType";
@@ -276,7 +275,9 @@ const AlbumPage = () => {
           className={`album-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
-          {...createSmoothTextContainerMotionProps(0.15)}
+          initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.8 }}
         >
           <SortableContext
             items={orderedAlbums.map((album) => album.id)}
