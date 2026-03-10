@@ -10,7 +10,7 @@ import useControlAlbum from "@/hooks/useControlAlbum";
 import { useFullScreenGallery } from "@/hooks/useFullScreenGallery";
 import useImageUploader from "@/pages/Portfolio/AlbumPage/useImageUploader";
 import { Fragment, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface HandleCheckboxChange {
   (value: string): void;
@@ -19,7 +19,6 @@ interface HandleCheckboxChange {
 const ImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const { id } = useParams();
   const { albums, editAlbumMutation, form } = useControlAlbum();
   const { photos, deletePhotoMutation } = useImageUploader(id || "");
@@ -39,8 +38,8 @@ const ImagePage = () => {
   } = useFullScreenGallery(photos || []);
 
   useEffect(() => {
-    window.scrollTo(0, 370);
-  }, [location.pathname]);
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (albumInfo) {
@@ -87,7 +86,7 @@ const ImagePage = () => {
       <Button
         variant={"outline"}
         className="w-[100px]"
-        onClick={() => navigate("/portfolio/photos")}
+        onClick={() => navigate(-1)}
       >
         <i className="fa-solid fa-arrow-left-long"></i> Back
       </Button>

@@ -1,5 +1,4 @@
 import { AI_MODELS } from "./variables";
-import Layout from "@/components/Layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -115,186 +114,182 @@ const AIChatbot = () => {
   };
 
   return (
-    <Layout>
-      <div className="privacy-policy-container max-w-full sm:max-w-[1200px] px-2 sm:px-5 pt-[70px] sm:pt-[100px] lg:pt-[150px] mx-auto">
-        <div className="flex flex-col justify-center items-center gap-1">
-          <h1 className="text-lg sm:text-2xl font-semibold text-center">
-            TFORART&apos;s AI Chatbot <span className="font-light">(Beta)</span>
-          </h1>
-          <div className="flex gap-3 items-center justify-center">
-            <select
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              className="w-48 px-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
-              disabled={isLoading}
-            >
-              {AI_MODELS.map((model) => (
-                <option key={model.id} value={model.id}>
-                  {model.name}
-                </option>
-              ))}
-            </select>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleNewChat}
-              title="New Chat"
-            >
-              <ReloadIcon className="h-4 w-4" />
-            </Button>
-          </div>
+    <div className="privacy-policy-container max-w-full sm:max-w-[1200px] px-2 sm:px-5 pt-[70px] sm:pt-[100px] lg:pt-[150px] mx-auto">
+      <div className="flex flex-col justify-center items-center gap-1">
+        <h1 className="text-lg sm:text-2xl font-semibold text-center">
+          TFORART&apos;s AI Chatbot <span className="font-light">(Beta)</span>
+        </h1>
+        <div className="flex gap-3 items-center justify-center">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="w-48 px-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+            disabled={isLoading}
+          >
+            {AI_MODELS.map((model) => (
+              <option key={model.id} value={model.id}>
+                {model.name}
+              </option>
+            ))}
+          </select>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleNewChat}
+            title="New Chat"
+          >
+            <ReloadIcon className="h-4 w-4" />
+          </Button>
         </div>
-        <p className="text-center text-xs text-gray-400 mt-2 mb-3 sm:mb-5">
-          (Model AI sử dụng là các phiên bản miễn phí từ OpenRouter.ai, có thể
-          giới hạn một số chức năng nâng cao)
-        </p>
+      </div>
+      <p className="text-center text-xs text-gray-400 mt-2 mb-3 sm:mb-5">
+        (Model AI sử dụng là các phiên bản miễn phí từ OpenRouter.ai, có thể
+        giới hạn một số chức năng nâng cao)
+      </p>
 
-        {/* generate questions area */}
-        <section className="flex flex-col h-[calc(100vh-250px)] relative">
-          {/* Chat messages area */}
-          <div className="flex-1 overflow-hidden">
-            {messages.length === 0 ? (
-              <div className="h-full flex items-center justify-center">
-                <p className="text-gray-500 text-center">
-                  Hãy bắt đầu cuộc trò chuyện với AI
-                </p>
-              </div>
-            ) : (
-              <ScrollArea
-                ref={scrollAreaRef}
-                className="h-full p-3 md:p-4 border-t border-gray-700"
-              >
-                {messages.map((msg, index) => (
+      {/* generate questions area */}
+      <section className="flex flex-col h-[calc(100vh-250px)] relative">
+        {/* Chat messages area */}
+        <div className="flex-1 overflow-hidden">
+          {messages.length === 0 ? (
+            <div className="h-full flex items-center justify-center">
+              <p className="text-gray-500 text-center">
+                Hãy bắt đầu cuộc trò chuyện với AI
+              </p>
+            </div>
+          ) : (
+            <ScrollArea
+              ref={scrollAreaRef}
+              className="h-full p-3 md:p-4 border-t border-gray-700"
+            >
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`mb-2 sm:mb-4 flex ${
+                    msg.role === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
                   <div
-                    key={index}
-                    className={`mb-2 sm:mb-4 flex ${
-                      msg.role === "user" ? "justify-end" : "justify-start"
+                    className={`max-w-[95%] sm:max-w-[80%] rounded-lg p-2 sm:p-3 text-sm sm:text-base ${
+                      msg.role === "user" ? "bg-blue-600" : "bg-gray-800"
                     }`}
                   >
-                    <div
-                      className={`max-w-[95%] sm:max-w-[80%] rounded-lg p-2 sm:p-3 text-sm sm:text-base ${
-                        msg.role === "user" ? "bg-blue-600" : "bg-gray-800"
-                      }`}
-                    >
-                      {msg.role === "assistant" ? (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            h3: ({ ...props }: ComponentProps<"h3">) => (
-                              <h3
-                                className="text-base sm:text-lg font-semibold mt-2 mb-1 sm:mt-4 sm:mb-2"
-                                {...props}
-                              />
-                            ),
-                            strong: ({
-                              ...props
-                            }: ComponentProps<"strong">) => (
-                              <strong className="font-bold" {...props} />
-                            ),
-                            ul: ({ ...props }: ComponentProps<"ul">) => (
-                              <ul
-                                className="list-disc pl-4 sm:pl-5 my-1 sm:my-2"
-                                {...props}
-                              />
-                            ),
-                            ol: ({ ...props }: ComponentProps<"ol">) => (
-                              <ol
-                                className="list-decimal pl-4 sm:pl-5 my-1 sm:my-2"
-                                {...props}
-                              />
-                            ),
-                            li: ({ ...props }: ComponentProps<"li">) => (
-                              <li className="my-1 pl-1 sm:pl-2" {...props} />
-                            ),
-                            hr: ({ ...props }: ComponentProps<"hr">) => (
-                              <hr
-                                className="border-gray-600 my-2 sm:my-4"
-                                {...props}
-                              />
-                            ),
-                            p: ({ ...props }: ComponentProps<"p">) => (
-                              <p className="my-1 sm:my-2" {...props} />
-                            ),
-                            table: ({ ...props }: ComponentProps<"table">) => (
-                              <table
-                                className="w-full border-collapse border border-gray-600 my-2 sm:my-4"
-                                {...props}
-                              />
-                            ),
-                            th: ({ ...props }: ComponentProps<"th">) => (
-                              <th
-                                className="border border-gray-600 p-1 sm:p-2 bg-gray-700"
-                                {...props}
-                              />
-                            ),
-                            td: ({ ...props }: ComponentProps<"td">) => (
-                              <td
-                                className="border border-gray-600 p-1 sm:p-2"
-                                {...props}
-                              />
-                            ),
-                            br: ({ ...props }: ComponentProps<"br">) => (
-                              <br {...props} />
-                            ),
-                          }}
-                        >
-                          {msg.content}
-                        </ReactMarkdown>
-                      ) : (
-                        <span>{msg.content}</span>
-                      )}
-                    </div>
+                    {msg.role === "assistant" ? (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          h3: ({ ...props }: ComponentProps<"h3">) => (
+                            <h3
+                              className="text-base sm:text-lg font-semibold mt-2 mb-1 sm:mt-4 sm:mb-2"
+                              {...props}
+                            />
+                          ),
+                          strong: ({ ...props }: ComponentProps<"strong">) => (
+                            <strong className="font-bold" {...props} />
+                          ),
+                          ul: ({ ...props }: ComponentProps<"ul">) => (
+                            <ul
+                              className="list-disc pl-4 sm:pl-5 my-1 sm:my-2"
+                              {...props}
+                            />
+                          ),
+                          ol: ({ ...props }: ComponentProps<"ol">) => (
+                            <ol
+                              className="list-decimal pl-4 sm:pl-5 my-1 sm:my-2"
+                              {...props}
+                            />
+                          ),
+                          li: ({ ...props }: ComponentProps<"li">) => (
+                            <li className="my-1 pl-1 sm:pl-2" {...props} />
+                          ),
+                          hr: ({ ...props }: ComponentProps<"hr">) => (
+                            <hr
+                              className="border-gray-600 my-2 sm:my-4"
+                              {...props}
+                            />
+                          ),
+                          p: ({ ...props }: ComponentProps<"p">) => (
+                            <p className="my-1 sm:my-2" {...props} />
+                          ),
+                          table: ({ ...props }: ComponentProps<"table">) => (
+                            <table
+                              className="w-full border-collapse border border-gray-600 my-2 sm:my-4"
+                              {...props}
+                            />
+                          ),
+                          th: ({ ...props }: ComponentProps<"th">) => (
+                            <th
+                              className="border border-gray-600 p-1 sm:p-2 bg-gray-700"
+                              {...props}
+                            />
+                          ),
+                          td: ({ ...props }: ComponentProps<"td">) => (
+                            <td
+                              className="border border-gray-600 p-1 sm:p-2"
+                              {...props}
+                            />
+                          ),
+                          br: ({ ...props }: ComponentProps<"br">) => (
+                            <br {...props} />
+                          ),
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    ) : (
+                      <span>{msg.content}</span>
+                    )}
                   </div>
-                ))}
+                </div>
+              ))}
 
-                {/* loading effect*/}
-                {isLoading && (
-                  <div className="mb-2 sm:mb-4 flex justify-start">
-                    <div className="max-w-[80%] rounded-lg p-2 sm:p-3 bg-gray-800 flex items-center gap-2 text-sm sm:text-base">
-                      <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]"></span>
-                      <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                      <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-                      <span className="ml-2 text-gray-400">
-                        AI is thinking...
-                      </span>
-                    </div>
+              {/* loading effect*/}
+              {isLoading && (
+                <div className="mb-2 sm:mb-4 flex justify-start">
+                  <div className="max-w-[80%] rounded-lg p-2 sm:p-3 bg-gray-800 flex items-center gap-2 text-sm sm:text-base">
+                    <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0s]"></span>
+                    <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                    <span className="block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                    <span className="ml-2 text-gray-400">
+                      AI is thinking...
+                    </span>
                   </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </ScrollArea>
+          )}
+        </div>
+
+        {/* input prompt - fixed at bottom */}
+        <div className="flex w-full gap-2 py-3 sm:py-4 bg-transparent">
+          <div className="relative flex-1">
+            <div className="relative">
+              <Input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 h-14 sm:h-16 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 pr-16 transition-all duration-200 text-sm sm:text-base"
+                disabled={isLoading}
+              />
+              <Button
+                onClick={() => void handleSend()}
+                disabled={isLoading || !input.trim()}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed h-10 w-10 sm:h-12 sm:w-12 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Send className="h-5 w-5" />
                 )}
-                <div ref={messagesEndRef} />
-              </ScrollArea>
-            )}
-          </div>
-
-          {/* input prompt - fixed at bottom */}
-          <div className="flex w-full gap-2 py-3 sm:py-4 bg-transparent">
-            <div className="relative flex-1">
-              <div className="relative">
-                <Input
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Type your message..."
-                  className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 h-14 sm:h-16 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 pr-16 transition-all duration-200 text-sm sm:text-base"
-                  disabled={isLoading}
-                />
-                <Button
-                  onClick={() => void handleSend()}
-                  disabled={isLoading || !input.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed h-10 w-10 sm:h-12 sm:w-12 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
-                >
-                  {isLoading ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    <Send className="h-5 w-5" />
-                  )}
-                </Button>
-              </div>
+              </Button>
             </div>
           </div>
-        </section>
-      </div>
-    </Layout>
+        </div>
+      </section>
+    </div>
   );
 };
 

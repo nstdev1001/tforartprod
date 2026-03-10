@@ -13,7 +13,7 @@ import { useFullScreenGallery } from "@/hooks/useFullScreenGallery";
 import FormUpdateProjectInfo from "@/pages/Portfolio/GraphicPage/GraphicImagePage/_components/FormUpdateAlbumInfo/FormUpdateProjectInfo";
 import useGraphicUploader from "@/pages/Portfolio/GraphicPage/useGraphicUploader";
 import { Fragment, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface HandleCheckboxChange {
   (value: string): void;
@@ -22,7 +22,6 @@ interface HandleCheckboxChange {
 const GraphicImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const { id } = useParams();
   const { projects, editProjectMutation, form } = useControlGraphicProject();
   const { photos, deletePhotoMutation } = useGraphicUploader(id || "");
@@ -44,7 +43,7 @@ const GraphicImagePage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, []);
 
   useEffect(() => {
     if (projectInfo) {
@@ -137,7 +136,7 @@ const GraphicImagePage = () => {
       <Button
         variant={"outline"}
         className="w-[100px]"
-        onClick={() => navigate("/portfolio/graphics")}
+        onClick={() => navigate(-1)}
       >
         <i className="fa-solid fa-arrow-left-long"></i> Quay lại
       </Button>
