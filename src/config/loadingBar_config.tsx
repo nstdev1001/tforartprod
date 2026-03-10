@@ -1,12 +1,20 @@
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { useEffect } from "react";
+import { useNavigation } from "react-router-dom";
+
+NProgress.configure({ showSpinner: false });
 
 const LoadingBar = () => {
+  const navigation = useNavigation();
+
   useEffect(() => {
-    NProgress.start();
-    setTimeout(() => NProgress.done(), 500);
-  }, []);
+    if (navigation.state === "loading") {
+      NProgress.start();
+    } else {
+      NProgress.done();
+    }
+  }, [navigation.state]);
 
   return null;
 };

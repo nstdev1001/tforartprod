@@ -6,18 +6,17 @@ import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { preconnect } from "react-dom";
 import highlightProductsData from "./highlightProduct";
-import styles from "./style.module.css";
 
 const HighlightProduct = () => {
   const highlightAmount = 0.2;
-
   preconnect("https://www.google.com");
   preconnect("https://static.doubleclick.net");
+
   return (
     <Fragment>
       <div className="hightlight-product-container flex flex-col gap-[50px] md:gap-[100px]">
         <motion.h3
-          className={`${styles.productTitle} text-xl text-center uppercase font-semibold`}
+          className="text-[25px] sm:text-[30px] text-center uppercase font-medium"
           {...createSmoothTextContainerMotionProps(highlightAmount)}
         >
           Sản phẩm nổi bật
@@ -32,26 +31,24 @@ const HighlightProduct = () => {
               >
                 {/* pc */}
                 <motion.div
-                  className={`${styles.productContent} hidden md:hidden lg:block`}
+                  className="hidden md:hidden lg:block"
                   {...createSmoothTextItemMotionProps(0.15, highlightAmount)}
                 >
-                  <h3
-                    className={`${styles.productTitle} text-start md:text-start`}
-                  >
+                  <h3 className="uppercase text-3xl font-medium text-start md:text-start mb-3">
                     {product.title}
                   </h3>
-                  <p className="w-full whitespace-pre-line">
+                  <p className="w-full whitespace-pre-line font-light italic">
                     {product.description}
                   </p>
                 </motion.div>
 
                 {/* Video */}
                 <motion.div
-                  className={`${styles.productVideo} w-full`}
+                  className="w-full"
                   {...createSmoothTextContainerMotionProps(highlightAmount)}
                 >
                   <iframe
-                    className="w-full h-auto md:w-[600px] aspect-video"
+                    className="w-full h-auto md:w-[600px] aspect-video rounded-[10px]"
                     src={product.videoUrl}
                     title={product.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -62,11 +59,15 @@ const HighlightProduct = () => {
 
                 {/* sp */}
                 <div className="product-content md:block lg:hidden flex flex-col gap-3 items-start md:w-[600px] mx-auto">
-                  <h3 className="product-title">{product.title}</h3>
-                  <p className="w-full">{product.description}</p>
+                  <h3 className="product-title text-xl font-medium">
+                    {product.title}
+                  </h3>
+                  <p className="w-full font-light italic">
+                    {product.description}
+                  </p>
                 </div>
               </div>
-              <hr className="line" />
+              <hr className="mx-auto w-[80%]" />
             </Fragment>
           ))}
         </div>
