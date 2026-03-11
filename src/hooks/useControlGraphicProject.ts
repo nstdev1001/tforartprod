@@ -40,7 +40,7 @@ const useControlGraphicProject = () => {
     queryFn: async () => {
       const q = query(
         collection(db, "graphicCollection"),
-        orderBy("position", "asc")
+        orderBy("position", "asc"),
       );
       const querySnapshot = await getDocs(q);
       return querySnapshot.docs.map((doc) => ({
@@ -88,16 +88,16 @@ const useControlGraphicProject = () => {
               console.error(
                 getUrlError instanceof Error
                   ? getUrlError.message
-                  : String(getUrlError)
+                  : String(getUrlError),
               );
               reject(
                 getUrlError instanceof Error
                   ? getUrlError
-                  : new Error(String(getUrlError))
+                  : new Error(String(getUrlError)),
               );
             }
           })();
-        }
+        },
       );
     });
   };
@@ -112,7 +112,7 @@ const useControlGraphicProject = () => {
       let minPosition = 0;
       if (projects && projects.length > 0) {
         minPosition = Math.min(
-          ...projects.map((project) => project.position || 0)
+          ...projects.map((project) => project.position || 0),
         );
       }
 
@@ -196,18 +196,23 @@ const useControlGraphicProject = () => {
     },
   });
 
+  const deleteAllFiles = async (folderRef: ReturnType<typeof ref>) => {
+    const listResult = await listAll(folderRef);
+    const deleteFiles = listResult.items.map((item) => deleteObject(item));
+    const deleteSubFolders = listResult.prefixes.map((prefix) =>
+      deleteAllFiles(prefix),
+    );
+    await Promise.all([...deleteFiles, ...deleteSubFolders]);
+  };
+
   const deleteProjectMutation = useMutation({
     mutationFn: async (collectionId: string) => {
       if (collectionId) {
         NProgress.start();
         const albumRef = ref(storage, `graphics/${collectionId}`);
 
-        //list all images in the collection
-        const listResult = await listAll(albumRef);
-
-        //delete all images in the collection
-        const deleteImages = listResult.items.map((item) => deleteObject(item));
-        await Promise.all(deleteImages);
+        //delete all images in the collection (including sub-folders)
+        await deleteAllFiles(albumRef);
 
         //delete the collection
         return deleteDoc(doc(db, "graphicCollection", collectionId));
