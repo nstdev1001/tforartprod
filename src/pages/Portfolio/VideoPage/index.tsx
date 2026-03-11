@@ -1,7 +1,6 @@
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { createSmoothTextContainerMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
 import useControlVideo from "@/hooks/useControlVideo";
 import AddVideoDialog from "@/pages/Portfolio/VideoPage/_components/AddVideoDialog";
@@ -272,7 +271,9 @@ const VideoPage = () => {
           className={`video_page_container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
-          {...createSmoothTextContainerMotionProps(0.15)}
+          initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.8 }}
         >
           <SortableContext
             items={orderedVideos.map((video) => video.id)}

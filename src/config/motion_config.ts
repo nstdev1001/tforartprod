@@ -32,7 +32,10 @@ export const createSmoothTextContainerMotionProps = (amount = 0.25) => ({
   viewport: { once: true, amount },
 });
 
-export const createSmoothTextItemMotionProps = (delay: number, amount = 0.25) => ({
+export const createSmoothTextItemMotionProps = (
+  delay: number,
+  amount = 0.25,
+) => ({
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
   transition: { duration: 0.7, delay },
