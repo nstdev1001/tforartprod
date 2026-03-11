@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -58,13 +59,19 @@ const AddVideoDialog = () => {
       </DialogTrigger>
 
       <DialogContent
-        aria-describedby={undefined}
+        aria-describedby="add-video-description"
         className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
       >
         <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
           <DialogTitle className="text-center text-lg md:text-xl">
             Add Video
           </DialogTitle>
+
+          <DialogDescription className="sr-only">
+            Fill in the form to add a new video. You can paste a YouTube URL and
+            provide a title and description.
+          </DialogDescription>
+
           <Form {...form}>
             <form
               onSubmit={(e) => {

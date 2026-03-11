@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -92,10 +93,10 @@ const AddAlbumDialog = () => {
           </DialogTitle>
 
           {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-          <p id="add-album-description" className="sr-only">
+          <DialogDescription className="sr-only">
             Fill in the form to create a new album. You can upload an image or
             video and provide a title and description.
-          </p>
+          </DialogDescription>
 
           <Form {...form}>
             <form

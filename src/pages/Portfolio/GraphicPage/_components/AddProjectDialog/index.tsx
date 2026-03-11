@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -70,20 +71,16 @@ const AddProjectDialog = () => {
         <i className="fa-regular fa-plus text-xl md:text-3xl"></i>
       </DialogTrigger>
 
-      <DialogContent
-        aria-describedby="add-project-description"
-        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
-      >
+      <DialogContent className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto">
         <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
           <DialogTitle className="text-center text-lg md:text-xl">
             Tạo mới project
           </DialogTitle>
 
-          {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-          <p id="add-project-description" className="sr-only">
+          <DialogDescription className="sr-only">
             Fill in the form to create a new project. You can upload an image or
             video and provide a title and description.
-          </p>
+          </DialogDescription>
 
           <Form {...form}>
             <form
@@ -225,7 +222,7 @@ const AddProjectDialog = () => {
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
               {watch("projectDescription")?.trim() === "" ? (
-                <p className="text-gray-600">(Chưa có mô tả)</p>
+                <span className="text-gray-600">(Chưa có mô tả)</span>
               ) : (
                 watch("projectDescription")
               )}
