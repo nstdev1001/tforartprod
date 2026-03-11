@@ -1,4 +1,3 @@
-import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import LineSpinerLoading from "@/components/Loading/LineSpinerLoading";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useControlAlbum from "@/hooks/useControlAlbum";
 import { useSelectImages } from "@/hooks/useSelectImages";
 import { useEffect, useState } from "react";
+import styles from "./style.module.css";
 
 const AddAlbumDialog = () => {
   const { form, watch, isPending, onSubmit } = useControlAlbum();
@@ -179,12 +179,12 @@ const AddAlbumDialog = () => {
                     </h4>
                     <ul className="list-disc list-inside text-gray-600">
                       {selectedFiles.map((file, index) => (
-                        <p
+                        <li
                           className="break-words overflow-hidden text-ellipsis mb-1 italic"
                           key={index}
                         >
                           {file.name}
-                        </p>
+                        </li>
                       ))}
                     </ul>
                   </div>

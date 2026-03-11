@@ -1,4 +1,3 @@
-import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import LineSpinerLoading from "@/components/Loading/LineSpinerLoading";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useControlGraphicProject from "@/hooks/useControlGraphicProject";
 import { useSelectImages } from "@/hooks/useSelectImages";
 import { useState } from "react";
+import styles from "./style.module.css";
 
 const AddProjectDialog = () => {
   const { form, watch, isPending, onSubmit } = useControlGraphicProject();
@@ -167,12 +167,12 @@ const AddProjectDialog = () => {
                     </h4>
                     <ul className="list-disc list-inside text-gray-600">
                       {selectedFiles.map((file, index) => (
-                        <p
+                        <li
                           className="break-words overflow-hidden text-ellipsis mb-1 italic"
                           key={index}
                         >
                           {file.name}
-                        </p>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -189,6 +189,8 @@ const AddProjectDialog = () => {
             </form>
           </Form>
         </div>
+
+        {/* Preview */}
         <div className="preview-project hidden md:flex flex-col items-center justify-center gap-8">
           <h1 className="text-center text-xl md:text-2xl">Xem trước project</h1>
           <div
