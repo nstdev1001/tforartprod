@@ -1,6 +1,5 @@
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { createSmoothTextContainerMotionProps } from "@/config/motion_config";
 import useAuth from "@/hooks/useAuth";
 import useControlGraphicProject from "@/hooks/useControlGraphicProject";
 import AddProjectDialog from "@/pages/Portfolio/GraphicPage/_components/AddProjectDialog";
@@ -128,24 +127,8 @@ const SortableProject = ({
         src={project.thumbnailUrl}
         alt={project.projectTitle}
         className="cursor-pointer"
-        onClick={() =>
-          navigate(
-            `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle,
-            )}`,
-          )
-        }
       />
-      <div
-        className={`${styles.overlay} cursor-pointer`}
-        onClick={() =>
-          navigate(
-            `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle,
-            )}`,
-          )
-        }
-      >
+      <div className={`${styles.overlay} cursor-pointer`}>
         <h3 className={styles.title}>{project.projectTitle}</h3>
       </div>
     </div>
@@ -289,7 +272,9 @@ const GraphicPage = () => {
           className={`project-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ${
             checkIsLogin ? `${styles.sortableEnabled}` : ""
           }`}
-          {...createSmoothTextContainerMotionProps(0.15)}
+          initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.8 }}
         >
           <SortableContext
             items={orderedProjects.map((project) => project.id)}

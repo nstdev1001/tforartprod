@@ -1,6 +1,3 @@
-import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
-import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
-import FormUpdateAlbumInfo from "./_components/FormUpdateAlbumInfo/FormUpdateAlbumInfo";
 import NoData from "@/components/NoData/NoData";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,6 +8,9 @@ import { useFullScreenGallery } from "@/hooks/useFullScreenGallery";
 import useImageUploader from "@/pages/Portfolio/AlbumPage/useImageUploader";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
+import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
+import FormUpdateAlbumInfo from "./_components/FormUpdateAlbumInfo/FormUpdateAlbumInfo";
 
 interface HandleCheckboxChange {
   (value: string): void;
@@ -36,10 +36,6 @@ const ImagePage = () => {
     goToNext,
     goToPrevious,
   } = useFullScreenGallery(photos || []);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   useEffect(() => {
     if (albumInfo) {
@@ -137,37 +133,42 @@ const ImagePage = () => {
       ) : (
         <div className="image-container">
           {checkIsLogin && (
-            <div className="hidden control-button md:flex justify-between items-center">
-              <DeletePhotosConfirmDialog
-                resetCheckedItems={() => setCheckedItems([])}
-                allData={photos || []}
-                data={checkedItems}
-                isOpen={isDeleteDialogOpen}
-                onClose={() => setIsDeleteDialogOpen(false)}
-                deleteMutation={deletePhotoMutation}
-              />
-              <AddPhotosDialog albumBucket={id || ""} />
-              <div className="flex gap-3 justify-center">
-                <div className="flex items-center space-x-2 border px-3 rounded-md">
-                  <Checkbox
-                    disabled={photos?.length === 0}
-                    id="selectAll"
-                    checked={selectAllChecked}
-                    onCheckedChange={handleSelectAllChange}
-                  />
-                  <label htmlFor="selectAll" className="cursor-pointer">
-                    {selectAllChecked ? "Bỏ chọn tất cả" : "Chọn tất cả"}
-                  </label>
-                </div>
-                <Button
-                  variant="destructive"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                  disabled={checkedItems.length === 0}
-                >
-                  <i className="fa-regular fa-trash-can"></i> Delete more
-                </Button>
+            <>
+              <div className="flex md:hidden justify-center mb-4">
+                <AddPhotosDialog albumBucket={id || ""} />
               </div>
-            </div>
+              <div className="hidden control-button md:flex justify-between items-center">
+                <DeletePhotosConfirmDialog
+                  resetCheckedItems={() => setCheckedItems([])}
+                  allData={photos || []}
+                  data={checkedItems}
+                  isOpen={isDeleteDialogOpen}
+                  onClose={() => setIsDeleteDialogOpen(false)}
+                  deleteMutation={deletePhotoMutation}
+                />
+                <AddPhotosDialog albumBucket={id || ""} />
+                <div className="flex gap-3 justify-center">
+                  <div className="flex items-center space-x-2 border px-3 rounded-md">
+                    <Checkbox
+                      disabled={photos?.length === 0}
+                      id="selectAll"
+                      checked={selectAllChecked}
+                      onCheckedChange={handleSelectAllChange}
+                    />
+                    <label htmlFor="selectAll" className="cursor-pointer">
+                      {selectAllChecked ? "Bỏ chọn tất cả" : "Chọn tất cả"}
+                    </label>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                    disabled={checkedItems.length === 0}
+                  >
+                    <i className="fa-regular fa-trash-can"></i> Delete more
+                  </Button>
+                </div>
+              </div>
+            </>
           )}
 
           <div className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">

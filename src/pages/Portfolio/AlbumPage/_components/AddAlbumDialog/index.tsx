@@ -1,10 +1,10 @@
-import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import LineSpinerLoading from "@/components/Loading/LineSpinerLoading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useControlAlbum from "@/hooks/useControlAlbum";
 import { useSelectImages } from "@/hooks/useSelectImages";
 import { useEffect, useState } from "react";
+import styles from "./style.module.css";
 
 const AddAlbumDialog = () => {
   const { form, watch, isPending, onSubmit } = useControlAlbum();
@@ -92,10 +93,10 @@ const AddAlbumDialog = () => {
           </DialogTitle>
 
           {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-          <p id="add-album-description" className="sr-only">
+          <DialogDescription className="sr-only">
             Fill in the form to create a new album. You can upload an image or
             video and provide a title and description.
-          </p>
+          </DialogDescription>
 
           <Form {...form}>
             <form
@@ -179,12 +180,12 @@ const AddAlbumDialog = () => {
                     </h4>
                     <ul className="list-disc list-inside text-gray-600">
                       {selectedFiles.map((file, index) => (
-                        <p
+                        <li
                           className="break-words overflow-hidden text-ellipsis mb-1 italic"
                           key={index}
                         >
                           {file.name}
-                        </p>
+                        </li>
                       ))}
                     </ul>
                   </div>

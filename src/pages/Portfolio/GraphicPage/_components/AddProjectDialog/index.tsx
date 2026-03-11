@@ -1,10 +1,10 @@
-import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import LineSpinerLoading from "@/components/Loading/LineSpinerLoading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useControlGraphicProject from "@/hooks/useControlGraphicProject";
 import { useSelectImages } from "@/hooks/useSelectImages";
 import { useState } from "react";
+import styles from "./style.module.css";
 
 const AddProjectDialog = () => {
   const { form, watch, isPending, onSubmit } = useControlGraphicProject();
@@ -70,20 +71,16 @@ const AddProjectDialog = () => {
         <i className="fa-regular fa-plus text-xl md:text-3xl"></i>
       </DialogTrigger>
 
-      <DialogContent
-        aria-describedby="add-project-description"
-        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
-      >
+      <DialogContent className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto">
         <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
           <DialogTitle className="text-center text-lg md:text-xl">
             Tạo mới project
           </DialogTitle>
 
-          {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-          <p id="add-project-description" className="sr-only">
+          <DialogDescription className="sr-only">
             Fill in the form to create a new project. You can upload an image or
             video and provide a title and description.
-          </p>
+          </DialogDescription>
 
           <Form {...form}>
             <form
@@ -167,12 +164,12 @@ const AddProjectDialog = () => {
                     </h4>
                     <ul className="list-disc list-inside text-gray-600">
                       {selectedFiles.map((file, index) => (
-                        <p
+                        <li
                           className="break-words overflow-hidden text-ellipsis mb-1 italic"
                           key={index}
                         >
                           {file.name}
-                        </p>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -189,6 +186,8 @@ const AddProjectDialog = () => {
             </form>
           </Form>
         </div>
+
+        {/* Preview */}
         <div className="preview-project hidden md:flex flex-col items-center justify-center gap-8">
           <h1 className="text-center text-xl md:text-2xl">Xem trước project</h1>
           <div
@@ -223,7 +222,7 @@ const AddProjectDialog = () => {
             <h3 className="text-center font-bold">Mô tả:</h3>
             <p className="w-[384px] overflow-hidden text-ellipsis text-center">
               {watch("projectDescription")?.trim() === "" ? (
-                <p className="text-gray-600">(Chưa có mô tả)</p>
+                <span className="text-gray-600">(Chưa có mô tả)</span>
               ) : (
                 watch("projectDescription")
               )}

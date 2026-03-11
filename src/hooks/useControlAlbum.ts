@@ -187,18 +187,21 @@ const useControlAlbum = () => {
     },
   });
 
+  const deleteAllFiles = async (folderRef: ReturnType<typeof ref>) => {
+    const listResult = await listAll(folderRef);
+    const deleteFiles = listResult.items.map((item) => deleteObject(item));
+    const deleteSubFolders = listResult.prefixes.map((prefix) => deleteAllFiles(prefix));
+    await Promise.all([...deleteFiles, ...deleteSubFolders]);
+  };
+
   const deleteAlbumMutation = useMutation({
     mutationFn: async (albumId: string) => {
       if (albumId) {
         NProgress.start();
         const albumRef = ref(storage, `images/${albumId}`);
 
-        //list all images in the album
-        const listResult = await listAll(albumRef);
-
-        //delete all images in the album
-        const deleteImages = listResult.items.map((item) => deleteObject(item));
-        await Promise.all(deleteImages);
+        //delete all images in the album (including sub-folders)
+        await deleteAllFiles(albumRef);
 
         //delete the album
         return deleteDoc(doc(db, "albumCollection", albumId));

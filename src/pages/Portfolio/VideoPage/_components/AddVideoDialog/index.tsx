@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -16,11 +17,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useControlVideo from "@/hooks/useControlVideo";
+import { getThumbnailYoutubeVideoURL } from "@/pages/Portfolio/VideoPage/youtubeUtils";
 import { useEffect, useState } from "react";
 
 const AddVideoDialog = () => {
   const { form, isPending, onSubmit } = useControlVideo();
   const [isOpen, setIsOpen] = useState(false);
+
+  const linkURL = form.watch("linkURL");
+  const videoTitle = form.watch("videoTitle");
+  const videoDescription = form.watch("videoDescription");
+  const thumbnailUrl = getThumbnailYoutubeVideoURL(linkURL || "");
 
   // Reset form when dialog opens
   useEffect(() => {
@@ -46,21 +53,32 @@ const AddVideoDialog = () => {
     >
       <DialogTrigger
         disabled={isPending}
-        className="cursor-pointer hidden md:block p-3 border rounded-lg"
+        className="cursor-pointer inline-flex items-center justify-center p-2 md:p-3 border rounded-lg"
       >
-        <i className="fa-regular fa-plus text-3xl"></i>
+        <i className="fa-regular fa-plus text-2xl md:text-3xl"></i>
       </DialogTrigger>
 
-      <DialogContent className="w-fit !max-w-fit" aria-describedby={undefined}>
-        <div className="add-box w-[400px] h-[400px]">
-          <DialogTitle className="text-center text-xl">Add Video</DialogTitle>
+      <DialogContent
+        aria-describedby="add-video-description"
+        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
+      >
+        <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
+          <DialogTitle className="text-center text-lg md:text-xl">
+            Add Video
+          </DialogTitle>
+
+          <DialogDescription className="sr-only">
+            Fill in the form to add a new video. You can paste a YouTube URL and
+            provide a title and description.
+          </DialogDescription>
+
           <Form {...form}>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 void form.handleSubmit(handleSubmitAddVideo)();
               }}
-              className="space-y-8 mt-5"
+              className="space-y-4 md:space-y-8 flex flex-col"
             >
               <FormField
                 control={form.control}
@@ -113,6 +131,41 @@ const AddVideoDialog = () => {
               </Button>
             </form>
           </Form>
+        </div>
+
+        {/* Preview */}
+        <div className="preview-video hidden md:flex flex-col items-center justify-center gap-8">
+          <h1 className="text-center text-xl md:text-2xl">Xem trước video</h1>
+          <div className="w-[384px]">
+            {thumbnailUrl ? (
+              <img
+                className="rounded-xl w-full h-auto aspect-video object-cover"
+                src={thumbnailUrl}
+                alt="Video thumbnail preview"
+              />
+            ) : (
+              <div className="rounded-xl w-full aspect-video border border-dashed border-gray-500 flex items-center justify-center">
+                <p className="text-gray-600">Chưa có URL để hiển thị</p>
+              </div>
+            )}
+            <h3 className="font-semibold text-[16px] uppercase mt-3">
+              {videoTitle || (
+                <span className="text-gray-400 normal-case font-normal">
+                  Tiêu đề video
+                </span>
+              )}
+            </h3>
+          </div>
+          <div className="preview-description max-w-[384px]">
+            <h3 className="text-center font-bold">Mô tả:</h3>
+            <p className="w-[384px] overflow-hidden text-ellipsis text-center">
+              {!videoDescription?.trim() ? (
+                <span className="text-gray-600">(Chưa có mô tả)</span>
+              ) : (
+                videoDescription
+              )}
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

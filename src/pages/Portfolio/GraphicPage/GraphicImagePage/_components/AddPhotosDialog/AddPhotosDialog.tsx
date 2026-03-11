@@ -40,15 +40,15 @@ const AddPhotosDialog = ({
           <i className="fa-solid fa-cloud-arrow-up"></i> Upload photos
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-fit !max-w-fit">
-        <div className="add-box w-[450px] flex flex-col gap-7">
-          <h1 className="text-center text-2xl">Tải ảnh lên project</h1>
+      <DialogContent className="w-[95vw] max-w-[500px] p-4 md:p-6">
+        <div className="add-box w-full flex flex-col gap-5 md:gap-7">
+          <h1 className="text-center text-xl md:text-2xl">Tải ảnh lên project</h1>
           <div
-            className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-6 border-2 border-dashed border-gray-500 rounded-lg"
+            className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-4 md:p-6 border-2 border-dashed border-gray-500 rounded-lg"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <div className="w-[210px] h-[150px] flex flex-col gap-4 items-center relative">
+            <div className="w-full md:w-[210px] h-[150px] flex flex-col gap-4 items-center relative">
               {isCompressing ? (
                 <div className="w-full absolute flex flex-col items-center gap-3 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
                   <CompressImageLoading />
