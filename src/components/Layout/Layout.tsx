@@ -1,30 +1,23 @@
 import LoadingBar from "@/config/loadingBar_config";
-import { Fragment, useRef } from "react";
-import { Outlet, ScrollRestoration } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-
-const portfolioPaths = [
-  "/portfolio/videos",
-  "/portfolio/photos",
-  "/portfolio/graphics",
-];
+import { Fragment } from "react";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 
 const Layout = () => {
-  const prevPathRef = useRef("");
-
   return (
     <Fragment>
       <LoadingBar />
       <ScrollRestoration
-        getKey={(currentLocation) => {
-          const isPortfolio = portfolioPaths.includes(currentLocation.pathname);
-          const wasPortfolio = portfolioPaths.includes(prevPathRef.current);
-          prevPathRef.current = currentLocation.pathname;
-
-          return isPortfolio && wasPortfolio
+        getKey={(location) => {
+          const portfolioPaths = [
+            "/portfolio/videos",
+            "/portfolio/photos",
+            "/portfolio/graphics",
+          ];
+          return portfolioPaths.includes(location.pathname)
             ? "/portfolio"
-            : currentLocation.key;
+            : location.key;
         }}
       />
       <Navbar />

@@ -121,20 +121,8 @@ const SortableAlbum = ({
         src={album.thumbnailUrl}
         alt={album.albumTitle}
         className="cursor-pointer"
-        onClick={() =>
-          navigate(
-            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`,
-          )
-        }
       />
-      <div
-        className={`${styles.overlay} cursor-pointer`}
-        onClick={() =>
-          navigate(
-            `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`,
-          )
-        }
-      >
+      <div className={`${styles.overlay} cursor-pointer`}>
         <h3 className={styles.title}>{album.albumTitle}</h3>
       </div>
     </div>

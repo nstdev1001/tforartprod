@@ -38,10 +38,6 @@ const ImagePage = () => {
   } = useFullScreenGallery(photos || []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     if (albumInfo) {
       form.setValue("albumTitle", albumInfo.albumTitle);
       form.setValue("albumDescription", albumInfo.albumDescription || "");

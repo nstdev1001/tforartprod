@@ -42,10 +42,6 @@ const GraphicImagePage = () => {
   } = useFullScreenGallery(photos || []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     if (projectInfo) {
       form.setValue("projectTitle", projectInfo.projectTitle);
       form.setValue("projectDescription", projectInfo.projectDescription || "");

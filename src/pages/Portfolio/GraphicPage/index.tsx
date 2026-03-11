@@ -128,24 +128,8 @@ const SortableProject = ({
         src={project.thumbnailUrl}
         alt={project.projectTitle}
         className="cursor-pointer"
-        onClick={() =>
-          navigate(
-            `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle,
-            )}`,
-          )
-        }
       />
-      <div
-        className={`${styles.overlay} cursor-pointer`}
-        onClick={() =>
-          navigate(
-            `/portfolio/graphics/${project.id}/${toUrlSlug(
-              project.projectTitle,
-            )}`,
-          )
-        }
-      >
+      <div className={`${styles.overlay} cursor-pointer`}>
         <h3 className={styles.title}>{project.projectTitle}</h3>
       </div>
     </div>
