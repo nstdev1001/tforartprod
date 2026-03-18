@@ -10,11 +10,13 @@ const Footer = () => {
       className={`${styles.footerContainer} px-6 py-10 md:p-[100px] flex flex-col gap-10 md:gap-[80px]`}
     >
       <section className="footer-content-wrapper gap-8 md:gap-[50px] flex flex-col lg:flex-row justify-around items-center">
-        <img
-          className="text-white h-[50px] md:h-[70px] lg:h-[90px]"
-          src="/images/branding/tforart_main.png"
-          alt="logo"
-        />
+        <Link to="/">
+          <img
+            className="text-white h-[50px] md:h-[70px] lg:h-[90px]"
+            src="/images/branding/tforart_main.png"
+            alt="logo"
+          />
+        </Link>
         <div className="content flex flex-col gap-8 md:flex-row lg:flex-row justify-around md:gap-12 lg:gap-[200px]">
           <div className="content-row content-row-1 text-center md:text-start flex flex-col gap-2 md:gap-3 text-sm md:text-base *:cursor-pointer">
             <Link to="/about-us">Giới thiệu</Link>
