@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { GraphicProjectData } from "@/types/graphicDataType";
 import { UseMutateFunction } from "@tanstack/react-query";
 
@@ -37,10 +42,9 @@ const DeleteConfirmDialog = ({
             {projectData?.projectTitle} ?
           </p>
         </DialogTitle>
-        {/* Phần mô tả được tham chiếu bởi aria-describedby */}
-        <p id="add-project-description" className="sr-only">
-          Confirm delete project
-        </p>
+        <DialogDescription className="sr-only">
+          Xác nhận xóa project đã chọn.
+        </DialogDescription>
         <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 mt-2">
           <Button
             variant="destructive"

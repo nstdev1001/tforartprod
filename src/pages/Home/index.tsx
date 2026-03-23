@@ -1,16 +1,16 @@
-import AboutCompany from "./AboutCompany";
-import Clients from "./Clients";
-import Experience from "./Experience";
-import HighlightProduct from "./HighlightProduct";
-import styles from "./style.module.css";
 import { defaultScaleMotionProps } from "@/config/motion_config";
 import MoreProduct from "@/pages/Home/MoreProduct";
 import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { preload } from "react-dom";
+import AboutCompany from "./AboutCompany";
+import Clients from "./Clients";
+import Experience from "./Experience";
+import HighlightProduct from "./HighlightProduct";
+import styles from "./style.module.css";
 
 const Home = () => {
-  preload("/videos/hero-vp9.webm", { as: "video", type: "video/webm" });
+  preload("/videos/hero-vp9.webm", { as: "fetch" });
   const scrollToMainContent = () => {
     const mainContent = document.getElementById("main-content");
     if (mainContent) {

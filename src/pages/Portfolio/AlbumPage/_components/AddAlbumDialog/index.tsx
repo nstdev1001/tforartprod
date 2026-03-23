@@ -83,10 +83,7 @@ const AddAlbumDialog = () => {
         <i className="fa-regular fa-plus text-xl md:text-3xl"></i>
       </DialogTrigger>
 
-      <DialogContent
-        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
-        aria-describedby={undefined}
-      >
+      <DialogContent className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto">
         <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
           <DialogTitle className="text-center text-lg md:text-xl">
             Tạo mới album

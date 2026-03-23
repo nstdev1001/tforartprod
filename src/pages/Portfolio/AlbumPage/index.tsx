@@ -168,8 +168,6 @@ const AlbumPage = () => {
   const [orderedAlbums, setOrderedAlbums] = useState<AlbumData[]>([]);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
-  console.log("storage", storage);
-
   // Sensors for drag detection
   const sensors = useSensors(
     useSensor(PointerSensor, {

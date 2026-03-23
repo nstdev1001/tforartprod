@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { VideoData } from "@/types/videoDataType";
 import { UseMutateFunction } from "@tanstack/react-query";
 
@@ -26,19 +31,16 @@ const DeleteConfirmDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent
-        className="w-[95vw] max-w-[450px] p-4 md:p-6"
-        aria-describedby={undefined}
-      >
+      <DialogContent className="w-[95vw] max-w-[450px] p-4 md:p-6">
         <DialogTitle className="text-lg md:text-2xl text-center">
           Bạn chắc chắn muốn xóa video
           <span className="block italic text-red-500 text-base md:text-2xl mt-1">
             {videoData?.videoTitle} ?
           </span>
         </DialogTitle>
-        <p id="delete-video-description" className="sr-only">
-          Confirm delete video
-        </p>
+        <DialogDescription className="sr-only">
+          Xác nhận xóa video đã chọn.
+        </DialogDescription>
         <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 mt-2">
           <Button
             variant="destructive"

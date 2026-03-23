@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
@@ -36,12 +41,15 @@ const DeleteConfirmDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent aria-describedby={undefined}>
+      <DialogContent>
         <DialogTitle className="text-2xl text-center">
           <i className="fa-duotone fa-solid fa-triangle-exclamation"></i>{" "}
           Tforart nhắc nhở{" "}
           <i className="fa-duotone fa-solid fa-skull-crossbones"></i>
         </DialogTitle>
+        <DialogDescription className="sr-only">
+          Xác nhận xóa mục đã chọn.
+        </DialogDescription>
         <div className="content-dialog text-center">
           {data ? (
             <>
@@ -52,10 +60,6 @@ const DeleteConfirmDialog = ({
             defaultDialogTitle
           )}
         </div>
-
-        <p id="delete-description" className="sr-only">
-          Confirm delete item
-        </p>
         <div className="flex justify-center gap-3">
           <Button
             variant="destructive"

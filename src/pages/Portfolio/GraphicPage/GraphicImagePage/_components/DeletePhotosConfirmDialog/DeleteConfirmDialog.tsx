@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { UseMutateFunction } from "@tanstack/react-query";
 
 interface Props {
@@ -37,6 +42,9 @@ const DeletePhotosConfirmDialog = ({
           Tforart nhắc nhở{" "}
           <i className="fa-duotone fa-solid fa-skull-crossbones"></i>
         </DialogTitle>
+        <DialogDescription className="sr-only">
+          Xác nhận xóa ảnh đã chọn.
+        </DialogDescription>
         <div className="content-dialog text-center">
           Bạn chắc chắn muốn xóa{" "}
           <span className="text-red-500 font-bold">
@@ -46,10 +54,6 @@ const DeletePhotosConfirmDialog = ({
             ?
           </span>
         </div>
-
-        <p id="delete-description" className="sr-only">
-          Confirm delete item
-        </p>
         <div className="flex justify-center gap-3">
           <Button
             variant="destructive"
