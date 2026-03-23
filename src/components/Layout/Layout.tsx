@@ -1,19 +1,18 @@
+import SEO from "@/components/SEO/SEO";
 import LoadingBar from "@/config/loadingBar_config";
-import { buildDocumentTitle } from "@/config/routeMeta";
+import { getRouteMetaByPath } from "@/config/routeMeta";
+import { Fragment } from "react";
+import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import { Fragment, useEffect } from "react";
-import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 
 const Layout = () => {
   const location = useLocation();
-
-  useEffect(() => {
-    document.title = buildDocumentTitle(location.pathname);
-  }, [location.pathname]);
+  const routeMeta = getRouteMetaByPath(location.pathname);
 
   return (
     <Fragment>
+      <SEO pathname={location.pathname} routeMeta={routeMeta} />
       <LoadingBar />
       <ScrollRestoration
         getKey={(location) => {

@@ -1,13 +1,37 @@
 export const APP_TITLE = "TFORART Production";
+export const DEFAULT_SEO_DESCRIPTION =
+  "TFORART Production - Agency sáng tạo nội dung hình ảnh, video và giải pháp truyền thông số cho doanh nghiệp.";
+export const DEFAULT_SEO_KEYWORDS = [
+  "TFORART",
+  "production",
+  "chụp ảnh",
+  "quay phim",
+  "thiết kế đồ hoạ",
+  "truyền thông",
+];
 
 export type RouteMeta = {
   title: string;
+  description?: string;
+  keywords?: string[];
+  canonicalPath?: string;
+  noIndex?: boolean;
 };
 
 export const routeMeta: Record<string, RouteMeta> = {
-  "/": { title: "Trang chủ" },
-  "/home": { title: "Trang chủ" },
-  "/login": { title: "Đăng nhập" },
+  "/": {
+    title: "Trang chủ",
+    description:
+      "Khám phá dịch vụ sản xuất video, album ảnh và thiết kế đồ hoạ chuyên nghiệp tại TFORART Production.",
+  },
+  "/home": {
+    title: "Trang chủ",
+    canonicalPath: "/",
+  },
+  "/login": {
+    title: "Đăng nhập",
+    noIndex: true,
+  },
   "/about-us": { title: "Giới thiệu" },
   "/services": { title: "Dịch vụ" },
   "/contact": { title: "Liên hệ" },
@@ -28,8 +52,8 @@ export const routeMeta: Record<string, RouteMeta> = {
   "/portfolio/graphics/:id/:albumSlug": {
     title: "Portfolio - Chi tiết dự án đồ hoạ",
   },
-  "/test-error": { title: "Kiểm thử lỗi" },
-  "/404": { title: "Không tìm thấy trang" },
+  "/test-error": { title: "Kiểm thử lỗi", noIndex: true },
+  "/404": { title: "Không tìm thấy trang", noIndex: true },
 };
 
 const normalizePath = (pathname: string) => {
