@@ -1,6 +1,12 @@
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useSelectImages } from "@/hooks/useSelectImages";
@@ -31,18 +37,20 @@ const AddPhotosDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>
-        <Button
-          variant="default"
-          onClick={() => setIsOpen(true)}
-          className={classNameButton}
-        >
+      <DialogTrigger asChild>
+        <Button variant="default" className={classNameButton}>
           <i className="fa-solid fa-cloud-arrow-up"></i> Upload photos
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[95vw] max-w-[500px] p-4 md:p-6">
         <div className="add-box w-full flex flex-col gap-5 md:gap-7">
-          <h1 className="text-center text-xl md:text-2xl">Tải ảnh lên project</h1>
+          <DialogTitle className="text-center text-xl md:text-2xl">
+            Tải ảnh lên project
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            Tải ảnh mới vào project hiện tại.
+          </DialogDescription>
+
           <div
             className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-4 md:p-6 border-2 border-dashed border-gray-500 rounded-lg"
             onDrop={handleDrop}

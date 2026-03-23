@@ -1,7 +1,11 @@
-import styles from "./style.module.css";
 import CompressImageLoading from "@/components/Loading/CompressImageLoading";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -16,6 +20,7 @@ import useControlAlbum from "@/hooks/useControlAlbum";
 import { useSelectImages } from "@/hooks/useSelectImages";
 import { AlbumData } from "@/types/albumDataType";
 import { useEffect } from "react";
+import styles from "./style.module.css";
 
 interface Props {
   albumData: AlbumData | null;
@@ -83,14 +88,14 @@ const UpdateAlbumDialog = ({ albumData, isOpen, onClose }: Props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent
-        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto"
-        aria-describedby={undefined}
-      >
+      <DialogContent className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit flex flex-col md:flex-row justify-between gap-6 md:gap-[80px] p-4 md:p-6 max-h-[90vh] overflow-y-auto">
         <div className="add-box w-full md:w-[400px] flex flex-col gap-4 md:gap-8">
           <DialogTitle className="text-center text-lg md:text-2xl font-semibold">
             Cập nhật album
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Cập nhật thông tin album và ảnh thumbnail.
+          </DialogDescription>
           <Form {...form}>
             <form
               onSubmit={(e) => {

@@ -9,6 +9,14 @@ const lazyPage = (
   lazy: () => importFn().then((m) => ({ Component: m.default })),
 });
 
+const futureFlags: Record<string, boolean> = {
+  v7_startTransition: true,
+  v7_relativeSplatPath: true,
+  v7_fetcherPersist: true,
+  v7_normalizeFormMethod: true,
+  v7_skipActionErrorRevalidation: true,
+};
+
 export const routerConfig = createBrowserRouter(
   [
     {
@@ -109,12 +117,6 @@ export const routerConfig = createBrowserRouter(
     },
   ],
   {
-    future: {
-      v7_relativeSplatPath: true,
-      v7_fetcherPersist: true,
-      v7_normalizeFormMethod: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-    },
+    future: futureFlags,
   },
 );

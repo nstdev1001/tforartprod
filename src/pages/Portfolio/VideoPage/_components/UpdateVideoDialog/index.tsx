@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -54,14 +59,14 @@ const UpdateVideoDialog = ({ videoData, isOpen, onClose }: Props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent
-        className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit p-4 md:p-6"
-        aria-describedby={undefined}
-      >
+      <DialogContent className="w-[95vw] max-w-[450px] md:w-fit md:!max-w-fit p-4 md:p-6">
         <div className="add-box w-full md:w-[400px] h-auto md:h-[400px]">
           <DialogTitle className="text-center text-xl md:text-2xl">
             Cập nhật video
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Cập nhật thông tin video hiện tại.
+          </DialogDescription>
           <Form {...form}>
             <form
               onSubmit={(e) => {

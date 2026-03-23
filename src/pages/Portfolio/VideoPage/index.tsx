@@ -1,6 +1,12 @@
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import useAuth from "@/hooks/useAuth";
 import useControlVideo from "@/hooks/useControlVideo";
 import AddVideoDialog from "@/pages/Portfolio/VideoPage/_components/AddVideoDialog";
@@ -124,6 +130,10 @@ const SortableVideo = ({
         </h3>
       </div>
       <DialogContent className="w-fit max-w-fit">
+        <DialogTitle className="sr-only">{video.videoTitle}</DialogTitle>
+        <DialogDescription className="sr-only">
+          Xem trước video đã chọn.
+        </DialogDescription>
         <VideoDialog
           src={getEmbedYoutubeVideoURL(video.linkURL)}
           title={video.videoTitle}
