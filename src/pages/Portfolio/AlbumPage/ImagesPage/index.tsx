@@ -20,13 +20,13 @@ const ImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { albums, editAlbumMutation, form } = useControlAlbum();
-  const { photos, deletePhotoMutation } = useImageUploader(id || "");
+  const { albumInfo, isAlbumInfoPending, editAlbumMutation, form } =
+    useControlAlbum({ albumId: id, fetchAlbums: false });
+  const { photos, isLoading, deletePhotoMutation } = useImageUploader(id || "");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editAlbumInfo, setEditAlbumInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const albumInfo = albums?.find((data) => data.id === id);
   const skeletonCount = 5;
 
   const {
@@ -87,7 +87,7 @@ const ImagePage = () => {
         <i className="fa-solid fa-arrow-left-long"></i> Back
       </Button>
       <div className="title-wrapper flex flex-col items-center gap-3">
-        {!albums ? (
+        {isAlbumInfoPending ? (
           <>
             <Skeleton className="w-[400px] h-10 mx-auto" />
             <Skeleton className="w-[200px] h-5 mx-auto mt-3" />
@@ -120,7 +120,7 @@ const ImagePage = () => {
         )}
       </div>
 
-      {photos && photos.length === 0 ? (
+      {!isLoading && photos && photos.length === 0 ? (
         <div className="flex flex-col items-center gap-20 mt-10">
           <NoData />
           {checkIsLogin && (
@@ -172,13 +172,13 @@ const ImagePage = () => {
           )}
 
           <div className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
-            {!photos
+            {isLoading && (!photos || photos.length === 0)
               ? Array.from({ length: skeletonCount }).map((_, index) => (
                   <div className="mb-4 break-inside-avoid" key={index}>
                     <Skeleton className="w-full h-64 rounded-lg" />
                   </div>
                 ))
-              : photos.map((photo, index) => (
+              : (photos || []).map((photo, index) => (
                   <div
                     className="mb-4 break-inside-avoid relative"
                     key={`image ${index}`}
@@ -203,6 +203,8 @@ const ImagePage = () => {
                     <img
                       src={photo}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
                       className="w-[500px] object-cover rounded-lg cursor-pointer"
                       onClick={() => openFullScreen(index)}
                     />

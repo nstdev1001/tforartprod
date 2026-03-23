@@ -24,8 +24,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useQueryClient } from "@tanstack/react-query";
+import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
 import { motion } from "framer-motion";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import AddAlbumDialog from "./_components/AddAlbumDialog";
 import UpdateAlbumDialog from "./_components/UpdateAlbumDialog";
@@ -38,6 +40,7 @@ interface SortableAlbumProps {
   handleDeleteClick: (album: AlbumData) => void;
   toUrlSlug: (title: string) => string;
   navigate: NavigateFunction;
+  prefetchAlbum: (album: AlbumData) => void;
 }
 
 interface DragAlbumPreviewProps {
@@ -51,6 +54,7 @@ const SortableAlbum = ({
   handleDeleteClick,
   toUrlSlug,
   navigate,
+  prefetchAlbum,
 }: SortableAlbumProps) => {
   const {
     attributes,
@@ -75,6 +79,7 @@ const SortableAlbum = ({
       }`}
       ref={setNodeRef}
       style={style}
+      onMouseEnter={() => prefetchAlbum(album)}
       onClick={(e) => {
         const target = e.target as Element;
         const isInteractiveElement =
@@ -83,6 +88,7 @@ const SortableAlbum = ({
           target.closest("button");
 
         if (!isInteractiveElement) {
+          prefetchAlbum(album);
           navigate(
             `/portfolio/photos/${album.id}/${toUrlSlug(album.albumTitle)}`,
           );
@@ -147,6 +153,9 @@ const DragAlbumPreview = ({ album }: DragAlbumPreviewProps) => {
 const AlbumPage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const storage = getStorage();
+  const prefetchedAlbumIdsRef = useRef(new Set<string>());
   const {
     albums,
     toUrlSlug,
@@ -158,6 +167,8 @@ const AlbumPage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [orderedAlbums, setOrderedAlbums] = useState<AlbumData[]>([]);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+
+  console.log("storage", storage);
 
   // Sensors for drag detection
   const sensors = useSensors(
@@ -184,6 +195,29 @@ const AlbumPage = () => {
   const handleDeleteClick = (album: AlbumData) => {
     setEditAlbumData(album);
     setIsDeleteDialogOpen(true);
+  };
+
+  const prefetchAlbum = (album: AlbumData) => {
+    if (prefetchedAlbumIdsRef.current.has(album.id)) {
+      return;
+    }
+
+    prefetchedAlbumIdsRef.current.add(album.id);
+
+    queryClient.setQueryData(["albumCollection", "detail", album.id], album);
+
+    void queryClient.prefetchQuery({
+      queryKey: ["photosCollection", album.id],
+      queryFn: async () => {
+        const imagesRef = ref(storage, `images/${album.id}/all`);
+        const result = await listAll(imagesRef);
+        return Promise.all(
+          result.items.map((itemRef) => getDownloadURL(itemRef)),
+        );
+      },
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+    });
   };
 
   // Find active album for overlay
@@ -280,6 +314,7 @@ const AlbumPage = () => {
                 handleDeleteClick={() => handleDeleteClick(album)}
                 toUrlSlug={toUrlSlug}
                 navigate={navigate}
+                prefetchAlbum={prefetchAlbum}
               />
             ))}
           </SortableContext>
