@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { companyInfo } from "@/pages/CompanyInfo/companyInfoData";
 import { faqData, FaqItem } from "@/pages/FAQ/FAQdata";
 import { useState } from "react";
@@ -7,7 +8,8 @@ const FAQItem = ({ question, answer }: FaqItem) => {
 
   return (
     <div className="border-b border-gray-800 py-4">
-      <button
+      <Button
+        variant={"ghost"}
         className="flex justify-between items-center w-full text-left font-medium text-gray-100 focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -28,7 +30,7 @@ const FAQItem = ({ question, answer }: FaqItem) => {
             d="M19 9l-7 7-7-7"
           ></path>
         </svg>
-      </button>
+      </Button>
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
