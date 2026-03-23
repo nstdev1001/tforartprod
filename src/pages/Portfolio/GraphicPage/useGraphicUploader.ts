@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteObject,
   getDownloadURL,
-  getMetadata,
   getStorage,
   listAll,
   ref,
@@ -25,38 +24,37 @@ const useGraphicUploader = (albumBucket: string) => {
     queryFn: async () => {
       if (!albumBucket) return [];
 
+      const queryKey = ["graphicsCollection", albumBucket] as const;
       const imagesRef = ref(storage, `graphics/${albumBucket}/all`);
       const result = await listAll(imagesRef);
 
-      const filesWithMetadata = await Promise.all(
-        result.items.map(async (itemRef) => {
-          const [url, metadata] = await Promise.all([
-            getDownloadURL(itemRef),
-            getMetadata(itemRef),
-          ]);
-          return {
-            url,
-            timeCreated: new Date(metadata.timeCreated), // Convert to Date for sorting
-          };
-        })
+      if (result.items.length === 0) {
+        return [];
+      }
+
+      const urls = new Array<string>(result.items.length);
+
+      await Promise.allSettled(
+        result.items.map(async (itemRef, index) => {
+          const url = await getDownloadURL(itemRef);
+          urls[index] = url;
+
+          queryClient.setQueryData<string[]>(queryKey, () =>
+            urls.filter(Boolean),
+          );
+        }),
       );
 
-      console.log("filesWithMetadata", filesWithMetadata);
-
-      // Sort by timeCreated ascending (oldest first, newest last)
-      filesWithMetadata.sort(
-        (a, b) => a.timeCreated.getTime() - b.timeCreated.getTime()
-      );
-
-      // Return only the URLs
-      return filesWithMetadata.map((file) => file.url);
+      return urls.filter(Boolean);
     },
     enabled: !!albumBucket,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 
   const uploadImage = async (
     file: File,
-    albumBucket: string
+    albumBucket: string,
   ): Promise<string> => {
     setError(null);
 
@@ -84,7 +82,7 @@ const useGraphicUploader = (albumBucket: string) => {
               setError(getUrlError.message);
               reject(getUrlError);
             });
-        }
+        },
       );
     });
   };
@@ -96,7 +94,7 @@ const useGraphicUploader = (albumBucket: string) => {
 
       setIsUploading(true);
       await Promise.all(
-        selectedPhotos.map((file) => uploadImage(file, albumBucket))
+        selectedPhotos.map((file) => uploadImage(file, albumBucket)),
       );
     },
     onSuccess: () => {
@@ -119,11 +117,11 @@ const useGraphicUploader = (albumBucket: string) => {
       await Promise.all(
         urlArray.map((url) => {
           const decodedPath = decodeURIComponent(
-            url.split("/o/")[1].split("?")[0]
+            url.split("/o/")[1].split("?")[0],
           );
           const fileRef = ref(storage, decodedPath);
           return deleteObject(fileRef);
-        })
+        }),
       );
     },
     onSuccess: () => {

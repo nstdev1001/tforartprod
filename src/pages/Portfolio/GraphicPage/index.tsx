@@ -26,9 +26,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { UseMutateFunction } from "@tanstack/react-query";
+import { UseMutateFunction, useQueryClient } from "@tanstack/react-query";
+import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
 import { motion } from "framer-motion";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
 
@@ -42,6 +43,7 @@ interface SortableProjectProps {
   };
   toUrlSlug: (title: string) => string;
   navigate: NavigateFunction;
+  prefetchProject: (project: GraphicProjectData) => void;
 }
 
 interface DragProjectPreviewProps {
@@ -55,6 +57,7 @@ const SortableProject = ({
   handleDeleteClick,
   toUrlSlug,
   navigate,
+  prefetchProject,
 }: SortableProjectProps) => {
   const {
     attributes,
@@ -79,6 +82,7 @@ const SortableProject = ({
       }`}
       ref={setNodeRef}
       style={style}
+      onMouseEnter={() => prefetchProject(project)}
       onClick={(e) => {
         const target = e.target as Element;
         const isInteractiveElement =
@@ -87,6 +91,7 @@ const SortableProject = ({
           target.closest("button");
 
         if (!isInteractiveElement) {
+          prefetchProject(project);
           navigate(
             `/portfolio/graphics/${project.id}/${toUrlSlug(
               project.projectTitle,
@@ -153,6 +158,9 @@ const DragProjectPreview = ({ project }: DragProjectPreviewProps) => {
 const GraphicPage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const storage = getStorage();
+  const prefetchedProjectIdsRef = useRef(new Set<string>());
   const {
     projects,
     toUrlSlug,
@@ -193,6 +201,32 @@ const GraphicPage = () => {
   const handleDeleteClick = (project: GraphicProjectData) => {
     setEditProjectData(project);
     setIsDeleteDialogOpen(true);
+  };
+
+  const prefetchProject = (project: GraphicProjectData) => {
+    if (prefetchedProjectIdsRef.current.has(project.id)) {
+      return;
+    }
+
+    prefetchedProjectIdsRef.current.add(project.id);
+
+    queryClient.setQueryData(
+      ["graphicCollection", "detail", project.id],
+      project,
+    );
+
+    void queryClient.prefetchQuery({
+      queryKey: ["graphicsCollection", project.id],
+      queryFn: async () => {
+        const imagesRef = ref(storage, `graphics/${project.id}/all`);
+        const result = await listAll(imagesRef);
+        return Promise.all(
+          result.items.map((itemRef) => getDownloadURL(itemRef)),
+        );
+      },
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+    });
   };
 
   // Find active project for overlay
@@ -290,6 +324,7 @@ const GraphicPage = () => {
                 deleteProjectMutation={deleteProjectMutation}
                 toUrlSlug={toUrlSlug}
                 navigate={navigate}
+                prefetchProject={prefetchProject}
               />
             ))}
           </SortableContext>
