@@ -7,6 +7,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   orderBy,
@@ -29,7 +30,15 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const useControlGraphicProject = () => {
+type UseControlGraphicProjectOptions = {
+  projectId?: string;
+  fetchProjects?: boolean;
+};
+
+const useControlGraphicProject = ({
+  projectId,
+  fetchProjects = true,
+}: UseControlGraphicProjectOptions = {}) => {
   const db = getFirestore();
   const queryClient = useQueryClient();
   const storage = getStorage();
@@ -51,6 +60,41 @@ const useControlGraphicProject = () => {
           Number.MIN_SAFE_INTEGER,
       })) as GraphicProjectData[];
     },
+    enabled: fetchProjects,
+  });
+
+  const { data: projectInfo, isPending: isProjectInfoPending } = useQuery<
+    GraphicProjectData | undefined
+  >({
+    queryKey: ["graphicCollection", "detail", projectId],
+    queryFn: async () => {
+      if (!projectId) return undefined;
+
+      const cachedProjects = queryClient.getQueryData<GraphicProjectData[]>([
+        "graphicCollection",
+      ]);
+      const cachedProject = cachedProjects?.find(
+        (project) => project.id === projectId,
+      );
+      if (cachedProject) {
+        return cachedProject;
+      }
+
+      const projectRef = doc(db, "graphicCollection", projectId);
+      const snapshot = await getDoc(projectRef);
+      if (!snapshot.exists()) {
+        return undefined;
+      }
+
+      return {
+        id: snapshot.id,
+        ...snapshot.data(),
+        position:
+          (snapshot.data() as GraphicProjectData).position ||
+          Number.MIN_SAFE_INTEGER,
+      } as GraphicProjectData;
+    },
+    enabled: !!projectId,
   });
 
   const form = useForm<z.infer<typeof graphicProjectSchema>>({
@@ -277,7 +321,9 @@ const useControlGraphicProject = () => {
     watch,
     onSubmit,
     isPending,
+    isProjectInfoPending,
     projects,
+    projectInfo,
     deleteProjectMutation,
     editProjectMutation,
     uploadProgress,

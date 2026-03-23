@@ -23,15 +23,17 @@ const GraphicImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { projects, editProjectMutation, form } = useControlGraphicProject();
-  const { photos, deletePhotoMutation } = useGraphicUploader(id || "");
+  const { projectInfo, isProjectInfoPending, editProjectMutation, form } =
+    useControlGraphicProject({ projectId: id, fetchProjects: false });
+  const { photos, isLoading, deletePhotoMutation } = useGraphicUploader(
+    id || "",
+  );
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editprojectInfo, setEditprojectInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRoundedImage, setIsRoundedImage] = useState(true);
   const [selectedGap, setSelectedGap] = useState<string>("mb-4");
-  const projectInfo = projects?.find((data) => data.id === id);
 
   const {
     currentImageIndex,
@@ -137,7 +139,7 @@ const GraphicImagePage = () => {
         <i className="fa-solid fa-arrow-left-long"></i> Quay lại
       </Button>
       <div className="title-wrapper flex flex-col items-center gap-3">
-        {!projects ? (
+        {isProjectInfoPending ? (
           <>
             <Skeleton className="w-[400px] h-10 mx-auto" />
             <Skeleton className="w-[200px] h-5 mx-auto mt-3" />
@@ -170,7 +172,7 @@ const GraphicImagePage = () => {
         )}
       </div>
 
-      {photos && photos.length === 0 ? (
+      {!isLoading && photos && photos.length === 0 ? (
         <div className="flex flex-col items-center gap-20 mt-10">
           <NoData />
           {checkIsLogin && (
@@ -243,13 +245,13 @@ const GraphicImagePage = () => {
               </div>
             )}
 
-            {!photos
+            {isLoading && (!photos || photos.length === 0)
               ? Array.from({ length: skeletonCount }).map((_, index) => (
                   <div className="mb-4 mt-5 break-inside-avoid" key={index}>
                     <Skeleton className="w-full h-64 rounded-lg" />
                   </div>
                 ))
-              : photos.map((photo, index) => (
+              : (photos || []).map((photo, index) => (
                   <div className="relative" key={`image ${index}`}>
                     {checkIsLogin && (
                       <>
@@ -270,6 +272,8 @@ const GraphicImagePage = () => {
                     <img
                       src={photo}
                       alt="image"
+                      loading="lazy"
+                      decoding="async"
                       className={`w-full object-cover ${
                         projectInfo?.isRoundedImage && "rounded-lg"
                       } ${projectInfo?.gapImage} cursor-pointer`}
