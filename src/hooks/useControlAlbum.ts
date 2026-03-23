@@ -7,6 +7,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   orderBy,
@@ -29,7 +30,15 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const useControlAlbum = () => {
+type UseControlAlbumOptions = {
+  albumId?: string;
+  fetchAlbums?: boolean;
+};
+
+const useControlAlbum = ({
+  albumId,
+  fetchAlbums = true,
+}: UseControlAlbumOptions = {}) => {
   const db = getFirestore();
   const queryClient = useQueryClient();
   const storage = getStorage();
@@ -40,7 +49,7 @@ const useControlAlbum = () => {
     queryFn: async () => {
       const q = query(
         collection(db, "albumCollection"),
-        orderBy("position", "asc")
+        orderBy("position", "asc"),
       );
       const querySnapshot = await getDocs(q);
       return querySnapshot.docs.map((doc) => ({
@@ -49,6 +58,38 @@ const useControlAlbum = () => {
         position: (doc.data() as AlbumData).position || Number.MIN_SAFE_INTEGER,
       })) as AlbumData[];
     },
+    enabled: fetchAlbums,
+  });
+
+  const { data: albumInfo, isPending: isAlbumInfoPending } = useQuery<
+    AlbumData | undefined
+  >({
+    queryKey: ["albumCollection", "detail", albumId],
+    queryFn: async () => {
+      if (!albumId) return undefined;
+
+      const cachedAlbums = queryClient.getQueryData<AlbumData[]>([
+        "albumCollection",
+      ]);
+      const cachedAlbum = cachedAlbums?.find((album) => album.id === albumId);
+      if (cachedAlbum) {
+        return cachedAlbum;
+      }
+
+      const albumRef = doc(db, "albumCollection", albumId);
+      const snapshot = await getDoc(albumRef);
+      if (!snapshot.exists()) {
+        return undefined;
+      }
+
+      return {
+        id: snapshot.id,
+        ...snapshot.data(),
+        position:
+          (snapshot.data() as AlbumData).position || Number.MIN_SAFE_INTEGER,
+      } as AlbumData;
+    },
+    enabled: !!albumId,
   });
 
   const form = useForm<z.infer<typeof albumSchema>>({
@@ -86,16 +127,16 @@ const useControlAlbum = () => {
               console.error(
                 getUrlError instanceof Error
                   ? getUrlError.message
-                  : String(getUrlError)
+                  : String(getUrlError),
               );
               reject(
                 getUrlError instanceof Error
                   ? getUrlError
-                  : new Error(String(getUrlError))
+                  : new Error(String(getUrlError)),
               );
             }
           })();
-        }
+        },
       );
     });
   };
@@ -190,7 +231,9 @@ const useControlAlbum = () => {
   const deleteAllFiles = async (folderRef: ReturnType<typeof ref>) => {
     const listResult = await listAll(folderRef);
     const deleteFiles = listResult.items.map((item) => deleteObject(item));
-    const deleteSubFolders = listResult.prefixes.map((prefix) => deleteAllFiles(prefix));
+    const deleteSubFolders = listResult.prefixes.map((prefix) =>
+      deleteAllFiles(prefix),
+    );
     await Promise.all([...deleteFiles, ...deleteSubFolders]);
   };
 
@@ -266,7 +309,9 @@ const useControlAlbum = () => {
     watch,
     onSubmit,
     isPending,
+    isAlbumInfoPending,
     albums,
+    albumInfo,
     deleteAlbumMutation,
     editAlbumMutation,
     uploadProgress,
