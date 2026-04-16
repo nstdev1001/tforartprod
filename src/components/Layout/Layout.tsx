@@ -1,7 +1,8 @@
 import SEO from "@/components/SEO/SEO";
 import LoadingBar from "@/config/loadingBar_config";
+import { trackPageView } from "@/config/logEvent_config";
 import { getRouteMetaByPath } from "@/config/routeMeta";
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
@@ -9,6 +10,21 @@ import Navbar from "../Navbar/Navbar";
 const Layout = () => {
   const location = useLocation();
   const routeMeta = getRouteMetaByPath(location.pathname);
+  const lastTrackedPathRef = useRef<string>("");
+
+  useEffect(() => {
+    const pathname = location.pathname;
+
+    if (lastTrackedPathRef.current === pathname) {
+      return;
+    }
+
+    lastTrackedPathRef.current = pathname;
+    void trackPageView({
+      pathname,
+      pageTitle: routeMeta?.title,
+    });
+  }, [location.pathname, routeMeta?.title]);
 
   return (
     <Fragment>

@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { trackVideoView } from "@/config/logEvent_config";
 import useAuth from "@/hooks/useAuth";
 import useControlVideo from "@/hooks/useControlVideo";
 import AddVideoDialog from "@/pages/Portfolio/VideoPage/_components/AddVideoDialog";
@@ -47,6 +48,7 @@ interface SortableVideoProps {
   checkIsLogin: boolean;
   handleEditClick: (video: VideoData) => void;
   handleDeleteClick: (video: VideoData) => void;
+  handleVideoOpen: (video: VideoData) => void;
   deleteVideoMutation: {
     mutate: (id: string) => void;
     isPending: boolean;
@@ -62,6 +64,7 @@ const SortableVideo = ({
   checkIsLogin,
   handleEditClick,
   handleDeleteClick,
+  handleVideoOpen,
 }: SortableVideoProps) => {
   const {
     attributes,
@@ -122,6 +125,7 @@ const SortableVideo = ({
             className="rounded-xl w-full h-auto aspect-video object-cover"
             src={getThumbnailYoutubeVideoURL(video.linkURL)}
             alt="thumbnail"
+            onClick={() => handleVideoOpen(video)}
           />
         </DialogTrigger>
 
@@ -202,6 +206,14 @@ const VideoPage = () => {
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
     setEditVideoData(null);
+  };
+
+  const handleVideoOpen = (video: VideoData) => {
+    void trackVideoView({
+      videoId: video.id,
+      videoTitle: video.videoTitle,
+      videoUrl: video.linkURL,
+    });
   };
 
   // Find active video for overlay
@@ -296,6 +308,7 @@ const VideoPage = () => {
                 checkIsLogin={checkIsLogin}
                 handleEditClick={handleEditClick}
                 handleDeleteClick={handleDeleteClick}
+                handleVideoOpen={handleVideoOpen}
                 deleteVideoMutation={{
                   mutate: deleteVideoMutation.mutate,
                   isPending: deleteVideoMutation.isPending,

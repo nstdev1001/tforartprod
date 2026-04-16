@@ -2,11 +2,12 @@ import NoData from "@/components/NoData/NoData";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
+import { trackAlbumView } from "@/config/logEvent_config";
 import useAuth from "@/hooks/useAuth";
 import useControlAlbum from "@/hooks/useControlAlbum";
 import { useFullScreenGallery } from "@/hooks/useFullScreenGallery";
 import useImageUploader from "@/pages/Portfolio/AlbumPage/useImageUploader";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddPhotosDialog from "./_components/AddPhotosDialog/AddPhotosDialog";
 import DeletePhotosConfirmDialog from "./_components/DeletePhotosConfirmDialog/DeleteConfirmDialog";
@@ -19,7 +20,7 @@ interface HandleCheckboxChange {
 const ImagePage = () => {
   const { checkIsLogin } = useAuth();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, albumSlug } = useParams();
   const { albumInfo, isAlbumInfoPending, editAlbumMutation, form } =
     useControlAlbum({ albumId: id, fetchAlbums: false });
   const { photos, isLoading, deletePhotoMutation } = useImageUploader(id || "");
@@ -27,6 +28,7 @@ const ImagePage = () => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editAlbumInfo, setEditAlbumInfo] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const trackedAlbumRef = useRef<string>("");
   const skeletonCount = 5;
 
   const {
@@ -43,6 +45,23 @@ const ImagePage = () => {
       form.setValue("albumDescription", albumInfo.albumDescription || "");
     }
   }, [albumInfo, form]);
+
+  useEffect(() => {
+    if (!albumInfo) {
+      return;
+    }
+
+    if (trackedAlbumRef.current === albumInfo.id) {
+      return;
+    }
+
+    trackedAlbumRef.current = albumInfo.id;
+    void trackAlbumView({
+      albumId: albumInfo.id,
+      albumTitle: albumInfo.albumTitle,
+      albumSlug,
+    });
+  }, [albumInfo, albumSlug]);
 
   const handleUpdateAlbumInfo = () => {
     setEditAlbumInfo(true);
