@@ -24,14 +24,15 @@ The TFORART website is designed to showcase the company's information, business 
 
 | Technology               | Version | Description                             |
 | ------------------------ | ------- | --------------------------------------- |
-| **React**                | 18.3.1  | UI library for building user interfaces |
-| **TypeScript**           | 5.5.3   | Type-safe JavaScript superset           |
-| **Vite**                 | 5.4.8   | Fast development and build tool         |
-| **React Router DOM**     | 6.30.0  | Client-side routing                     |
-| **Tailwind CSS**         | 3.4.13  | Utility-first CSS framework             |
-| **Framer Motion**        | 12.5.0  | Animation library                       |
-| **Tanstack React Query** | 5.59.20 | Data fetching & state management        |
-| **React Hook Form**      | 7.53.1  | Form handling with Zod validation       |
+| **React**                | 19.2.4  | UI library for building user interfaces |
+| **TypeScript**           | 5.9.3   | Type-safe JavaScript superset           |
+| **Vite**                 | 5.4.21  | Fast development and build tool         |
+| **React Router DOM**     | 6.30.3  | Client-side routing                     |
+| **Tailwind CSS**         | 3.4.19  | Utility-first CSS framework             |
+| **Framer Motion**        | 12.34.3 | Animation library                       |
+| **Tanstack React Query** | 5.90.21 | Data fetching & state management        |
+| **React Hook Form**      | 7.71.2  | Form handling with Zod validation       |
+| **Firebase Analytics**   | 11.10.0 | User behavior tracking and reporting    |
 
 ### UI Components & Libraries
 
@@ -49,7 +50,7 @@ The TFORART website is designed to showcase the company's information, business 
 
 | Service      | Version | Purpose                                           |
 | ------------ | ------- | ------------------------------------------------- |
-| **Firebase** | 11.0.1  | Authentication, Firestore Database, Cloud Storage |
+| **Firebase** | 11.10.0 | Authentication, Firestore Database, Cloud Storage |
 | **EmailJS**  | 3.2.0   | Contact form email handling                       |
 
 ### Development Tools
@@ -98,6 +99,7 @@ The TFORART website is designed to showcase the company's information, business 
 - 🤖 **AI Chatbot** - AI-powered assistant (`/ai-chatbot`)
 - 🛡️ **Error Boundary** - Graceful error handling
 - 🔧 **Maintenance Mode** - Built-in maintenance page toggle
+- 📊 **Analytics Tracking** - Firebase Analytics integration to track page views, album views, and video views
 
 ---
 
@@ -140,6 +142,11 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
+# Analytics Configuration (optional)
+# Set to 'true' to enable Firebase Analytics tracking on localhost
+# By default, analytics only run in production
+VITE_ENABLE_ANALYTICS=false
+
 # EmailJS Configuration
 VITE_EMAILJS_SERVICE_ID=your_service_id
 VITE_EMAILJS_TEMPLATE_ID=your_template_id
@@ -163,6 +170,30 @@ The application will be available at `http://localhost:5173`
 | `npm run preview`  | Preview production build locally                     |
 | `npm run lint`     | Run ESLint for code quality check                    |
 | `npm run lint:fix` | Auto-fix ESLint issues                               |
+
+---
+
+### 📊 Analytics & Tracking
+
+The application uses **Firebase Analytics** to track user behavior and engagement:
+
+#### Tracked Events
+
+| Event          | Trigger                         | Data Collected                          |
+| -------------- | ------------------------------- | --------------------------------------- |
+| **page_view**  | User navigates to any page      | `page_path`, `page_title`               |
+| **view_album** | User opens an album detail page | `album_id`, `album_title`, `album_slug` |
+| **view_video** | User opens a video              | `video_id`, `video_title`, `video_url`  |
+
+#### Configuration
+
+- **Production**: Analytics is automatically enabled in production builds using the `VITE_FIREBASE_MEASUREMENT_ID` environment variable.
+- **Development**: Analytics is disabled by default to prevent extension conflicts (e.g., ad blockers). To enable:
+  ```env
+  VITE_ENABLE_ANALYTICS=true
+  ```
+  Then restart the development server.
+- **Implementation**: See `src/config/logEvent_config.ts` for the tracking configuration and `src/components/Layout/Layout.tsx`, `src/pages/Portfolio/AlbumPage/ImagesPage/index.tsx`, and `src/pages/Portfolio/VideoPage/index.tsx` for event tracking integration.
 
 ---
 
@@ -195,6 +226,7 @@ tforart-dev/
 │   │
 │   ├── config/                 # App configurations
 │   │   ├── loadingBar_config.tsx
+│   │   ├── logEvent_config.ts # Firebase Analytics tracking events
 │   │   ├── motion_config.ts    # Framer Motion presets
 │   │   ├── navbar_config.tsx   # Navigation configuration
 │   │   ├── route_config.tsx    # React Router configuration
