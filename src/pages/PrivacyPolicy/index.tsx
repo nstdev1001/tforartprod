@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
         <p className="text-lg text-gray-600">{companyInfo.internationalName}</p>
       </div>
 
-      <div className="rounded-lg p-6 md:p-8 shadow-sm mb-10">
+      <div className="rounded-lg md:p-8 shadow-sm mb-10">
         <p className="mb-6 leading-relaxed">
           Tại {companyInfo.internationalName} (sau đây gọi tắt là &quot;
           {companyInfo.abbreviation}&quot;), chúng tôi coi trọng quyền riêng tư

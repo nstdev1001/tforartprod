@@ -13,10 +13,12 @@ const CompanyInfo = () => {
   return (
     <div className="company-info-container flex flex-col gap-10 md:gap-20 max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[200px] mx-auto">
       <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold mb-3">
+        <h1 className="text-2xl md:text-4xl font-bold mb-3">
           {companyInfo.internationalName}
         </h1>
-        <p className="text-lg text-gray-400">{companyInfo.abbreviation}</p>
+        <p className="text-base md:text-lg text-gray-400">
+          {companyInfo.abbreviation}
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8">
