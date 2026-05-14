@@ -1,6 +1,6 @@
-import { companyInfo } from "../CompanyInfo/companyInfoData";
 import { ArrowRight, Clapperboard, Film, Play, Tv } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { companyInfo } from "../CompanyInfo/companyInfoData";
 
 const CompanyServices = () => {
   const navigate = useNavigate();
@@ -36,14 +36,14 @@ const CompanyServices = () => {
   ];
 
   return (
-    <div className="min-h-screen text-white flex flex-col gap-10 md:gap-20 max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[200px] mx-auto">
+    <div className="min-h-screen text-white flex flex-col gap-1 md:gap-20 max-w-[1200px] p-[20px] md:p-[50px] pt-[70px] md:pt-[100px] lg:pt-[200px] mx-auto">
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl text-center md:text-4xl font-bold mb-3">
+      <div className="mb-10 flex flex-col gap-5">
+        <h1 className="text-2xl md:text-4xl font-bold mb-3 text-center">
           DỊCH VỤ CỦA CHÚNG TÔI
         </h1>
 
-        <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+        <p className="text-lg text-gray-400 ">
           TFORART là một trong những đơn vị tiên phong trong lĩnh vực sản xuất
           nội dung truyền thông tại Việt Nam. Chúng tôi tự hào mang đến những
           tác phẩm điện ảnh, video quảng cáo, chương trình truyền hình sáng tạo
