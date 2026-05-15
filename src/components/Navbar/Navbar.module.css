@@ -7,9 +7,19 @@
   width: 80%;
   margin: 0 auto;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.06)
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   padding: 15px 50px;
-  border-radius: 12px;
+  border-radius: 18px;
   margin-top: 20px;
   transition: all 0.5s ease-in-out;
 }
@@ -21,16 +31,25 @@
   right: 0;
   margin: 0 auto;
   z-index: 20;
-  background-color: rgba(0, 0, 0, 1);
   padding: 15px 50px;
-  border-radius: 0px 0px 12px 12px;
+  border-radius: 0px 0px 18px 18px;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 1px 30px rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 16px 50px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .sideMenu {
   width: 250px;
-  background-color: #1b1b1b;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.88),
+    rgba(30, 30, 30, 0.78)
+  );
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.28);
   position: fixed;
   height: 100%;
   top: 0;
@@ -96,7 +115,14 @@
   left: 0;
   width: 100%;
   height: 55px;
-  background: black;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 15, 15, 0.76),
+    rgba(15, 15, 15, 0.45)
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   z-index: 10;
 }
 
@@ -113,7 +139,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(8, 8, 12, 0.42);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   z-index: 10;
 }
 
@@ -167,7 +195,7 @@
 .timeContainer {
   position: fixed;
   right: 0;
-  padding: 16px 16px;
+  padding: 14px 16px;
   cursor: pointer;
   z-index: 10;
 }
