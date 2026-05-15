@@ -65,7 +65,7 @@ const Footer = () => {
           >
             <i className="fa-brands fa-facebook-f"></i>
           </Link>
-          <Link to="https://www.instagram.com/" target="_blank">
+          <Link to="https://www.instagram.com/tforartvn.prod/" target="_blank">
             <i className="fa-brands fa-instagram"></i>
           </Link>
           <Link to="https://x.com/tforartprod" target="_blank">
@@ -74,7 +74,7 @@ const Footer = () => {
           <Link to="https://www.youtube.com/@TforartProduction" target="_blank">
             <i className="fa-brands fa-youtube"></i>
           </Link>
-          <Link to="" target="_blank">
+          <Link to="https://www.behance.net/tforartprod" target="_blank">
             <i className="fa-brands fa-behance"></i>
           </Link>
         </div>

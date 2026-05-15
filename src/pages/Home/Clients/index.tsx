@@ -1,7 +1,7 @@
-import { clientLogos, clientLogosReverse } from "./clientData";
-import styles from "./style.module.css";
+import LogoLoop from "@/components/LogoLoop";
 import { defaultYMotionProps } from "@/config/motion_config";
 import { motion } from "framer-motion";
+import { clientLogos, clientLogosReverse } from "./clientData";
 
 const Clients = () => {
   const LogoImage = ({ src }: { src: string }) => (
@@ -24,7 +24,7 @@ const Clients = () => {
       {/* sp view */}
       <section className="md:hidden">
         <motion.div className="grid grid-cols-3 gap-6 justify-items-center">
-          {clientLogos.map((src, index) => (
+          {clientLogos.map((client, index) => (
             <motion.div
               key={`mobile-logo-${index}`}
               {...defaultYMotionProps}
@@ -34,7 +34,7 @@ const Clients = () => {
                 delay: index * 0.2,
               }}
             >
-              <LogoImage src={src} />
+              <LogoImage src={client.src} />
             </motion.div>
           ))}
         </motion.div>
@@ -42,24 +42,31 @@ const Clients = () => {
 
       {/* pc view */}
       <section className="hidden md:block w-full overflow-x-hidden py-12">
-        {/* line 1 */}
-        <div className="relative flex items-center">
-          <div className={`${styles.scrollTrack} flex gap-28`}>
-            {[...clientLogos, ...clientLogos].map((src, index) => (
-              <LogoImage key={`line1-${index}`} src={src} />
-            ))}
-          </div>
-        </div>
+        <div className="space-y-16">
+          <LogoLoop
+            logos={clientLogos.map((client) => ({
+              src: client.src,
+              alt: client.name,
+              href: client.url,
+              title: client.name,
+            }))}
+            logoHeight={30}
+            gap={112}
+            speed={90}
+          />
 
-        {/* line 2 */}
-        <div className="relative flex items-center mt-16">
-          <div className={`${styles.scrollTrackReverse} flex gap-28`}>
-            {[...clientLogosReverse, ...clientLogosReverse].map(
-              (src, index) => (
-                <LogoImage key={`line2-${index}`} src={src} />
-              ),
-            )}
-          </div>
+          <LogoLoop
+            logos={clientLogosReverse.map((client) => ({
+              src: client.src,
+              alt: client.name,
+              href: client.url,
+              title: client.name,
+            }))}
+            logoHeight={30}
+            gap={112}
+            speed={90}
+            direction="right"
+          />
         </div>
       </section>
     </div>
