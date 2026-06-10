@@ -212,25 +212,60 @@ const useControlGraphicProject = ({
       gapImage?: string;
     }) => {
       NProgress.start();
-      if (projectId) {
-        const albumRef = doc(db, "graphicCollection", projectId);
-        if (thumbnailFile) {
-          const newThumbnailUrl = await uploadImage(thumbnailFile, projectId);
-          return updateDoc(albumRef, {
-            ...updatedData,
-            thumbnailUrl: newThumbnailUrl,
-          });
-        } else {
-          return updateDoc(albumRef, {
-            ...updatedData,
-            thumbnailUrl: oldThumbnailUrl,
-            isRoundedImage,
-            gapImage,
-          });
-        }
+      if (!projectId) {
+        return undefined;
       }
+
+      const projectRef = doc(db, "graphicCollection", projectId);
+      const cachedProject = queryClient.getQueryData<GraphicProjectData>([
+        "graphicCollection",
+        "detail",
+        projectId,
+      ]);
+      const collectionProject = queryClient
+        .getQueryData<GraphicProjectData[]>(["graphicCollection"])
+        ?.find((project) => project.id === projectId);
+      const currentProject = cachedProject || collectionProject;
+
+      let thumbnailUrl = oldThumbnailUrl ?? currentProject?.thumbnailUrl;
+      if (thumbnailFile) {
+        thumbnailUrl = await uploadImage(thumbnailFile, projectId);
+      }
+
+      const nextProject = {
+        ...currentProject,
+        ...updatedData,
+        id: projectId,
+        thumbnailUrl,
+        isRoundedImage:
+          isRoundedImage ??
+          updatedData.isRoundedImage ??
+          currentProject?.isRoundedImage,
+        gapImage: gapImage ?? updatedData.gapImage ?? currentProject?.gapImage,
+      } as GraphicProjectData;
+
+      const { ...dataToPersist } = nextProject;
+
+      await updateDoc(projectRef, dataToPersist);
+      return nextProject;
     },
-    onSuccess: async () => {
+    onSuccess: async (updatedProject) => {
+      if (updatedProject?.id) {
+        queryClient.setQueryData<GraphicProjectData | undefined>(
+          ["graphicCollection", "detail", updatedProject.id],
+          updatedProject,
+        );
+        queryClient.setQueryData<GraphicProjectData[] | undefined>(
+          ["graphicCollection"],
+          (previousProjects) =>
+            previousProjects?.map((project) =>
+              project.id === updatedProject.id
+                ? { ...project, ...updatedProject }
+                : project,
+            ),
+        );
+      }
+
       await queryClient.invalidateQueries({ queryKey: ["graphicCollection"] });
       NProgress.done();
     },

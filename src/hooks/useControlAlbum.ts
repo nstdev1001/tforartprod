@@ -199,26 +199,55 @@ const useControlAlbum = ({
       oldThumbnailUrl?: string;
     }) => {
       NProgress.start();
-      if (albumId) {
-        const albumRef = doc(db, "albumCollection", albumId);
-        const { ...dataToUpdate } = updatedData;
-
-        if (thumbnailFile) {
-          const newThumbnailUrl = await uploadImage(thumbnailFile, albumId);
-          return updateDoc(albumRef, {
-            ...dataToUpdate,
-            thumbnailUrl: newThumbnailUrl,
-          });
-        } else {
-          const thumbnailUrl = oldThumbnailUrl;
-          return updateDoc(albumRef, {
-            ...updatedData,
-            thumbnailUrl,
-          });
-        }
+      if (!albumId) {
+        return undefined;
       }
+
+      const albumRef = doc(db, "albumCollection", albumId);
+      const cachedAlbum = queryClient.getQueryData<AlbumData>([
+        "albumCollection",
+        "detail",
+        albumId,
+      ]);
+      const collectionAlbum = queryClient
+        .getQueryData<AlbumData[]>(["albumCollection"])
+        ?.find((album) => album.id === albumId);
+      const currentAlbum = cachedAlbum || collectionAlbum;
+
+      let thumbnailUrl = oldThumbnailUrl ?? currentAlbum?.thumbnailUrl;
+      if (thumbnailFile) {
+        thumbnailUrl = await uploadImage(thumbnailFile, albumId);
+      }
+
+      const nextAlbum = {
+        ...currentAlbum,
+        ...updatedData,
+        id: albumId,
+        thumbnailUrl,
+      } as AlbumData;
+
+      const { ...dataToPersist } = nextAlbum;
+
+      await updateDoc(albumRef, dataToPersist);
+      return nextAlbum;
     },
-    onSuccess: async () => {
+    onSuccess: async (updatedAlbum) => {
+      if (updatedAlbum?.id) {
+        queryClient.setQueryData<AlbumData | undefined>(
+          ["albumCollection", "detail", updatedAlbum.id],
+          updatedAlbum,
+        );
+        queryClient.setQueryData<AlbumData[] | undefined>(
+          ["albumCollection"],
+          (previousAlbums) =>
+            previousAlbums?.map((album) =>
+              album.id === updatedAlbum.id
+                ? { ...album, ...updatedAlbum }
+                : album,
+            ),
+        );
+      }
+
       await queryClient.invalidateQueries({ queryKey: ["albumCollection"] });
       NProgress.done();
     },
@@ -242,11 +271,8 @@ const useControlAlbum = ({
       if (albumId) {
         NProgress.start();
         const albumRef = ref(storage, `images/${albumId}`);
-
         //delete all images in the album (including sub-folders)
         await deleteAllFiles(albumRef);
-
-        //delete the album
         return deleteDoc(doc(db, "albumCollection", albumId));
       }
     },

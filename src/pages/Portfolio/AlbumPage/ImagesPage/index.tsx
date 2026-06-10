@@ -241,7 +241,6 @@ const ImagePage = () => {
                 <i className="fa-solid fa-xmark text-2xl"></i>
               </Button>
 
-              {/* Container cho ảnh và checkbox */}
               <div className="relative inline-block">
                 <img
                   src={photos[currentImageIndex]}
